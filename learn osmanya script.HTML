@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Osmanya Script Learning App</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #FFA500 0%, #00008B 100%);
+      min-height: 100%;
+    }
+    
+    html {
+      height: 100%;
+    }
+
+    @font-face {
+      font-family: 'Osmanya';
+      src: local('Noto Sans Osmanya');
+    }
+
+    .font-osmanya {
+      font-family: 'Noto Sans Osmanya', 'Osmanya', serif;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .header h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 2.5rem;
+      font-weight: 800;
+    }
+
+    .header p {
+      margin: 0;
+      font-size: 1.125rem;
+      opacity: 0.8;
+    }
+
+    .tab-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .tab-buttons {
+      display: flex;
+      border-bottom: 2px solid #e5e7eb;
+      background: #f9fafb;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 1rem;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab-button:hover {
+      background: rgba(249, 115, 22, 0.1);
+    }
+
+    .tab-button.active {
+      border-bottom-color: #f97316;
+    }
+
+    .tab-content {
+      padding: 2rem;
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid #f97316;
+      display: inline-block;
+    }
+
+    .char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .char-card {
+      aspect-ratio: 1;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      transition: transform 0.2s;
+      border: 2px solid #e5e7eb;
+    }
+
+    .char-card:hover {
+      transform: scale(1.05);
+    }
+
+    .char-card.consonant {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    }
+
+    .char-card.vowel {
+      background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
+    }
+
+    .char-card.number {
+      background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
+    }
+
+    .char-osmanya {
+      font-size: 2.5rem;
+      font-family: 'Noto Sans Osmanya', 'Osmanya', serif;
+      margin-bottom: 0.5rem;
+    }
+
+    .char-latin {
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+
+    .char-name {
+      font-size: 0.875rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+
+    .converter-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .input-group label {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .input-group textarea {
+      padding: 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 100px;
+      transition: border-color 0.2s;
+    }
+
+    .input-group textarea:focus {
+      outline: none;
+      border-color: #f97316;
+    }
+
+    .output-box {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      border-radius: 0.75rem;
+      border: 2px solid #f59e0b;
+      min-height: 120px;
+      font-size: 2rem;
+      font-family: 'Noto Sans Osmanya', 'Osmanya', serif;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .quiz-section {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .quiz-card {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      padding: 2rem;
+      border-radius: 1rem;
+      border: 2px solid #86efac;
+    }
+
+    .quiz-question {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .quiz-character {
+      font-size: 5rem;
+      font-family: 'Noto Sans Osmanya', 'Osmanya', serif;
+      margin: 1rem 0;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .quiz-option {
+      padding: 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      background: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      text-align: center;
+      font-size: 1.125rem;
+    }
+
+    .quiz-option:hover {
+      border-color: #f97316;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .quiz-option.correct {
+      background: #86efac;
+      border-color: #22c55e;
+    }
+
+    .quiz-option.incorrect {
+      background: #fca5a5;
+      border-color: #ef4444;
+    }
+
+    .quiz-option:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+
+    .quiz-feedback.correct {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .quiz-feedback.incorrect {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .quiz-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: #f97316;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #ea580c;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
+    }
+
+    .btn-secondary {
+      background: #6366f1;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #4f46e5;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+    }
+
+    .score-display {
+      text-align: center;
+      padding: 1rem;
+      background: white;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.875rem;
+      }
+
+      .char-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 0.75rem;
+      }
+
+      .char-osmanya {
+        font-size: 2rem;
+      }
+
+      .quiz-character {
+        font-size: 3.5rem;
+      }
+
+      .quiz-options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <div class="header">
+    <h1 id="app-title">Osmanya Script Learning</h1>
+    <p id="app-subtitle">Learn the ancient Somali writing system</p>
+   </div>
+   <div class="tab-container">
+    <div class="tab-buttons"><button class="tab-button active" data-tab="reference">
+      <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      </svg><span id="tab-reference-label">Reference</span> </button> <button class="tab-button" data-tab="converter">
+      <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+      </svg><span id="tab-converter-label">Converter</span> </button> <button class="tab-button" data-tab="quiz">
+      <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg><span id="tab-quiz-label">Quiz</span> </button>
+    </div>
+    <div id="reference-tab" class="tab-content active">
+     <h2 class="section-title" id="reference-title">Character Reference</h2>
+     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Consonants</h3>
+     <div id="consonants-grid" class="char-grid"></div>
+     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Short Vowels</h3>
+     <div id="vowels-short-grid" class="char-grid"></div>
+     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Long Vowels</h3>
+     <div id="vowels-long-grid" class="char-grid"></div>
+     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Numbers</h3>
+     <div id="numbers-grid" class="char-grid"></div>
+    </div>
+    <div id="converter-tab" class="tab-content">
+     <h2 class="section-title" id="converter-title">Latin to Osmanya Converter</h2>
+     <div class="converter-section">
+      <div class="input-group"><label for="latin-input">Enter Latin text:</label> <textarea id="latin-input" placeholder="Type in Latin script (e.g., magac, buur, waddan)"></textarea>
+      </div>
+      <div class="input-group"><label>Osmanya output:</label>
+       <div id="osmanya-output" class="output-box">
+        Your converted text will appear here
+       </div>
+      </div>
+     </div>
+    </div>
+    <div id="quiz-tab" class="tab-content">
+     <h2 class="section-title" id="quiz-title">Practice Quiz</h2>
+     <div class="quiz-section">
+      <div class="score-display" id="score-display">
+       Score: 0 / 0
+      </div>
+      <div class="quiz-card">
+       <div class="quiz-question">
+        <p style="font-size: 1.25rem; margin: 0 0 1rem 0;">What is this character?</p>
+        <div class="quiz-character" id="quiz-character">
+         𐒁
+        </div>
+       </div>
+       <div class="quiz-options" id="quiz-options"></div>
+       <div id="quiz-feedback" class="quiz-feedback" style="display: none;"></div>
+       <div class="quiz-controls"><button class="btn btn-primary" id="next-question">
+         <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+         </svg> Next Question </button> <button class="btn btn-secondary" id="reset-quiz">
+         <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+         </svg> Reset Score </button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const consonants = [
+      { latin: 'b', osmanya: '𐒁', name: 'ba' },
+      { latin: 't', osmanya: '𐒂', name: 'ta' },
+      { latin: 'j', osmanya: '𐒃', name: 'ja' },
+      { latin: 'x', osmanya: '𐒄', name: 'xa' },
+      { latin: 'kh', osmanya: '𐒅', name: 'kha' },
+      { latin: 'd', osmanya: '𐒆', name: 'da' },
+      { latin: 'r', osmanya: '𐒇', name: 'ra' },
+      { latin: 's', osmanya: '𐒈', name: 'sa' },
+      { latin: 'sh', osmanya: '𐒉', name: 'shiin' },
+      { latin: 'dh', osmanya: '𐒊', name: 'dha' },
+      { latin: 'c', osmanya: '𐒋', name: 'cayn' },
+      { latin: 'g', osmanya: '𐒌', name: 'ga' },
+      { latin: 'f', osmanya: '𐒍', name: 'fa' },
+      { latin: 'q', osmanya: '𐒎', name: 'qa' },
+      { latin: 'k', osmanya: '𐒏', name: 'ka' },
+      { latin: 'l', osmanya: '𐒐', name: 'laan' },
+      { latin: 'm', osmanya: '𐒑', name: 'miin' },
+      { latin: 'n', osmanya: '𐒒', name: 'nuun' },
+      { latin: 'w', osmanya: '𐒓', name: 'waw' },
+      { latin: 'h', osmanya: '𐒔', name: 'ha' },
+      { latin: 'y', osmanya: '𐒕', name: 'ya' },
+      { latin: "'", osmanya: '𐒀', name: 'hamza' },
+    ];
+
+    const vowelsShort = [
+      { latin: 'a', osmanya: '𐒖', name: 'a' },
+      { latin: 'e', osmanya: '𐒗', name: 'e' },
+      { latin: 'i', osmanya: '𐒘', name: 'i' },
+      { latin: 'o', osmanya: '𐒙', name: 'o' },
+      { latin: 'u', osmanya: '𐒚', name: 'u' },
+    ];
+
+    const vowelsLong = [
+      { latin: 'aa', osmanya: '𐒛', name: 'aa' },
+      { latin: 'ee', osmanya: '𐒜', name: 'ee' },
+      { latin: 'ii', osmanya: '𐒕', name: 'ii' },
+      { latin: 'oo', osmanya: '𐒝', name: 'oo' },
+      { latin: 'uu', osmanya: '𐒓', name: 'uu' },
+    ];
+
+    const numbers = [
+      { latin: '0', osmanya: '𐒠', name: 'eber' },
+      { latin: '1', osmanya: '𐒡', name: 'kow' },
+      { latin: '2', osmanya: '𐒢', name: 'labo' },
+      { latin: '3', osmanya: '𐒣', name: 'sadex' },
+      { latin: '4', osmanya: '𐒤', name: 'afar' },
+      { latin: '5', osmanya: '𐒥', name: 'shan' },
+      { latin: '6', osmanya: '𐒦', name: 'lix' },
+      { latin: '7', osmanya: '𐒧', name: 'todoba' },
+      { latin: '8', osmanya: '𐒨', name: 'sideed' },
+      { latin: '9', osmanya: '𐒩', name: 'sagaal' },
+    ];
+
+    const allChars = [...consonants, ...vowelsShort, ...vowelsLong, ...numbers];
+
+    const defaultConfig = {
+      app_title: "Osmanya Script Learning",
+      app_subtitle: "Learn the ancient Somali writing system",
+      reference_title: "Character Reference",
+      converter_title: "Latin to Osmanya Converter",
+      quiz_title: "Practice Quiz",
+      primary_color: "#FFA500",
+      secondary_color: "#f97316",
+      background_color: "#ffffff",
+      text_color: "#1f2937",
+      accent_color: "#00008B"
+    };
+
+    let config = { ...defaultConfig };
+
+    // Conversion logic
+    function convertToOsmanya(text) {
+      let result = "";
+      let i = 0;
+      const lowerText = text.toLowerCase();
+
+      while (i < lowerText.length) {
+        let matchFound = false;
+
+        if (i + 1 < lowerText.length) {
+          const twoChar = lowerText.substring(i, i + 2);
+          const match = allChars.find(c => c.latin === twoChar);
+          if (match) {
+            result += match.osmanya;
+            i += 2;
+            matchFound = true;
+          }
+        }
+
+        if (!matchFound) {
+          const char = lowerText[i];
+          const match = allChars.find(c => c.latin === char);
+          if (match) {
+            result += match.osmanya;
+          } else {
+            result += text[i];
+          }
+          i += 1;
+        }
+      }
+      return result;
+    }
+
+    // Render character grids
+    function renderCharGrid(containerId, data, cardClass) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      data.forEach(char => {
+        const card = document.createElement('div');
+        card.className = `char-card ${cardClass}`;
+        card.innerHTML = `
+          <div class="char-osmanya">${char.osmanya}</div>
+          <div class="char-latin">${char.latin}</div>
+          <div class="char-name">${char.name}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Tab switching
+    function setupTabs() {
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetTab = button.getAttribute('data-tab');
+          
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabContents.forEach(content => content.classList.remove('active'));
+          
+          button.classList.add('active');
+          document.getElementById(`${targetTab}-tab`).classList.add('active');
+        });
+      });
+    }
+
+    // Converter functionality
+    function setupConverter() {
+      const input = document.getElementById('latin-input');
+      const output = document.getElementById('osmanya-output');
+
+      input.addEventListener('input', () => {
+        const text = input.value;
+        if (text.trim()) {
+          output.textContent = convertToOsmanya(text);
+        } else {
+          output.textContent = 'Your converted text will appear here';
+        }
+      });
+    }
+
+    // Quiz functionality
+    let quizScore = 0;
+    let quizTotal = 0;
+    let currentQuestion = null;
+    let answered = false;
+
+    function generateQuizQuestion() {
+      answered = false;
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.style.display = 'none';
+
+      const quizChars = [...consonants, ...vowelsShort, ...vowelsLong];
+      currentQuestion = quizChars[Math.floor(Math.random() * quizChars.length)];
+      
+      document.getElementById('quiz-character').textContent = currentQuestion.osmanya;
+
+      const options = [currentQuestion];
+      while (options.length < 4) {
+        const randomChar = quizChars[Math.floor(Math.random() * quizChars.length)];
+        if (!options.find(o => o.latin === randomChar.latin)) {
+          options.push(randomChar);
+        }
+      }
+
+      options.sort(() => Math.random() - 0.5);
+
+      const optionsContainer = document.getElementById('quiz-options');
+      optionsContainer.innerHTML = '';
+      
+      options.forEach(option => {
+        const button = document.createElement('button');
+        button.className = 'quiz-option';
+        button.textContent = option.latin;
+        button.addEventListener('click', () => checkAnswer(button, option));
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function checkAnswer(button, selectedOption) {
+      if (answered) return;
+      
+      answered = true;
+      quizTotal++;
+
+      const allButtons = document.querySelectorAll('.quiz-option');
+      allButtons.forEach(btn => btn.disabled = true);
+
+      const feedback = document.getElementById('quiz-feedback');
+      
+      if (selectedOption.latin === currentQuestion.latin) {
+        button.classList.add('correct');
+        feedback.className = 'quiz-feedback correct';
+        feedback.innerHTML = `
+          <svg style="width: 24px; height: 24px; display: inline; vertical-align: middle; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Correct! ${currentQuestion.osmanya} = ${currentQuestion.latin} (${currentQuestion.name})
+        `;
+        quizScore++;
+      } else {
+        button.classList.add('incorrect');
+        allButtons.forEach(btn => {
+          if (btn.textContent === currentQuestion.latin) {
+            btn.classList.add('correct');
+          }
+        });
+        feedback.className = 'quiz-feedback incorrect';
+        feedback.innerHTML = `
+          <svg style="width: 24px; height: 24px; display: inline; vertical-align: middle; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          Not quite! ${currentQuestion.osmanya} = ${currentQuestion.latin} (${currentQuestion.name})
+        `;
+      }
+      
+      feedback.style.display = 'block';
+      updateScore();
+    }
+
+    function updateScore() {
+      document.getElementById('score-display').textContent = `Score: ${quizScore} / ${quizTotal}`;
+    }
+
+    function setupQuiz() {
+      generateQuizQuestion();
+      updateScore();
+
+      document.getElementById('next-question').addEventListener('click', generateQuizQuestion);
+      document.getElementById('reset-quiz').addEventListener('click', () => {
+        quizScore = 0;
+        quizTotal = 0;
+        updateScore();
+        generateQuizQuestion();
+      });
+    }
+
+    async function onConfigChange(newConfig) {
+      config = { ...config, ...newConfig };
+
+      document.getElementById('app-title').textContent = config.app_title || defaultConfig.app_title;
+      document.getElementById('app-subtitle').textContent = config.app_subtitle || defaultConfig.app_subtitle;
+      document.getElementById('reference-title').textContent = config.reference_title || defaultConfig.reference_title;
+      document.getElementById('converter-title').textContent = config.converter_title || defaultConfig.converter_title;
+      document.getElementById('quiz-title').textContent = config.quiz_title || defaultConfig.quiz_title;
+
+      const primaryColor = config.primary_color || defaultConfig.primary_color;
+      const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
+      const backgroundColor = config.background_color || defaultConfig.background_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+
+      document.body.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${accentColor} 100%)`;
+      document.querySelector('.header').style.background = `rgba(255, 255, 255, 0.95)`;
+      document.querySelector('.header h1').style.color = textColor;
+      document.querySelector('.header p').style.color = textColor;
+      
+      document.querySelectorAll('.section-title').forEach(el => {
+        el.style.borderBottomColor = secondaryColor;
+        el.style.color = textColor;
+      });
+
+      document.querySelectorAll('.tab-button.active').forEach(el => {
+        el.style.borderBottomColor = secondaryColor;
+      });
+
+      document.querySelectorAll('.btn-primary').forEach(el => {
+        el.style.backgroundColor = secondaryColor;
+      });
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.primary_color || defaultConfig.primary_color,
+              set: (value) => {
+                config.primary_color = value;
+                window.elementSdk.setConfig({ primary_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => {
+                config.secondary_color = value;
+                window.elementSdk.setConfig({ secondary_color: value });
+              }
+            },
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.accent_color || defaultConfig.accent_color,
+              set: (value) => {
+                config.accent_color = value;
+                window.elementSdk.setConfig({ accent_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["app_title", config.app_title || defaultConfig.app_title],
+          ["app_subtitle", config.app_subtitle || defaultConfig.app_subtitle],
+          ["reference_title", config.reference_title || defaultConfig.reference_title],
+          ["converter_title", config.converter_title || defaultConfig.converter_title],
+          ["quiz_title", config.quiz_title || defaultConfig.quiz_title]
+        ])
+      });
+    }
+
+    // Initialize app
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCharGrid('consonants-grid', consonants, 'consonant');
+      renderCharGrid('vowels-short-grid', vowelsShort, 'vowel');
+      renderCharGrid('vowels-long-grid', vowelsLong, 'vowel');
+      renderCharGrid('numbers-grid', numbers, 'number');
+      
+      setupTabs();
+      setupConverter();
+      setupQuiz();
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a2fb0c5e7837939',t:'MTc2Mzg5MDY3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
