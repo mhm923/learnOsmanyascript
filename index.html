@@ -3,8 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Osmanya Script Learning App</title>
-  <script src="/_sdk/element_sdk.js"></script>
+  <title>Baro Far Soomaali</title>
   <style>
     body {
       box-sizing: border-box;
@@ -47,12 +46,14 @@
       margin: 0 0 0.5rem 0;
       font-size: 2.5rem;
       font-weight: 800;
+      color: #1f2937;
     }
 
     .header p {
       margin: 0;
       font-size: 1.125rem;
       opacity: 0.8;
+      color: #1f2937;
     }
 
     .tab-container {
@@ -108,6 +109,7 @@
       padding-bottom: 0.5rem;
       border-bottom: 3px solid #f97316;
       display: inline-block;
+      color: #1f2937;
     }
 
     .char-grid {
@@ -371,56 +373,55 @@
     }
   </style>
   <style>@view-transition { navigation: auto; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
  <body>
   <div class="container">
    <div class="header">
-    <h1 id="app-title">Osmanya Script Learning</h1>
-    <p id="app-subtitle">Learn the ancient Somali writing system</p>
+    <h1 id="app-title">Baro Far Soomaali</h1>
+    <p id="app-subtitle">Baro qoraalka qadiimiga ah ee Soomaaliga</p>
    </div>
    <div class="tab-container">
     <div class="tab-buttons"><button class="tab-button active" data-tab="reference">
       <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-      </svg><span id="tab-reference-label">Reference</span> </button> <button class="tab-button" data-tab="converter">
+      </svg><span id="tab-reference-label">Xuruufta</span> </button> <button class="tab-button" data-tab="converter">
       <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-      </svg><span id="tab-converter-label">Converter</span> </button> <button class="tab-button" data-tab="quiz">
+      </svg><span id="tab-converter-label">Qoraal-Bedele</span> </button> <button class="tab-button" data-tab="quiz">
       <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg><span id="tab-quiz-label">Quiz</span> </button>
+      </svg><span id="tab-quiz-label">Layli</span> </button>
     </div>
     <div id="reference-tab" class="tab-content active">
-     <h2 class="section-title" id="reference-title">Character Reference</h2>
-     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Consonants</h3>
+     <h2 class="section-title" id="reference-title">Shaxda Xuruufta</h2>
+     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Sibbane (Consonants)</h3>
      <div id="consonants-grid" class="char-grid"></div>
-     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Short Vowels</h3>
+     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Saqal Gaaban (Short Vowels)</h3>
      <div id="vowels-short-grid" class="char-grid"></div>
-     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Long Vowels</h3>
+     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Saqal Dheer (Long Vowels)</h3>
      <div id="vowels-long-grid" class="char-grid"></div>
-     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Numbers</h3>
+     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Tirooyin (Numbers)</h3>
      <div id="numbers-grid" class="char-grid"></div>
     </div>
     <div id="converter-tab" class="tab-content">
-     <h2 class="section-title" id="converter-title">Latin to Osmanya Converter</h2>
+     <h2 class="section-title" id="converter-title">Laatiin u bedel Cismaaniya</h2>
      <div class="converter-section">
-      <div class="input-group"><label for="latin-input">Enter Latin text:</label> <textarea id="latin-input" placeholder="Type in Latin script (e.g., magac, buur, waddan)"></textarea>
+      <div class="input-group"><label for="latin-input">Geli Qoraalka Laatiinka:</label> <textarea id="latin-input" placeholder="Ku qor farta Laatiinka (tusaale: magac, buur, waddan)"></textarea>
       </div>
-      <div class="input-group"><label>Osmanya output:</label>
+      <div class="input-group"><label>Natiijada Cismaaniyada:</label>
        <div id="osmanya-output" class="output-box">
-        Your converted text will appear here
+        Halkan ayuu qoraalku kasoo baxayaa
        </div>
       </div>
      </div>
     </div>
     <div id="quiz-tab" class="tab-content">
-     <h2 class="section-title" id="quiz-title">Practice Quiz</h2>
+     <h2 class="section-title" id="quiz-title">Tijaabi Aqoontaada</h2>
      <div class="quiz-section">
       <div class="score-display" id="score-display">
-       Score: 0 / 0
+       Dhibcaha: 0 / 0
       </div>
       <div class="quiz-card">
        <div class="quiz-question">
-        <p style="font-size: 1.25rem; margin: 0 0 1rem 0;">What is this character?</p>
+        <p style="font-size: 1.25rem; margin: 0 0 1rem 0;">Waa kee xarafkan?</p>
         <div class="quiz-character" id="quiz-character">
          𐒁
         </div>
@@ -429,9 +430,9 @@
        <div id="quiz-feedback" class="quiz-feedback" style="display: none;"></div>
        <div class="quiz-controls"><button class="btn btn-primary" id="next-question">
          <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-         </svg> Next Question </button> <button class="btn btn-secondary" id="reset-quiz">
+         </svg> Su'aal Kale </button> <button class="btn btn-secondary" id="reset-quiz">
          <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-         </svg> Reset Score </button>
+         </svg> Dib u bilow </button>
        </div>
       </div>
      </div>
@@ -494,21 +495,6 @@
     ];
 
     const allChars = [...consonants, ...vowelsShort, ...vowelsLong, ...numbers];
-
-    const defaultConfig = {
-      app_title: "Osmanya Script Learning",
-      app_subtitle: "Learn the ancient Somali writing system",
-      reference_title: "Character Reference",
-      converter_title: "Latin to Osmanya Converter",
-      quiz_title: "Practice Quiz",
-      primary_color: "#FFA500",
-      secondary_color: "#f97316",
-      background_color: "#ffffff",
-      text_color: "#1f2937",
-      accent_color: "#00008B"
-    };
-
-    let config = { ...defaultConfig };
 
     // Conversion logic
     function convertToOsmanya(text) {
@@ -648,7 +634,7 @@
           <svg style="width: 24px; height: 24px; display: inline; vertical-align: middle; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
-          Correct! ${currentQuestion.osmanya} = ${currentQuestion.latin} (${currentQuestion.name})
+          Sax! ${currentQuestion.osmanya} = ${currentQuestion.latin} (${currentQuestion.name})
         `;
         quizScore++;
       } else {
@@ -663,7 +649,7 @@
           <svg style="width: 24px; height: 24px; display: inline; vertical-align: middle; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
-          Not quite! ${currentQuestion.osmanya} = ${currentQuestion.latin} (${currentQuestion.name})
+          Qalad! ${currentQuestion.osmanya} = ${currentQuestion.latin} (${currentQuestion.name})
         `;
       }
       
@@ -672,7 +658,7 @@
     }
 
     function updateScore() {
-      document.getElementById('score-display').textContent = `Score: ${quizScore} / ${quizTotal}`;
+      document.getElementById('score-display').textContent = `Dhibcaha: ${quizScore} / ${quizTotal}`;
     }
 
     function setupQuiz() {
@@ -688,96 +674,6 @@
       });
     }
 
-    async function onConfigChange(newConfig) {
-      config = { ...config, ...newConfig };
-
-      document.getElementById('app-title').textContent = config.app_title || defaultConfig.app_title;
-      document.getElementById('app-subtitle').textContent = config.app_subtitle || defaultConfig.app_subtitle;
-      document.getElementById('reference-title').textContent = config.reference_title || defaultConfig.reference_title;
-      document.getElementById('converter-title').textContent = config.converter_title || defaultConfig.converter_title;
-      document.getElementById('quiz-title').textContent = config.quiz_title || defaultConfig.quiz_title;
-
-      const primaryColor = config.primary_color || defaultConfig.primary_color;
-      const secondaryColor = config.secondary_color || defaultConfig.secondary_color;
-      const backgroundColor = config.background_color || defaultConfig.background_color;
-      const textColor = config.text_color || defaultConfig.text_color;
-      const accentColor = config.accent_color || defaultConfig.accent_color;
-
-      document.body.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${accentColor} 100%)`;
-      document.querySelector('.header').style.background = `rgba(255, 255, 255, 0.95)`;
-      document.querySelector('.header h1').style.color = textColor;
-      document.querySelector('.header p').style.color = textColor;
-      
-      document.querySelectorAll('.section-title').forEach(el => {
-        el.style.borderBottomColor = secondaryColor;
-        el.style.color = textColor;
-      });
-
-      document.querySelectorAll('.tab-button.active').forEach(el => {
-        el.style.borderBottomColor = secondaryColor;
-      });
-
-      document.querySelectorAll('.btn-primary').forEach(el => {
-        el.style.backgroundColor = secondaryColor;
-      });
-    }
-
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities: (config) => ({
-          recolorables: [
-            {
-              get: () => config.primary_color || defaultConfig.primary_color,
-              set: (value) => {
-                config.primary_color = value;
-                window.elementSdk.setConfig({ primary_color: value });
-              }
-            },
-            {
-              get: () => config.secondary_color || defaultConfig.secondary_color,
-              set: (value) => {
-                config.secondary_color = value;
-                window.elementSdk.setConfig({ secondary_color: value });
-              }
-            },
-            {
-              get: () => config.background_color || defaultConfig.background_color,
-              set: (value) => {
-                config.background_color = value;
-                window.elementSdk.setConfig({ background_color: value });
-              }
-            },
-            {
-              get: () => config.text_color || defaultConfig.text_color,
-              set: (value) => {
-                config.text_color = value;
-                window.elementSdk.setConfig({ text_color: value });
-              }
-            },
-            {
-              get: () => config.accent_color || defaultConfig.accent_color,
-              set: (value) => {
-                config.accent_color = value;
-                window.elementSdk.setConfig({ accent_color: value });
-              }
-            }
-          ],
-          borderables: [],
-          fontEditable: undefined,
-          fontSizeable: undefined
-        }),
-        mapToEditPanelValues: (config) => new Map([
-          ["app_title", config.app_title || defaultConfig.app_title],
-          ["app_subtitle", config.app_subtitle || defaultConfig.app_subtitle],
-          ["reference_title", config.reference_title || defaultConfig.reference_title],
-          ["converter_title", config.converter_title || defaultConfig.converter_title],
-          ["quiz_title", config.quiz_title || defaultConfig.quiz_title]
-        ])
-      });
-    }
-
     // Initialize app
     document.addEventListener('DOMContentLoaded', () => {
       renderCharGrid('consonants-grid', consonants, 'consonant');
@@ -790,5 +686,5 @@
       setupQuiz();
     });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a2fb0c5e7837939',t:'MTc2Mzg5MDY3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
