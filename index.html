@@ -1,690 +1,667 @@
 <!doctype html>
-<html lang="en">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baro Far Soomaali</title>
-  <style>
-    body {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #FFA500 0%, #00008B 100%);
-      min-height: 100%;
-    }
-    
-    html {
-      height: 100%;
-    }
+<!doctype html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Far Cismaaniya: Barasho & Ciyaar</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        // Dejinta Midabada (Dark Blue & Gold)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'osm-bg-start': '#001233', // Buluug aad u madow
+                        'osm-bg-end': '#002855',   // Buluug dhexdhexaad ah
+                        'osm-gold': '#FFD700',     // Dahabi saafi ah
+                        'osm-gold-hover': '#E6C200',
+                        'osm-card': 'rgba(255, 255, 255, 0.08)',
+                        'osm-border': 'rgba(255, 215, 0, 0.3)', // Xuduud Dahabi ah
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #001233 0%, #003366 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #ffffff;
+        }
 
-    @font-face {
-      font-family: 'Osmanya';
-      src: local('Noto Sans Osmanya');
-    }
+        @font-face {
+            font-family: 'Osmanya';
+            src: local('Noto Sans Osmanya');
+        }
+        .font-osmanya {
+            font-family: 'Noto Sans Osmanya', 'Osmanya', serif;
+        }
 
-    .font-osmanya {
-      font-family: 'Noto Sans Osmanya', 'Osmanya', serif;
-    }
+        /* Glassmorphism Styles */
+        .glass-panel {
+            background-color: var(--osm-card);
+            border: 1px solid var(--osm-border);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
-    }
+        /* Tab Styles */
+        .tab-btn {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            color: #a0aec0;
+        }
+        .tab-btn.active {
+            color: #FFD700; /* Dahabi */
+            border-bottom-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+        .tab-btn:hover:not(.active) {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
 
-    .header {
-      text-align: center;
-      margin-bottom: 3rem;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
+        /* Gold Buttons */
+        .btn-gold {
+            background-color: #FFD700;
+            color: #001233;
+            font-weight: 800;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        .btn-gold:hover {
+            background-color: #E6C200;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+        .btn-gold:active {
+            transform: translateY(0);
+        }
 
-    .header h1 {
-      margin: 0 0 0.5rem 0;
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #1f2937;
-    }
+        /* Blue Buttons (Secondary) */
+        .btn-blue {
+            background-color: rgba(0, 40, 85, 0.8);
+            border: 1px solid #FFD700;
+            color: #FFD700;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-blue:hover {
+            background-color: rgba(0, 60, 120, 0.9);
+            color: white;
+            border-color: white;
+        }
 
-    .header p {
-      margin: 0;
-      font-size: 1.125rem;
-      opacity: 0.8;
-      color: #1f2937;
-    }
+        /* Inputs */
+        textarea, input[type="text"] {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            color: white;
+            transition: border-color 0.3s;
+        }
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
 
-    .tab-container {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 1rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      overflow: hidden;
-    }
+        /* Quiz Options */
+        .quiz-option {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+        }
+        .quiz-option:hover:not(:disabled) {
+            background-color: rgba(255, 215, 0, 0.1);
+            border-color: #FFD700;
+            transform: scale(1.02);
+        }
+        .quiz-option.correct {
+            background-color: rgba(72, 187, 120, 0.2);
+            border-color: #48bb78;
+            color: #48bb78;
+        }
+        .quiz-option.incorrect {
+            background-color: rgba(245, 101, 101, 0.2);
+            border-color: #f56565;
+            color: #f56565;
+        }
 
-    .tab-buttons {
-      display: flex;
-      border-bottom: 2px solid #e5e7eb;
-      background: #f9fafb;
-    }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
 
-    .tab-button {
-      flex: 1;
-      padding: 1rem;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      border-bottom: 3px solid transparent;
-    }
-
-    .tab-button:hover {
-      background: rgba(249, 115, 22, 0.1);
-    }
-
-    .tab-button.active {
-      border-bottom-color: #f97316;
-    }
-
-    .tab-content {
-      padding: 2rem;
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .section-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 3px solid #f97316;
-      display: inline-block;
-      color: #1f2937;
-    }
-
-    .char-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .char-card {
-      aspect-ratio: 1;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      transition: transform 0.2s;
-      border: 2px solid #e5e7eb;
-    }
-
-    .char-card:hover {
-      transform: scale(1.05);
-    }
-
-    .char-card.consonant {
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    }
-
-    .char-card.vowel {
-      background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
-    }
-
-    .char-card.number {
-      background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
-    }
-
-    .char-osmanya {
-      font-size: 2.5rem;
-      font-family: 'Noto Sans Osmanya', 'Osmanya', serif;
-      margin-bottom: 0.5rem;
-    }
-
-    .char-latin {
-      font-size: 1.125rem;
-      font-weight: 700;
-    }
-
-    .char-name {
-      font-size: 0.875rem;
-      opacity: 0.7;
-      margin-top: 0.25rem;
-    }
-
-    .converter-section {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .input-group label {
-      font-weight: 600;
-      font-size: 1rem;
-    }
-
-    .input-group textarea {
-      padding: 1rem;
-      border: 2px solid #e5e7eb;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      font-family: inherit;
-      resize: vertical;
-      min-height: 100px;
-      transition: border-color 0.2s;
-    }
-
-    .input-group textarea:focus {
-      outline: none;
-      border-color: #f97316;
-    }
-
-    .output-box {
-      padding: 1.5rem;
-      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-      border-radius: 0.75rem;
-      border: 2px solid #f59e0b;
-      min-height: 120px;
-      font-size: 2rem;
-      font-family: 'Noto Sans Osmanya', 'Osmanya', serif;
-      text-align: center;
-      line-height: 1.6;
-    }
-
-    .quiz-section {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .quiz-card {
-      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-      padding: 2rem;
-      border-radius: 1rem;
-      border: 2px solid #86efac;
-    }
-
-    .quiz-question {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .quiz-character {
-      font-size: 5rem;
-      font-family: 'Noto Sans Osmanya', 'Osmanya', serif;
-      margin: 1rem 0;
-    }
-
-    .quiz-options {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-    }
-
-    .quiz-option {
-      padding: 1rem;
-      border: 2px solid #e5e7eb;
-      border-radius: 0.5rem;
-      background: white;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
-      text-align: center;
-      font-size: 1.125rem;
-    }
-
-    .quiz-option:hover {
-      border-color: #f97316;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .quiz-option.correct {
-      background: #86efac;
-      border-color: #22c55e;
-    }
-
-    .quiz-option.incorrect {
-      background: #fca5a5;
-      border-color: #ef4444;
-    }
-
-    .quiz-option:disabled {
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-
-    .quiz-feedback {
-      margin-top: 1rem;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      text-align: center;
-      font-weight: 600;
-      font-size: 1.125rem;
-    }
-
-    .quiz-feedback.correct {
-      background: #d1fae5;
-      color: #065f46;
-    }
-
-    .quiz-feedback.incorrect {
-      background: #fee2e2;
-      color: #991b1b;
-    }
-
-    .quiz-controls {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .btn {
-      padding: 0.75rem 1.5rem;
-      border: none;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 1rem;
-    }
-
-    .btn-primary {
-      background: #f97316;
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: #ea580c;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3);
-    }
-
-    .btn-secondary {
-      background: #6366f1;
-      color: white;
-    }
-
-    .btn-secondary:hover {
-      background: #4f46e5;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
-    }
-
-    .score-display {
-      text-align: center;
-      padding: 1rem;
-      background: white;
-      border-radius: 0.5rem;
-      margin-bottom: 1rem;
-      font-size: 1.125rem;
-      font-weight: 600;
-    }
-
-    .icon {
-      width: 20px;
-      height: 20px;
-    }
-
-    @media (max-width: 768px) {
-      .header h1 {
-        font-size: 1.875rem;
-      }
-
-      .char-grid {
-        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        gap: 0.75rem;
-      }
-
-      .char-osmanya {
-        font-size: 2rem;
-      }
-
-      .quiz-character {
-        font-size: 3.5rem;
-      }
-
-      .quiz-options {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
- </head>
- <body>
-  <div class="container">
-   <div class="header">
-    <h1 id="app-title">Baro Far Soomaali</h1>
-    <p id="app-subtitle">Baro qoraalka qadiimiga ah ee Soomaaliga</p>
-   </div>
-   <div class="tab-container">
-    <div class="tab-buttons"><button class="tab-button active" data-tab="reference">
-      <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-      </svg><span id="tab-reference-label">Xuruufta</span> </button> <button class="tab-button" data-tab="converter">
-      <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-      </svg><span id="tab-converter-label">Qoraal-Bedele</span> </button> <button class="tab-button" data-tab="quiz">
-      <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg><span id="tab-quiz-label">Layli</span> </button>
-    </div>
-    <div id="reference-tab" class="tab-content active">
-     <h2 class="section-title" id="reference-title">Shaxda Xuruufta</h2>
-     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Sibbane (Consonants)</h3>
-     <div id="consonants-grid" class="char-grid"></div>
-     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Saqal Gaaban (Short Vowels)</h3>
-     <div id="vowels-short-grid" class="char-grid"></div>
-     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Saqal Dheer (Long Vowels)</h3>
-     <div id="vowels-long-grid" class="char-grid"></div>
-     <h3 style="font-size: 1.25rem; font-weight: 600; margin: 1.5rem 0 1rem;">Tirooyin (Numbers)</h3>
-     <div id="numbers-grid" class="char-grid"></div>
-    </div>
-    <div id="converter-tab" class="tab-content">
-     <h2 class="section-title" id="converter-title">Laatiin u bedel Cismaaniya</h2>
-     <div class="converter-section">
-      <div class="input-group"><label for="latin-input">Geli Qoraalka Laatiinka:</label> <textarea id="latin-input" placeholder="Ku qor farta Laatiinka (tusaale: magac, buur, waddan)"></textarea>
-      </div>
-      <div class="input-group"><label>Natiijada Cismaaniyada:</label>
-       <div id="osmanya-output" class="output-box">
-        Halkan ayuu qoraalku kasoo baxayaa
-       </div>
-      </div>
-     </div>
-    </div>
-    <div id="quiz-tab" class="tab-content">
-     <h2 class="section-title" id="quiz-title">Tijaabi Aqoontaada</h2>
-     <div class="quiz-section">
-      <div class="score-display" id="score-display">
-       Dhibcaha: 0 / 0
-      </div>
-      <div class="quiz-card">
-       <div class="quiz-question">
-        <p style="font-size: 1.25rem; margin: 0 0 1rem 0;">Waa kee xarafkan?</p>
-        <div class="quiz-character" id="quiz-character">
-         𐒁
+    <!-- NAVIGATION -->
+    <nav class="max-w-5xl mx-auto mb-8 glass-panel rounded-2xl sticky top-4 z-50">
+        <div class="px-4 md:px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">🇸🇴</span>
+                <h1 class="text-xl md:text-2xl font-extrabold text-osm-gold tracking-wide">FAR CISMAANIYA</h1>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="switchTab('home')" class="nav-item px-3 py-2 rounded-lg hover:bg-white/10 transition text-sm md:text-base font-medium" id="nav-home">🏠 Guriga</button>
+                <button onclick="switchTab('learn')" class="nav-item px-3 py-2 rounded-lg hover:bg-white/10 transition text-sm md:text-base font-medium" id="nav-learn">📚 Baro</button>
+                <button onclick="switchTab('play')" class="nav-item px-3 py-2 rounded-lg hover:bg-white/10 transition text-sm md:text-base font-medium" id="nav-play">🎮 Ciyaar</button>
+            </div>
         </div>
-       </div>
-       <div class="quiz-options" id="quiz-options"></div>
-       <div id="quiz-feedback" class="quiz-feedback" style="display: none;"></div>
-       <div class="quiz-controls"><button class="btn btn-primary" id="next-question">
-         <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-         </svg> Su'aal Kale </button> <button class="btn btn-secondary" id="reset-quiz">
-         <svg class="icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-         </svg> Dib u bilow </button>
-       </div>
-      </div>
-     </div>
-    </div>
-   </div>
-  </div>
-  <script>
-    const consonants = [
-      { latin: 'b', osmanya: '𐒁', name: 'ba' },
-      { latin: 't', osmanya: '𐒂', name: 'ta' },
-      { latin: 'j', osmanya: '𐒃', name: 'ja' },
-      { latin: 'x', osmanya: '𐒄', name: 'xa' },
-      { latin: 'kh', osmanya: '𐒅', name: 'kha' },
-      { latin: 'd', osmanya: '𐒆', name: 'da' },
-      { latin: 'r', osmanya: '𐒇', name: 'ra' },
-      { latin: 's', osmanya: '𐒈', name: 'sa' },
-      { latin: 'sh', osmanya: '𐒉', name: 'shiin' },
-      { latin: 'dh', osmanya: '𐒊', name: 'dha' },
-      { latin: 'c', osmanya: '𐒋', name: 'cayn' },
-      { latin: 'g', osmanya: '𐒌', name: 'ga' },
-      { latin: 'f', osmanya: '𐒍', name: 'fa' },
-      { latin: 'q', osmanya: '𐒎', name: 'qa' },
-      { latin: 'k', osmanya: '𐒏', name: 'ka' },
-      { latin: 'l', osmanya: '𐒐', name: 'laan' },
-      { latin: 'm', osmanya: '𐒑', name: 'miin' },
-      { latin: 'n', osmanya: '𐒒', name: 'nuun' },
-      { latin: 'w', osmanya: '𐒓', name: 'waw' },
-      { latin: 'h', osmanya: '𐒔', name: 'ha' },
-      { latin: 'y', osmanya: '𐒕', name: 'ya' },
-      { latin: "'", osmanya: '𐒀', name: 'hamza' },
-    ];
+    </nav>
 
-    const vowelsShort = [
-      { latin: 'a', osmanya: '𐒖', name: 'a' },
-      { latin: 'e', osmanya: '𐒗', name: 'e' },
-      { latin: 'i', osmanya: '𐒘', name: 'i' },
-      { latin: 'o', osmanya: '𐒙', name: 'o' },
-      { latin: 'u', osmanya: '𐒚', name: 'u' },
-    ];
+    <main class="max-w-5xl mx-auto pb-12">
 
-    const vowelsLong = [
-      { latin: 'aa', osmanya: '𐒛', name: 'aa' },
-      { latin: 'ee', osmanya: '𐒜', name: 'ee' },
-      { latin: 'ii', osmanya: '𐒕', name: 'ii' },
-      { latin: 'oo', osmanya: '𐒝', name: 'oo' },
-      { latin: 'uu', osmanya: '𐒓', name: 'uu' },
-    ];
+        <!-- 1. HOME SECTION -->
+        <section id="home-section" class="animate-fade-in">
+            <div class="glass-panel rounded-3xl p-8 md:p-12 text-center">
+                <h2 class="text-4xl md:text-6xl font-extrabold mb-6 text-white drop-shadow-lg">
+                    Baro Qoraalka <span class="text-osm-gold">Hiddahaaga</span>
+                </h2>
+                <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+                    Ku soo dhowow app-ka ugu casrisan ee lagu barto Far Cismaaniya. Baro xuruufta, u beddel qoraalkaaga, oo ku raaxayso ciyaaro xiiso leh.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                    <button onclick="switchTab('learn')" class="group glass-panel p-6 rounded-2xl hover:bg-white/5 transition text-left border-l-4 border-osm-gold">
+                        <div class="text-4xl mb-3">📚</div>
+                        <h3 class="text-xl font-bold text-osm-gold mb-1">Casharrada & Beddelaha</h3>
+                        <p class="text-sm text-gray-400 group-hover:text-gray-200">Baro shaxda xuruufta oo isticmaal aaladda wax beddesha.</p>
+                    </button>
+                    <button onclick="switchTab('play')" class="group glass-panel p-6 rounded-2xl hover:bg-white/5 transition text-left border-l-4 border-green-400">
+                        <div class="text-4xl mb-3">🎮</div>
+                        <h3 class="text-xl font-bold text-green-400 mb-1">Ciyaaraha & Layliga</h3>
+                        <p class="text-sm text-gray-400 group-hover:text-gray-200">Tijaabi aqoontaada 5 ciyaarood oo kala duwan.</p>
+                    </button>
+                </div>
+            </div>
+        </section>
 
-    const numbers = [
-      { latin: '0', osmanya: '𐒠', name: 'eber' },
-      { latin: '1', osmanya: '𐒡', name: 'kow' },
-      { latin: '2', osmanya: '𐒢', name: 'labo' },
-      { latin: '3', osmanya: '𐒣', name: 'sadex' },
-      { latin: '4', osmanya: '𐒤', name: 'afar' },
-      { latin: '5', osmanya: '𐒥', name: 'shan' },
-      { latin: '6', osmanya: '𐒦', name: 'lix' },
-      { latin: '7', osmanya: '𐒧', name: 'todoba' },
-      { latin: '8', osmanya: '𐒨', name: 'sideed' },
-      { latin: '9', osmanya: '𐒩', name: 'sagaal' },
-    ];
+        <!-- 2. LEARN SECTION -->
+        <section id="learn-section" class="hidden animate-fade-in">
+            <div class="glass-panel rounded-3xl p-6 md:p-8">
+                <div class="flex justify-center mb-8 border-b border-gray-700">
+                    <button onclick="showLearnSubTab('chars')" class="learn-subtab tab-btn active px-6 py-3 font-bold text-lg w-1/2 text-center" data-target="chars">🔤 Shaxda Xuruufta</button>
+                    <button onclick="showLearnSubTab('converter')" class="learn-subtab tab-btn px-6 py-3 font-bold text-lg w-1/2 text-center" data-target="converter">🔄 Qoraal-Bedele</button>
+                </div>
 
-    const allChars = [...consonants, ...vowelsShort, ...vowelsLong, ...numbers];
+                <!-- Characters Grid -->
+                <div id="chars-content">
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-osm-gold mb-4 border-l-4 border-osm-gold pl-3">Shibbanayaasha (Consonants)</h3>
+                            <div id="consonants-grid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3"></div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-osm-gold mb-4 border-l-4 border-osm-gold pl-3">Shaqallada (Vowels)</h3>
+                            <div id="vowels-grid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3"></div>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-osm-gold mb-4 border-l-4 border-osm-gold pl-3">Tirooyinka (Numbers)</h3>
+                            <div id="numbers-grid" class="grid grid-cols-5 sm:grid-cols-10 gap-3"></div>
+                        </div>
+                    </div>
+                </div>
 
-    // Conversion logic
-    function convertToOsmanya(text) {
-      let result = "";
-      let i = 0;
-      const lowerText = text.toLowerCase();
+                <!-- Converter Tool -->
+                <div id="converter-content" class="hidden">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-400 mb-2">Qoraalka Laatiinka (Somali Latin)</label>
+                            <textarea id="latinInput" class="w-full h-64 rounded-xl p-4 text-lg focus:ring-2 focus:ring-osm-gold" placeholder="Ku qor halkan (Tusaale: Nabad, Soomaaliya)..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-osm-gold mb-2">Natiijada Far Cismaaniya</label>
+                            <div id="osmanyaOutput" class="w-full h-64 rounded-xl p-4 text-3xl font-osmanya bg-black/30 border border-gray-600 overflow-auto leading-relaxed text-osm-gold"></div>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-center">
+                        <button onclick="copyToClipboard()" class="btn-gold px-8 py-3 rounded-full flex items-center gap-2">
+                            <span>📋</span> Koobiyeey Qoraalka
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-      while (i < lowerText.length) {
-        let matchFound = false;
+        <!-- 3. PLAY SECTION -->
+        <section id="play-section" class="hidden animate-fade-in">
+            
+            <!-- Game Menu -->
+            <div id="game-menu" class="glass-panel rounded-3xl p-8">
+                <h2 class="text-3xl font-bold text-center text-white mb-8">Dooro Ciyaar</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <button onclick="startGame(1)" class="btn-blue p-6 rounded-xl flex flex-col items-center gap-3 hover:scale-105">
+                        <span class="text-4xl">🔤</span>
+                        <span class="text-xl">Xuruufta</span>
+                    </button>
+                    <button onclick="startGame(2)" class="btn-blue p-6 rounded-xl flex flex-col items-center gap-3 hover:scale-105">
+                        <span class="text-4xl">✍</span>
+                        <span class="text-xl">Erayada</span>
+                    </button>
+                    <button onclick="startGame(3)" class="btn-blue p-6 rounded-xl flex flex-col items-center gap-3 hover:scale-105">
+                        <span class="text-4xl">🔢</span>
+                        <span class="text-xl">Tirooyinka</span>
+                    </button>
+                    <button onclick="startGame(4)" class="btn-blue p-6 rounded-xl flex flex-col items-center gap-3 hover:scale-105">
+                        <span class="text-4xl">📝</span>
+                        <span class="text-xl">Jumladaha</span>
+                    </button>
+                    <button onclick="startGame(5)" class="btn-blue p-6 rounded-xl flex flex-col items-center gap-3 hover:scale-105">
+                        <span class="text-4xl">🔍</span>
+                        <span class="text-xl">Kala Saar</span>
+                    </button>
+                </div>
+            </div>
 
-        if (i + 1 < lowerText.length) {
-          const twoChar = lowerText.substring(i, i + 2);
-          const match = allChars.find(c => c.latin === twoChar);
-          if (match) {
-            result += match.osmanya;
-            i += 2;
-            matchFound = true;
-          }
-        }
+            <!-- Game Interface -->
+            <div id="game-interface" class="hidden glass-panel rounded-3xl p-6 md:p-10 relative">
+                <button onclick="exitGame()" class="absolute top-6 left-6 text-gray-400 hover:text-white flex items-center gap-1 font-bold">
+                    ⬅ Ka bax
+                </button>
+                
+                <div class="text-center max-w-2xl mx-auto">
+                    <div class="flex justify-between items-center mb-6 mt-8">
+                        <span id="question-counter" class="text-sm font-mono text-gray-400">SU'AASHA 1/10</span>
+                        <span id="score-display" class="text-osm-gold font-bold text-lg">Dhibcaha: 0</span>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-gray-700 h-2 rounded-full mb-8 overflow-hidden">
+                        <div id="progress-bar" class="bg-osm-gold h-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
 
-        if (!matchFound) {
-          const char = lowerText[i];
-          const match = allChars.find(c => c.latin === char);
-          if (match) {
-            result += match.osmanya;
-          } else {
-            result += text[i];
-          }
-          i += 1;
-        }
-      }
-      return result;
-    }
+                    <p id="game-instruction" class="text-xl text-gray-300 mb-6">U beddel Cismaaniya:</p>
+                    
+                    <div id="game-display" class="text-6xl md:text-7xl font-osmanya text-white mb-8 min-h-[100px] flex items-center justify-center drop-shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                        <!-- Content goes here -->
+                    </div>
 
-    // Render character grids
-    function renderCharGrid(containerId, data, cardClass) {
-      const container = document.getElementById(containerId);
-      container.innerHTML = '';
-      data.forEach(char => {
-        const card = document.createElement('div');
-        card.className = `char-card ${cardClass}`;
-        card.innerHTML = `
-          <div class="char-osmanya">${char.osmanya}</div>
-          <div class="char-latin">${char.latin}</div>
-          <div class="char-name">${char.name}</div>
-        `;
-        container.appendChild(card);
-      });
-    }
+                    <!-- Input Area -->
+                    <div id="input-area" class="w-full">
+                        <input type="text" id="game-input" class="w-full p-4 rounded-xl text-center text-xl md:text-2xl font-bold bg-black/40 border-2 border-gray-600 focus:border-osm-gold mb-4" placeholder="Qor jawaabta..." autocomplete="off">
+                        <button onclick="submitAnswer()" class="btn-gold w-full py-4 rounded-xl text-lg shadow-lg">Jawaab</button>
+                    </div>
 
-    // Tab switching
-    function setupTabs() {
-      const tabButtons = document.querySelectorAll('.tab-button');
-      const tabContents = document.querySelectorAll('.tab-content');
+                    <!-- Choice Area (For Game 5) -->
+                    <div id="choice-area" class="hidden grid-cols-2 gap-4 w-full">
+                        <button onclick="submitChoice('cismaaniya')" class="quiz-option p-6 rounded-xl text-xl font-bold text-white">Far Cismaaniya</button>
+                        <button onclick="submitChoice('laatiin')" class="quiz-option p-6 rounded-xl text-xl font-bold text-white">Far Laatiin</button>
+                    </div>
 
-      tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          const targetTab = button.getAttribute('data-tab');
-          
-          tabButtons.forEach(btn => btn.classList.remove('active'));
-          tabContents.forEach(content => content.classList.remove('active'));
-          
-          button.classList.add('active');
-          document.getElementById(`${targetTab}-tab`).classList.add('active');
+                    <!-- Feedback -->
+                    <div id="feedback" class="mt-6 p-4 rounded-xl text-lg font-bold hidden"></div>
+                    
+                    <button id="next-btn" onclick="nextQuestion()" class="hidden mt-6 btn-blue w-full py-3 rounded-xl">Su'aasha Xigta ➡</button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="results-screen" class="hidden glass-panel rounded-3xl p-10 text-center">
+                <h2 class="text-4xl font-bold text-osm-gold mb-4">Dhammaad!</h2>
+                <div class="text-8xl font-black text-white mb-4 drop-shadow-lg" id="final-score">8/10</div>
+                <p id="final-msg" class="text-xl text-gray-300 mb-8">Shaqo fiican!</p>
+                <button onclick="exitGame()" class="btn-gold px-8 py-3 rounded-full">🏠 Ku noqo Menu-ga</button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        // --- DATA (XOGTA) ---
+        const consonants = [
+            {l:'b', o:'𐒁'}, {l:'t', o:'𐒂'}, {l:'j', o:'𐒃'}, {l:'x', o:'𐒄'}, {l:'kh', o:'𐒅'},
+            {l:'d', o:'𐒆'}, {l:'r', o:'𐒇'}, {l:'s', o:'𐒈'}, {l:'sh', o:'𐒉'}, {l:'dh', o:'𐒊'},
+            {l:'c', o:'𐒋'}, {l:'g', o:'𐒌'}, {l:'f', o:'𐒍'}, {l:'q', o:'𐒎'}, {l:'k', o:'𐒏'},
+            {l:'l', o:'𐒐'}, {l:'m', o:'𐒑'}, {l:'n', o:'𐒒'}, {l:'w', o:'𐒓'}, {l:'h', o:'𐒔'},
+            {l:'y', o:'𐒕'}, {l:"'", o:'𐒀'}
+        ];
+        // Fixed Vowel Mappings
+        const vowelsShort = [
+            {l:'a', o:'𐒖'}, {l:'e', o:'𐒗'}, {l:'i', o:'𐒘'}, {l:'o', o:'𐒙'}, {l:'u', o:'𐒚'}
+        ];
+        const vowelsLong = [
+            {l:'aa', o:'𐒛'}, {l:'ee', o:'𐒜'}, {l:'ii', o:'𐒕'}, {l:'oo', o:'𐒝'}, {l:'uu', o:'𐒓'}
+        ];
+        const numbers = [
+            {l:'0', o:'𐒠'}, {l:'1', o:'𐒡'}, {l:'2', o:'𐒢'}, {l:'3', o:'𐒣'}, {l:'4', o:'𐒤'},
+            {l:'5', o:'𐒥'}, {l:'6', o:'𐒦'}, {l:'7', o:'𐒧'}, {l:'8', o:'𐒨'}, {l:'9', o:'𐒩'}
+        ];
+
+        // Maps for Logic
+        const osmanyaMap = {};
+        const reverseOsmanyaMap = {}; // For quiz generation
+        const numberMap = {}; // Map specifically for numbers for easy lookup in game 3
+        
+        [...consonants, ...vowelsShort, ...vowelsLong, ...numbers].forEach(item => {
+            osmanyaMap[item.l] = item.o;
+            // For reverse map, prioritize simple chars, avoid duplicates overwriting if possible
+            if (!reverseOsmanyaMap[item.o]) reverseOsmanyaMap[item.o] = item.l;
+            if (item.l.match(/^\d$/)) numberMap[item.l] = item.o; // Populate number map
         });
-      });
-    }
 
-    // Converter functionality
-    function setupConverter() {
-      const input = document.getElementById('latin-input');
-      const output = document.getElementById('osmanya-output');
-
-      input.addEventListener('input', () => {
-        const text = input.value;
-        if (text.trim()) {
-          output.textContent = convertToOsmanya(text);
-        } else {
-          output.textContent = 'Your converted text will appear here';
+        // --- CONVERTER LOGIC ---
+        function convertText(text) {
+            let res = "";
+            let lower = text.toLowerCase();
+            for(let i=0; i<lower.length; i++) {
+                // Check double chars first (e.g., sh, aa, ii)
+                if(i+1 < lower.length) {
+                    let two = lower.substring(i, i+2);
+                    if(osmanyaMap[two]) {
+                        res += osmanyaMap[two];
+                        i++;
+                        continue;
+                    }
+                }
+                // Check single char
+                if(osmanyaMap[lower[i]]) res += osmanyaMap[lower[i]];
+                else res += text[i]; // Keep original if not found
+            }
+            return res;
         }
-      });
-    }
 
-    // Quiz functionality
-    let quizScore = 0;
-    let quizTotal = 0;
-    let currentQuestion = null;
-    let answered = false;
+        // --- APP LOGIC ---
+        
+        // 1. Navigation
+        function switchTab(tabId) {
+            // Hide all sections
+            ['home-section', 'learn-section', 'play-section'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            // Show target
+            document.getElementById(tabId+'-section').classList.remove('hidden');
+            
+            // Update Navbar Highlight
+            ['nav-home', 'nav-learn', 'nav-play'].forEach(id => {
+                const el = document.getElementById(id);
+                if(id === 'nav-'+tabId) {
+                    el.classList.add('text-osm-gold', 'bg-white/10');
+                    el.classList.remove('text-gray-300');
+                } else {
+                    el.classList.remove('text-osm-gold', 'bg-white/10');
+                    el.classList.add('text-gray-300');
+                }
+            });
 
-    function generateQuizQuestion() {
-      answered = false;
-      const feedback = document.getElementById('quiz-feedback');
-      feedback.style.display = 'none';
-
-      const quizChars = [...consonants, ...vowelsShort, ...vowelsLong];
-      currentQuestion = quizChars[Math.floor(Math.random() * quizChars.length)];
-      
-      document.getElementById('quiz-character').textContent = currentQuestion.osmanya;
-
-      const options = [currentQuestion];
-      while (options.length < 4) {
-        const randomChar = quizChars[Math.floor(Math.random() * quizChars.length)];
-        if (!options.find(o => o.latin === randomChar.latin)) {
-          options.push(randomChar);
+            if(tabId !== 'play') exitGame();
         }
-      }
 
-      options.sort(() => Math.random() - 0.5);
+        function showLearnSubTab(subTabId) {
+            document.getElementById('chars-content').classList.add('hidden');
+            document.getElementById('converter-content').classList.add('hidden');
+            
+            if(subTabId === 'chars') document.getElementById('chars-content').classList.remove('hidden');
+            else document.getElementById('converter-content').classList.remove('hidden');
 
-      const optionsContainer = document.getElementById('quiz-options');
-      optionsContainer.innerHTML = '';
-      
-      options.forEach(option => {
-        const button = document.createElement('button');
-        button.className = 'quiz-option';
-        button.textContent = option.latin;
-        button.addEventListener('click', () => checkAnswer(button, option));
-        optionsContainer.appendChild(button);
-      });
-    }
+            // Update buttons
+            document.querySelectorAll('.learn-subtab').forEach(btn => {
+                if(btn.dataset.target === subTabId) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+        }
 
-    function checkAnswer(button, selectedOption) {
-      if (answered) return;
-      
-      answered = true;
-      quizTotal++;
+        // 2. Render Grids
+        function renderGrid(id, data) {
+            const container = document.getElementById(id);
+            container.innerHTML = data.map(item => `
+                <div class="glass-panel p-3 rounded-xl flex flex-col items-center justify-center hover:bg-white/10 transition cursor-default border border-white/5">
+                    <span class="text-3xl md:text-4xl font-osmanya text-osm-gold mb-1">${item.o}</span>
+                    <span class="text-sm font-bold text-gray-400">${item.l.toUpperCase()}</span>
+                </div>
+            `).join('');
+        }
 
-      const allButtons = document.querySelectorAll('.quiz-option');
-      allButtons.forEach(btn => btn.disabled = true);
+        // 3. Game State
+        let gameState = {
+            type: 0,
+            qIndex: 0,
+            score: 0,
+            total: 0,
+            data: []
+        };
 
-      const feedback = document.getElementById('quiz-feedback');
-      
-      if (selectedOption.latin === currentQuestion.latin) {
-        button.classList.add('correct');
-        feedback.className = 'quiz-feedback correct';
-        feedback.innerHTML = `
-          <svg style="width: 24px; height: 24px; display: inline; vertical-align: middle; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          Sax! ${currentQuestion.osmanya} = ${currentQuestion.latin} (${currentQuestion.name})
-        `;
-        quizScore++;
-      } else {
-        button.classList.add('incorrect');
-        allButtons.forEach(btn => {
-          if (btn.textContent === currentQuestion.latin) {
-            btn.classList.add('correct');
-          }
+        function startGame(type) {
+            gameState.type = type;
+            gameState.qIndex = 0;
+            gameState.score = 0;
+            gameState.data = [];
+
+            // Generate Data
+            if(type === 1) { // Alphabet (Reverse: Osmanya -> Latin)
+                gameState.total = 10;
+                let keys = Object.keys(reverseOsmanyaMap).filter(k => k.match(/[\u{10480}-\u{10497}\u{104A0}-\u{104A9}]/u)); 
+                for(let i=0; i<10; i++) {
+                    let q = keys[Math.floor(Math.random()*keys.length)];
+                    gameState.data.push({q: q, a: reverseOsmanyaMap[q].toLowerCase(), instr: "Waa maxay xarafkan?"});
+                }
+            } else if(type === 2) { // Words (Latin -> Osmanya)
+                gameState.total = 7;
+                const words = ["Nabad", "Qalin", "Hooyo", "Aabe", "Guri", "Dugsi", "Calan"];
+                gameState.data = words.map(w => ({q: w, a: convertText(w), instr: "U beddel Cismaaniya:"}));
+            } else if(type === 3) { // Numbers (Latin -> Osmanya Numbers)
+                gameState.total = 10;
+                for(let i=0; i<10; i++) {
+                    let n = Math.floor(Math.random()*99);
+                    let res = n.toString().split('').map(d => numberMap[d]).join('');
+                    gameState.data.push({q: n.toString(), a: res, instr: "U beddel Tiro Cismaaniya:"});
+                }
+            } else if(type === 4) { // Sentences (Latin -> Osmanya)
+                gameState.total = 5;
+                const sents = ["Nabad iyo nolol", "Barasho waa iftiin", "Soomaaliya", "Afka hooyo", "Guul"];
+                gameState.data = sents.map(s => ({q: s, a: convertText(s), instr: "Qor jumladdan:"}));
+            } else if(type === 5) { // Identify (Osmanya vs Latin)
+                gameState.total = 8;
+                let samples = [
+                    {t:"𐒈𐒕 𐒓𐒖𐒆", k:"cismaaniya", instr: "Waa kuwee qoraalkan?"}, {t:"Sii Wad", k:"laatiin", instr: "Waa kuwee qoraalkan?"},
+                    {t:"𐒒𐒖𐒁𐒖𐒆", k:"cismaaniya", instr: "Waa kuwee qoraalkan?"}, {t:"Nabad", k:"laatiin", instr: "Waa kuwee qoraalkan?"},
+                    {t:"𐒌𐒚𐒚𐒐", k:"cismaaniya", instr: "Waa kuwee qoraalkan?"}, {t:"Horumar", k:"laatiin", instr: "Waa kuwee qoraalkan?"}
+                ];
+                for(let i=0; i<8; i++) gameState.data.push(samples[Math.floor(Math.random()*samples.length)]);
+            }
+
+            // Show Interface
+            document.getElementById('game-menu').classList.add('hidden');
+            document.getElementById('game-interface').classList.remove('hidden');
+            document.getElementById('results-screen').classList.add('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (gameState.qIndex >= gameState.total) {
+                showResults();
+                return;
+            }
+            
+            let item = gameState.data[gameState.qIndex];
+            
+            // UI Updates
+            document.getElementById('question-counter').innerText = `SU'AASHA ${gameState.qIndex + 1}/${gameState.total}`;
+            document.getElementById('score-display').innerText = `Dhibcaha: ${gameState.score}`;
+            document.getElementById('progress-bar').style.width = `${(gameState.qIndex / gameState.total) * 100}%`;
+            
+            document.getElementById('game-instruction').innerText = item.instr;
+            document.getElementById('game-display').innerText = item.t || item.q; // t for type 5, q for others
+
+            // Reset Inputs
+            document.getElementById('feedback').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+
+            if(gameState.type === 5) {
+                document.getElementById('input-area').classList.add('hidden');
+                document.getElementById('choice-area').classList.remove('hidden');
+                document.getElementById('choice-area').classList.add('grid'); // Ensure grid display
+                
+                // Reset buttons
+                document.querySelectorAll('.quiz-option').forEach(btn => {
+                    btn.disabled = false;
+                    btn.classList.remove('correct', 'incorrect');
+                    btn.style.opacity = '1';
+                });
+            } else {
+                document.getElementById('input-area').classList.remove('hidden');
+                document.getElementById('choice-area').classList.add('hidden');
+                document.getElementById('choice-area').classList.remove('grid');
+                
+                let inp = document.getElementById('game-input');
+                inp.value = '';
+                inp.disabled = false;
+                inp.focus();
+                
+                // Placeholder hint
+                inp.placeholder = (gameState.type === 1) ? "Tusaale: b, sh" : "Qor jawaabta...";
+            }
+        }
+
+        function submitAnswer() {
+            let inp = document.getElementById('game-input');
+            let val = inp.value.trim();
+            if(!val) return;
+
+            let correct = gameState.data[gameState.qIndex].a;
+            // Loose checking (case insensitive)
+            let isCorrect = (val.toLowerCase() === correct.toLowerCase()) || (val === correct);
+            
+            // For type 3 (Numbers), the answer is Osmanya script, which needs exact match
+            if (gameState.type === 3) {
+                 isCorrect = (val === correct);
+            }
+            
+            processResult(isCorrect, correct);
+            inp.disabled = true;
+        }
+
+        function submitChoice(choice) {
+            let correctKey = gameState.data[gameState.qIndex].k;
+            let isCorrect = (choice === correctKey);
+            
+            processResult(isCorrect, correctKey === 'cismaaniya' ? 'Far Cismaaniya' : 'Far Laatiin');
+            
+            document.querySelectorAll('.quiz-option').forEach(btn => btn.disabled = true);
+        }
+
+        function processResult(isCorrect, rightAnswerText) {
+            let fb = document.getElementById('feedback');
+            fb.classList.remove('hidden', 'correct', 'incorrect');
+            
+            if(isCorrect) {
+                gameState.score++;
+                fb.classList.add('correct');
+                fb.innerHTML = "✅ SAX! Aad baad u fiican tahay.";
+            } else {
+                fb.classList.add('incorrect');
+                let displayAns;
+                if(gameState.type === 1) { // Alphabet (Latin result)
+                    displayAns = `<span class="font-bold text-white uppercase">${rightAnswerText}</span>`;
+                } else if (gameState.type === 5) { // Identify (Text result)
+                    displayAns = `<span class="font-bold text-white">${rightAnswerText}</span>`;
+                } else { // Words/Sentences/Numbers (Osmanya result)
+                    displayAns = `<span class="font-osmanya text-2xl">${rightAnswerText}</span>`;
+                }
+                fb.innerHTML = `❌ KHALAD! Jawaabta saxda ah: ${displayAns}`;
+            }
+            
+            document.getElementById('score-display').innerText = `Dhibcaha: ${gameState.score}`;
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            gameState.qIndex++;
+            if(gameState.qIndex >= gameState.total) {
+                showResults();
+            } else {
+                loadQuestion();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('game-interface').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+            
+            document.getElementById('final-score').innerText = `${gameState.score}/${gameState.total}`;
+            
+            let msg = "";
+            let pct = gameState.score / gameState.total;
+            if(pct === 1) msg = "🏆 Maashaa'Allaah! Dhammaan waa sax!";
+            else if(pct >= 0.7) msg = "🌟 Aad baad u fiican tahay!";
+            else if(pct >= 0.5) msg = "👍 Si fiican baad isku dayday.";
+            else msg = "💪 Ha niyad jabin, dib u eeg casharrada!";
+            
+            document.getElementById('final-msg').innerText = msg;
+        }
+
+        function exitGame() {
+            document.getElementById('game-interface').classList.add('hidden');
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('game-menu').classList.remove('hidden');
+        }
+
+        function copyToClipboard() {
+            let text = document.getElementById('osmanyaOutput').innerText;
+            // Use execCommand('copy') for better compatibility in iFrames
+            const el = document.createElement('textarea');
+            el.value = text;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    // Replace alert with custom feedback
+                    const copyButton = document.querySelector('.btn-gold');
+                    const originalText = copyButton.innerHTML;
+                    copyButton.innerHTML = '✅ Waa la koobiyeeyay!';
+                    copyButton.disabled = true;
+                    setTimeout(() => {
+                        copyButton.innerHTML = originalText;
+                        copyButton.disabled = false;
+                    }, 1500);
+                }
+            } catch (err) {
+                console.error('Could not copy text: ', err);
+            }
+            document.body.removeChild(el);
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGrid('consonants-grid', consonants);
+            renderGrid('vowels-grid', [...vowelsShort, ...vowelsLong]);
+            renderGrid('numbers-grid', numbers);
+            
+            // Input Listener for Converter
+            document.getElementById('latinInput').addEventListener('input', (e) => {
+                document.getElementById('osmanyaOutput').innerText = convertText(e.target.value);
+            });
+
+            // Enter key for game
+            document.getElementById('game-input').addEventListener('keypress', (e) => {
+                if(e.key === 'Enter') {
+                    e.preventDefault(); // Prevent form submission if input is inside a form (good practice)
+                    submitAnswer();
+                }
+            });
+            
+            // Set initial tab state
+            switchTab('home');
         });
-        feedback.className = 'quiz-feedback incorrect';
-        feedback.innerHTML = `
-          <svg style="width: 24px; height: 24px; display: inline; vertical-align: middle; margin-right: 8px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-          Qalad! ${currentQuestion.osmanya} = ${currentQuestion.latin} (${currentQuestion.name})
-        `;
-      }
-      
-      feedback.style.display = 'block';
-      updateScore();
-    }
 
-    function updateScore() {
-      document.getElementById('score-display').textContent = `Dhibcaha: ${quizScore} / ${quizTotal}`;
-    }
-
-    function setupQuiz() {
-      generateQuizQuestion();
-      updateScore();
-
-      document.getElementById('next-question').addEventListener('click', generateQuizQuestion);
-      document.getElementById('reset-quiz').addEventListener('click', () => {
-        quizScore = 0;
-        quizTotal = 0;
-        updateScore();
-        generateQuizQuestion();
-      });
-    }
-
-    // Initialize app
-    document.addEventListener('DOMContentLoaded', () => {
-      renderCharGrid('consonants-grid', consonants, 'consonant');
-      renderCharGrid('vowels-short-grid', vowelsShort, 'vowel');
-      renderCharGrid('vowels-long-grid', vowelsLong, 'vowel');
-      renderCharGrid('numbers-grid', numbers, 'number');
-      
-      setupTabs();
-      setupConverter();
-      setupQuiz();
-    });
-  </script>
+    </script>
 </body>
 </html>
