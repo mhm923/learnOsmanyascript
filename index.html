@@ -1,667 +1,2348 @@
 <!doctype html>
-<!doctype html>
 <html lang="so">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Far Cismaaniya: Barasho & Ciyaar</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        // Dejinta Midabada (Dark Blue & Gold)
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'osm-bg-start': '#001233', // Buluug aad u madow
-                        'osm-bg-end': '#002855',   // Buluug dhexdhexaad ah
-                        'osm-gold': '#FFD700',     // Dahabi saafi ah
-                        'osm-gold-hover': '#E6C200',
-                        'osm-card': 'rgba(255, 255, 255, 0.08)',
-                        'osm-border': 'rgba(255, 215, 0, 0.3)', // Xuduud Dahabi ah
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #001233 0%, #003366 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            color: #ffffff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Far Cismaaniya — Barasho & Ciyaar</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #00102e;
+    --navy2: #001a45;
+    --navy3: #002366;
+    --gold: #f0b90b;
+    --gold2: #d4a009;
+    --gold-glow: rgba(240,185,11,0.18);
+    --gold-light: rgba(240,185,11,0.08);
+    --white: #ffffff;
+    --gray1: #e8eaf0;
+    --gray2: #b0b8cc;
+    --gray3: #6b7a99;
+    --gray4: #2a3550;
+    --green: #22c55e;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --font: 'Sora', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
 
-        @font-face {
-            font-family: 'Osmanya';
-            src: local('Noto Sans Osmanya');
-        }
-        .font-osmanya {
-            font-family: 'Noto Sans Osmanya', 'Osmanya', serif;
-        }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Glassmorphism Styles */
-        .glass-panel {
-            background-color: var(--osm-card);
-            border: 1px solid var(--osm-border);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
+  body {
+    font-family: var(--font);
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-        /* Tab Styles */
-        .tab-btn {
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            color: #a0aec0;
-        }
-        .tab-btn.active {
-            color: #FFD700; /* Dahabi */
-            border-bottom-color: #FFD700;
-            background: rgba(255, 215, 0, 0.1);
-        }
-        .tab-btn:hover:not(.active) {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.05);
-        }
+  /* Background stars */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 70%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 60%, rgba(255,255,255,0.15) 0%, transparent 100%),
+      radial-gradient(2px 2px at 35% 15%, rgba(240,185,11,0.3) 0%, transparent 100%),
+      radial-gradient(2px 2px at 70% 85%, rgba(240,185,11,0.2) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-        /* Gold Buttons */
-        .btn-gold {
-            background-color: #FFD700;
-            color: #001233;
-            font-weight: 800;
-            transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-        }
-        .btn-gold:hover {
-            background-color: #E6C200;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
-        }
-        .btn-gold:active {
-            transform: translateY(0);
-        }
+  #app { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 16px 60px; }
 
-        /* Blue Buttons (Secondary) */
-        .btn-blue {
-            background-color: rgba(0, 40, 85, 0.8);
-            border: 1px solid #FFD700;
-            color: #FFD700;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .btn-blue:hover {
-            background-color: rgba(0, 60, 120, 0.9);
-            color: white;
-            border-color: white;
-        }
+  /* NAV */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(0,16,46,0.85);
+    border-bottom: 1px solid rgba(240,185,11,0.15);
+    padding: 0 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    height: 64px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; }
+  .nav-brand .flag { font-size: 22px; }
+  .nav-brand .title { font-size: 18px; font-weight: 800; color: var(--gold); letter-spacing: 2px; }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab {
+    padding: 8px 14px; border-radius: var(--radius-sm); border: none;
+    background: transparent; color: var(--gray2); font-family: var(--font);
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .nav-tab:hover { color: var(--white); background: rgba(255,255,255,0.07); }
+  .nav-tab.active { color: var(--gold); background: var(--gold-light); }
+  .nav-tab .tab-icon { font-size: 15px; }
 
-        /* Inputs */
-        textarea, input[type="text"] {
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            color: white;
-            transition: border-color 0.3s;
-        }
-        textarea:focus, input[type="text"]:focus {
-            outline: none;
-            border-color: #FFD700;
-            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
-        }
+  /* PROGRESS BAR (top) */
+  .xp-bar-wrap { height: 3px; background: var(--gray4); }
+  .xp-bar { height: 100%; background: var(--gold); transition: width 0.6s ease; }
 
-        /* Quiz Options */
-        .quiz-option {
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.2s;
-        }
-        .quiz-option:hover:not(:disabled) {
-            background-color: rgba(255, 215, 0, 0.1);
-            border-color: #FFD700;
-            transform: scale(1.02);
-        }
-        .quiz-option.correct {
-            background-color: rgba(72, 187, 120, 0.2);
-            border-color: #48bb78;
-            color: #48bb78;
-        }
-        .quiz-option.incorrect {
-            background-color: rgba(245, 101, 101, 0.2);
-            border-color: #f56565;
-            color: #f56565;
-        }
+  /* SECTIONS */
+  .section { display: none; padding-top: 28px; }
+  .section.active { display: block; animation: fadeUp 0.35s ease; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform: translateY(0); } }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-    </style>
+  /* GLASS CARD */
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(240,185,11,0.12);
+    border-radius: var(--radius);
+    padding: 28px;
+    backdrop-filter: blur(12px);
+  }
+
+  /* TYPOGRAPHY */
+  h1 { font-size: 42px; font-weight: 800; line-height: 1.1; }
+  h2 { font-size: 26px; font-weight: 700; }
+  h3 { font-size: 18px; font-weight: 700; }
+  .gold { color: var(--gold); }
+  .muted { color: var(--gray2); }
+  .mono { font-family: var(--mono); }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px; border-radius: 50px; border: none;
+    font-family: var(--font); font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-gold { background: var(--gold); color: var(--navy); }
+  .btn-gold:hover { background: var(--gold2); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--gold); border: 1.5px solid var(--gold); }
+  .btn-outline:hover { background: var(--gold-light); }
+  .btn-ghost { background: rgba(255,255,255,0.06); color: var(--white); border: 1px solid rgba(255,255,255,0.1); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+  .btn-sm { padding: 8px 16px; font-size: 13px; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+  /* ===================== HOME ===================== */
+  .home-hero { text-align: center; padding: 48px 20px 36px; }
+  .home-hero h1 { margin-bottom: 16px; }
+  .home-hero p { color: var(--gray2); font-size: 17px; max-width: 520px; margin: 0 auto 32px; line-height: 1.7; }
+  .home-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 8px; }
+  .home-card {
+    border: 1px solid rgba(240,185,11,0.15);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    background: rgba(255,255,255,0.03);
+    cursor: pointer; transition: all 0.25s; text-align: left;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .home-card:hover { background: rgba(255,255,255,0.07); border-color: var(--gold); transform: translateY(-3px); }
+  .home-card .icon { font-size: 28px; }
+  .home-card h3 { color: var(--gold); }
+  .home-card p { color: var(--gray2); font-size: 13px; line-height: 1.5; }
+
+  /* Stats Row */
+  .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 28px; }
+  .stat-card { background: rgba(240,185,11,0.07); border: 1px solid rgba(240,185,11,0.2); border-radius: var(--radius-sm); padding: 16px; text-align: center; }
+  .stat-card .num { font-size: 28px; font-weight: 800; color: var(--gold); }
+  .stat-card .lbl { font-size: 11px; color: var(--gray2); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+
+  /* ===================== LEARN ===================== */
+  .learn-tabs { display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 28px; }
+  .learn-tab {
+    padding: 12px 20px; background: transparent; border: none; border-bottom: 2px solid transparent;
+    color: var(--gray2); font-family: var(--font); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .learn-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .learn-tab:hover:not(.active) { color: var(--white); }
+
+  /* Char Grid */
+  .section-label { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; padding-left: 10px; border-left: 3px solid var(--gold); }
+  .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px,1fr)); gap: 10px; margin-bottom: 28px; }
+  .char-tile {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: var(--radius-sm); padding: 12px 6px 10px;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    cursor: default; transition: all 0.15s;
+  }
+  .char-tile:hover { background: rgba(240,185,11,0.08); border-color: rgba(240,185,11,0.4); }
+  .char-tile .osm { font-size: 26px; color: var(--gold); font-family: 'Noto Sans Osmanya', serif; }
+  .char-tile .lat { font-size: 12px; font-weight: 700; color: var(--gray2); font-family: var(--mono); }
+
+  /* Converter */
+  .converter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media(max-width:640px){ .converter-grid { grid-template-columns: 1fr; } }
+  .converter-label { font-size: 12px; font-weight: 700; color: var(--gray2); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .converter-in { width:100%; height:200px; background: rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); padding:16px; color:var(--white); font-family:var(--font); font-size:16px; resize:none; }
+  .converter-in:focus { outline:none; border-color:var(--gold); }
+  .converter-out { width:100%; height:200px; background: rgba(0,0,0,0.35); border:1px solid rgba(240,185,11,0.25); border-radius:var(--radius-sm); padding:16px; color:var(--gold); font-family:'Noto Sans Osmanya',serif; font-size:26px; overflow-y:auto; line-height:1.6; }
+
+  /* ===================== QAAMUUSKA ===================== */
+  .dict-search-wrap { position:relative; margin-bottom:20px; }
+  .dict-search { width:100%; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:50px; padding:14px 20px 14px 48px; color:var(--white); font-family:var(--font); font-size:15px; }
+  .dict-search:focus { outline:none; border-color:var(--gold); }
+  .dict-search-icon { position:absolute; left:18px; top:50%; transform:translateY(-50%); color:var(--gray3); pointer-events:none; }
+  .dict-cats { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+  .dict-cat { padding:6px 14px; border-radius:50px; border:1px solid rgba(255,255,255,0.12); background:transparent; color:var(--gray2); font-family:var(--font); font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .dict-cat.active, .dict-cat:hover { background:var(--gold-light); color:var(--gold); border-color:rgba(240,185,11,0.4); }
+  .dict-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:12px; }
+  .dict-entry {
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius-sm);
+    padding:16px; cursor:pointer; transition:all 0.2s;
+  }
+  .dict-entry:hover { background:rgba(240,185,11,0.07); border-color:rgba(240,185,11,0.3); }
+  .dict-entry .osm-word { font-family:'Noto Sans Osmanya',serif; font-size:22px; color:var(--gold); margin-bottom:4px; }
+  .dict-entry .lat-word { font-size:14px; font-weight:700; color:var(--white); }
+  .dict-entry .meaning { font-size:12px; color:var(--gray2); margin-top:4px; }
+
+  /* ===================== PLAY ===================== */
+  .game-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap:14px; }
+  .game-card {
+    background:rgba(255,255,255,0.04); border:1.5px solid rgba(255,255,255,0.08); border-radius:var(--radius);
+    padding:24px 16px; text-align:center; cursor:pointer; transition:all 0.25s;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .game-card:hover { transform:translateY(-4px); border-color:var(--gold); background:rgba(240,185,11,0.06); }
+  .game-card .g-icon { font-size:32px; }
+  .game-card .g-name { font-size:15px; font-weight:700; }
+  .game-card .g-desc { font-size:11px; color:var(--gray2); }
+  .game-card .g-badge { font-size:10px; font-weight:700; letter-spacing:1px; padding:3px 8px; border-radius:50px; }
+  .badge-easy { background:rgba(34,197,94,0.15); color:#22c55e; }
+  .badge-medium { background:rgba(240,185,11,0.15); color:var(--gold); }
+  .badge-hard { background:rgba(239,68,68,0.15); color:#ef4444; }
+
+  /* Game UI */
+  #game-ui { display:none; }
+  #game-ui.visible { display:block; }
+  .game-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .game-meta { display:flex; gap:16px; align-items:center; }
+  .score-pill { background:var(--gold-glow); border:1px solid rgba(240,185,11,0.35); border-radius:50px; padding:6px 16px; font-size:13px; font-weight:700; color:var(--gold); }
+  .progress-track { flex:1; height:6px; background:var(--gray4); border-radius:3px; overflow:hidden; margin: 0 16px; }
+  .progress-fill { height:100%; background:var(--gold); transition:width 0.5s ease; }
+  .q-counter { font-size:12px; color:var(--gray2); font-family:var(--mono); white-space:nowrap; }
+
+  .game-display { text-align:center; margin:28px 0; }
+  .display-instr { font-size:14px; color:var(--gray2); letter-spacing:1px; margin-bottom:16px; }
+  .display-main { font-size:60px; font-family:'Noto Sans Osmanya',serif; color:var(--white); min-height:80px; display:flex; align-items:center; justify-content:center; }
+  .display-latin { font-size:52px; font-weight:800; color:var(--white); min-height:80px; display:flex; align-items:center; justify-content:center; }
+  .display-number { font-size:72px; font-weight:800; color:var(--white); font-family:var(--mono); }
+
+  .game-input-row { display:flex; gap:10px; max-width:480px; margin:0 auto; }
+  .game-input { flex:1; background:rgba(0,0,0,0.35); border:2px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); padding:14px 18px; color:var(--white); font-family:'Noto Sans Osmanya',serif; font-size:22px; text-align:center; }
+  .game-input:focus { outline:none; border-color:var(--gold); }
+
+  .choices-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:480px; margin:0 auto; }
+  .choice-btn {
+    background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm);
+    padding:18px; font-family:var(--font); font-size:15px; font-weight:700; color:var(--white); cursor:pointer; transition:all 0.15s;
+  }
+  .choice-btn:hover:not(:disabled) { background:rgba(240,185,11,0.1); border-color:var(--gold); }
+  .choice-btn.correct { background:rgba(34,197,94,0.15); border-color:#22c55e; color:#22c55e; }
+  .choice-btn.wrong { background:rgba(239,68,68,0.15); border-color:#ef4444; color:#ef4444; }
+  .choice-btn.reveal { background:rgba(34,197,94,0.08); border-color:rgba(34,197,94,0.4); }
+
+  .feedback-box { margin-top:18px; padding:14px 20px; border-radius:var(--radius-sm); text-align:center; font-size:15px; font-weight:700; display:none; }
+  .feedback-box.correct { background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.3); color:#22c55e; }
+  .feedback-box.wrong { background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.3); color:#ef4444; }
+
+  /* Flashcard */
+  .flashcard-wrap { perspective:1200px; max-width:440px; margin:0 auto 24px; }
+  .flashcard {
+    width:100%; height:220px; position:relative;
+    transform-style:preserve-3d; transition:transform 0.55s ease;
+    cursor:pointer; border-radius:var(--radius);
+  }
+  .flashcard.flipped { transform:rotateY(180deg); }
+  .fc-face {
+    position:absolute; inset:0; border-radius:var(--radius);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    backface-visibility:hidden;
+    border:1.5px solid rgba(240,185,11,0.25);
+  }
+  .fc-front { background:rgba(0,35,102,0.6); }
+  .fc-back { background:rgba(0,26,69,0.7); transform:rotateY(180deg); }
+  .fc-osm { font-family:'Noto Sans Osmanya',serif; font-size:52px; color:var(--gold); }
+  .fc-lat { font-size:28px; font-weight:800; }
+  .fc-hint { font-size:12px; color:var(--gray2); }
+
+  /* Results */
+  #results-ui { display:none; text-align:center; }
+  #results-ui.visible { display:block; }
+  .result-circle {
+    width:130px; height:130px; border-radius:50%; border:4px solid var(--gold);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    margin:0 auto 24px; background:var(--gold-glow);
+  }
+  .result-big { font-size:36px; font-weight:800; color:var(--gold); }
+  .result-sub { font-size:13px; color:var(--gray2); }
+
+  /* ===================== AI SECTION ===================== */
+  /* ===================== TURJUMAAN ===================== */
+  .trj-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
+  .trj-badge { background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.35); color:#60a5fa; font-size:11px; font-weight:700; letter-spacing:1px; padding:4px 10px; border-radius:50px; }
+  .trj-dir-row { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:50px; padding:6px; margin-bottom:22px; width:fit-content; }
+  .trj-dir-btn { padding:8px 20px; border-radius:50px; border:none; font-family:var(--font); font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; background:transparent; color:var(--gray2); }
+  .trj-dir-btn.active { background:var(--gold); color:var(--navy); }
+  .trj-swap-btn { width:36px; height:36px; border-radius:50%; border:1.5px solid rgba(240,185,11,0.4); background:transparent; color:var(--gold); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+  .trj-swap-btn:hover { background:var(--gold-light); transform:rotate(180deg); }
+  .trj-panels { display:grid; grid-template-columns:1fr auto 1fr; gap:0; align-items:stretch; margin-bottom:16px; }
+  @media(max-width:640px){ .trj-panels { grid-template-columns:1fr; } }
+  .trj-panel { display:flex; flex-direction:column; }
+  .trj-panel-label { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+  .trj-label-cismaaniya { color:var(--gold); }
+  .trj-label-laatiin { color:#60a5fa; }
+  .trj-textarea {
+    flex:1; width:100%; min-height:200px; padding:18px;
+    border-radius:var(--radius-sm); font-size:16px; resize:none;
+    background:rgba(0,0,0,0.3); border:1.5px solid rgba(255,255,255,0.08); color:var(--white);
+    font-family:var(--font); line-height:1.7; transition:border-color 0.2s;
+  }
+  .trj-textarea:focus { outline:none; border-color:var(--gold); }
+  .trj-textarea.osm-font { font-family:'Noto Sans Osmanya',serif; font-size:22px; line-height:1.8; }
+  .trj-out {
+    flex:1; width:100%; min-height:200px; padding:18px;
+    border-radius:var(--radius-sm); font-size:16px;
+    background:rgba(0,0,0,0.38); border:1.5px solid rgba(240,185,11,0.2); color:var(--gold);
+    font-family:var(--font); line-height:1.7; overflow-y:auto; white-space:pre-wrap; word-break:break-word;
+  }
+  .trj-out.osm-font { font-family:'Noto Sans Osmanya',serif; font-size:22px; line-height:1.8; }
+  .trj-out.blue-out { color:#93c5fd; border-color:rgba(59,130,246,0.25); }
+  .trj-arrow-col { display:flex; align-items:center; justify-content:center; padding:0 16px; }
+  @media(max-width:640px){ .trj-arrow-col { padding:12px 0; transform:rotate(90deg); } }
+  .trj-arrow { font-size:28px; color:var(--gray3); }
+  .trj-actions { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:28px; }
+  .trj-history { margin-top:8px; }
+  .trj-history-label { font-size:11px; font-weight:700; color:var(--gray3); letter-spacing:1px; text-transform:uppercase; margin-bottom:10px; }
+  .trj-hist-item { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:8px; display:flex; align-items:center; gap:12px; cursor:pointer; transition:all 0.15s; }
+  .trj-hist-item:hover { background:rgba(255,255,255,0.06); border-color:rgba(240,185,11,0.25); }
+  .trj-hist-osm { font-family:'Noto Sans Osmanya',serif; font-size:18px; color:var(--gold); min-width:80px; }
+  .trj-hist-lat { font-size:13px; color:var(--gray2); }
+  .trj-hist-del { margin-left:auto; background:none; border:none; color:var(--gray3); cursor:pointer; font-size:16px; }
+  .trj-hist-del:hover { color:var(--red); }
+  .trj-char-count { font-size:11px; color:var(--gray3); text-align:right; margin-top:4px; }
+  /* Reverse map hint panel */
+  .trj-rev-hint { background:rgba(59,130,246,0.06); border:1px solid rgba(59,130,246,0.15); border-radius:var(--radius-sm); padding:14px 18px; margin-bottom:16px; font-size:13px; color:#93c5fd; display:none; line-height:1.6; }
+
+  /* ===================== PROGRESS ===================== */
+  .progress-section { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+  @media(max-width:560px){ .progress-section { grid-template-columns:1fr; } }
+  .prog-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-sm); padding:20px; }
+  .prog-card h3 { font-size:14px; color:var(--gray2); margin-bottom:14px; }
+  .prog-bar-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .prog-label { font-size:12px; color:var(--gray2); min-width:80px; }
+  .prog-track { flex:1; height:6px; background:var(--gray4); border-radius:3px; overflow:hidden; }
+  .prog-fill { height:100%; border-radius:3px; background:var(--gold); transition:width 0.6s; }
+  .prog-pct { font-size:12px; color:var(--gold); font-family:var(--mono); min-width:36px; text-align:right; }
+
+  .achievement { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .achievement:last-child { border-bottom:none; }
+  .ach-icon { font-size:24px; }
+  .ach-info .name { font-size:13px; font-weight:700; }
+  .ach-info .desc { font-size:11px; color:var(--gray2); }
+  .ach-locked { opacity:0.35; filter:grayscale(1); }
+
+  /* TOAST */
+  .toast {
+    position:fixed; bottom:24px; right:24px; background:var(--navy2); border:1px solid var(--gold);
+    color:var(--white); padding:12px 20px; border-radius:var(--radius-sm); font-size:14px; font-weight:600;
+    transform:translateY(100px); opacity:0; transition:all 0.3s; z-index:999;
+  }
+  .toast.show { transform:translateY(0); opacity:1; }
+
+  /* Osmanya font */
+  .osm { font-family:'Noto Sans Osmanya',serif; }
+
+  /* Responsive */
+  @media(max-width:600px){
+    h1 { font-size:30px; }
+    .nav-brand .title { font-size:15px; }
+    .nav-tab span:not(.tab-icon) { display:none; }
+    .stats-row { grid-template-columns:1fr 1fr; }
+  }
+  /* ===================== KEYBOARD ===================== */
+  .kbd-wrap { background:rgba(0,0,0,0.3); border:1px solid rgba(240,185,11,0.15); border-radius:var(--radius); padding:20px; margin-bottom:20px; }
+  .kbd-output { font-family:'Noto Sans Osmanya',serif; font-size:28px; color:var(--gold); min-height:64px; padding:14px 18px; background:rgba(0,0,0,0.35); border:1.5px solid rgba(240,185,11,0.2); border-radius:var(--radius-sm); margin-bottom:14px; word-break:break-all; line-height:1.7; }
+  .kbd-row { display:flex; gap:6px; justify-content:center; flex-wrap:wrap; margin-bottom:8px; }
+  .kbd-key { min-width:48px; height:48px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; color:var(--white); font-family:var(--font); font-size:11px; cursor:pointer; transition:all 0.12s; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; padding:4px; }
+  .kbd-key:hover { background:rgba(240,185,11,0.15); border-color:var(--gold); transform:translateY(-2px); }
+  .kbd-key:active { transform:translateY(0); background:rgba(240,185,11,0.25); }
+  .kbd-key .k-osm { font-family:'Noto Sans Osmanya',serif; font-size:18px; color:var(--gold); line-height:1; }
+  .kbd-key .k-lat { font-size:9px; color:var(--gray2); font-family:var(--mono); }
+  .kbd-key.space-key { min-width:140px; font-size:12px; color:var(--gray2); }
+  .kbd-key.del-key { min-width:64px; color:#ef4444; border-color:rgba(239,68,68,0.2); }
+  .kbd-key.del-key:hover { background:rgba(239,68,68,0.1); border-color:#ef4444; }
+  .kbd-actions { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:12px; }
+
+  /* ===================== XISAAB ===================== */
+  .xis-problem { font-size:48px; font-weight:800; color:var(--white); text-align:center; margin:20px 0 10px; font-family:var(--mono); }
+  .xis-osm-display { font-family:'Noto Sans Osmanya',serif; font-size:32px; color:var(--gold); text-align:center; margin-bottom:20px; }
+  .xis-choices { display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:400px; margin:0 auto; }
+  .xis-choice { background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.1); border-radius:var(--radius-sm); padding:16px; font-family:'Noto Sans Osmanya',serif; font-size:24px; color:var(--white); cursor:pointer; text-align:center; transition:all 0.15s; }
+  .xis-choice:hover:not(:disabled) { background:rgba(240,185,11,0.1); border-color:var(--gold); }
+  .xis-choice.correct { background:rgba(34,197,94,0.15); border-color:#22c55e; color:#22c55e; }
+  .xis-choice.wrong { background:rgba(239,68,68,0.15); border-color:#ef4444; color:#ef4444; }
+
+  /* ===================== SPEED QUIZ ===================== */
+  .spd-timer-ring { width:80px; height:80px; margin:0 auto 16px; position:relative; }
+  .spd-timer-ring svg { transform:rotate(-90deg); }
+  .spd-timer-ring .ring-bg { fill:none; stroke:var(--gray4); stroke-width:6; }
+  .spd-timer-ring .ring-fill { fill:none; stroke:var(--gold); stroke-width:6; stroke-linecap:round; transition:stroke-dashoffset 0.1s linear; }
+  .spd-timer-num { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:22px; font-weight:800; color:var(--gold); font-family:var(--mono); }
+  .spd-streak { font-size:13px; color:var(--gold); text-align:center; margin-bottom:8px; font-weight:700; }
+
+  /* ===================== QORAAL DHEER ===================== */
+  .qd-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+  .qd-tab { padding:8px 16px; border-radius:50px; border:1px solid rgba(255,255,255,0.1); background:transparent; color:var(--gray2); font-family:var(--font); font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .qd-tab.active { background:var(--gold-light); color:var(--gold); border-color:rgba(240,185,11,0.4); }
+  .qd-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:var(--radius); padding:24px; margin-bottom:16px; cursor:pointer; transition:all 0.2s; }
+  .qd-card:hover { background:rgba(255,255,255,0.06); border-color:rgba(240,185,11,0.3); }
+  .qd-card .qd-title { font-size:15px; font-weight:700; color:var(--gold); margin-bottom:8px; }
+  .qd-card .qd-lat { font-size:14px; color:var(--gray2); line-height:1.7; margin-bottom:10px; }
+  .qd-card .qd-osm { font-family:'Noto Sans Osmanya',serif; font-size:20px; color:var(--white); line-height:1.8; display:none; }
+  .qd-card.revealed .qd-osm { display:block; }
+  .qd-card .qd-reveal-btn { font-size:12px; color:var(--gold); background:none; border:1px solid rgba(240,185,11,0.3); border-radius:50px; padding:4px 12px; cursor:pointer; font-family:var(--font); }
+
+  /* ===================== LEADERBOARD ===================== */
+  .lb-form { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-sm); padding:20px; margin-bottom:20px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .lb-input { flex:1; min-width:160px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:50px; padding:10px 18px; color:var(--white); font-family:var(--font); font-size:14px; }
+  .lb-input:focus { outline:none; border-color:var(--gold); }
+  .lb-row { display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:var(--radius-sm); margin-bottom:8px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); transition:all 0.2s; }
+  .lb-row.me { background:rgba(240,185,11,0.08); border-color:rgba(240,185,11,0.3); }
+  .lb-rank { font-size:20px; min-width:36px; text-align:center; font-weight:800; color:var(--gray2); font-family:var(--mono); }
+  .lb-rank.gold { color:#ffd700; }
+  .lb-rank.silver { color:#c0c0c0; }
+  .lb-rank.bronze { color:#cd7f32; }
+  .lb-name { flex:1; font-size:15px; font-weight:700; }
+  .lb-score { font-size:18px; font-weight:800; color:var(--gold); font-family:var(--mono); }
+  .lb-badge { font-size:10px; padding:2px 8px; border-radius:50px; background:rgba(240,185,11,0.15); color:var(--gold); font-weight:700; }
+
+  /* ===================== PRINT ===================== */
+  @media print {
+    body { background:white !important; color:black !important; }
+    body::before { display:none !important; }
+    .nav, .xp-bar-wrap, .toast, #sec-home, #sec-learn, #sec-qaamuus, #sec-play, #sec-turjumaan, #sec-progress, #sec-keyboard, #sec-xisaab, #sec-speed, #sec-qoraal, #sec-leaderboard { display:none !important; }
+    #sec-print { display:block !important; background:white; color:black; }
+    .print-char-grid { display:grid; grid-template-columns:repeat(8,1fr); gap:8px; }
+    .print-tile { border:1px solid #ccc; border-radius:6px; padding:8px; text-align:center; }
+    .print-tile .p-osm { font-family:'Noto Sans Osmanya',serif; font-size:28px; color:#b8860b; }
+    .print-tile .p-lat { font-size:11px; font-weight:700; color:#333; }
+    .print-section-title { font-size:16px; font-weight:800; margin:16px 0 8px; color:#001233; border-bottom:2px solid #f0b90b; padding-bottom:4px; }
+  }
+
+</style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-    <!-- NAVIGATION -->
-    <nav class="max-w-5xl mx-auto mb-8 glass-panel rounded-2xl sticky top-4 z-50">
-        <div class="px-4 md:px-6 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <span class="text-3xl">🇸🇴</span>
-                <h1 class="text-xl md:text-2xl font-extrabold text-osm-gold tracking-wide">FAR CISMAANIYA</h1>
+<div class="xp-bar-wrap"><div class="xp-bar" id="xpBar" style="width:0%"></div></div>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="flag">🇸🇴</span>
+    <span class="title">FAR CISMAANIYA</span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab" onclick="goTo('home')"><span class="tab-icon">🏠</span><span>Guriga</span></button>
+    <button class="nav-tab" onclick="goTo('learn')"><span class="tab-icon">📚</span><span>Baro</span></button>
+    <button class="nav-tab" onclick="goTo('qaamuus')"><span class="tab-icon">📖</span><span>Qaamuus</span></button>
+    <button class="nav-tab" onclick="goTo('play')"><span class="tab-icon">🎮</span><span>Ciyaar</span></button>
+    <button class="nav-tab" onclick="goTo('speed')"><span class="tab-icon">⚡</span><span>Degdeg</span></button>
+    <button class="nav-tab" onclick="goTo('xisaab')"><span class="tab-icon">🔢</span><span>Xisaab</span></button>
+    <button class="nav-tab" onclick="goTo('keyboard')"><span class="tab-icon">⌨️</span><span>Farta</span></button>
+    <button class="nav-tab" onclick="goTo('qoraal')"><span class="tab-icon">📝</span><span>Qoraal</span></button>
+    <button class="nav-tab" onclick="goTo('turjumaan')"><span class="tab-icon">🔁</span><span>Turjumaan</span></button>
+    <button class="nav-tab" onclick="goTo('leaderboard')"><span class="tab-icon">🏆</span><span>Tartam</span></button>
+    <button class="nav-tab" onclick="goTo('progress')"><span class="tab-icon">📊</span><span>Horumar</span></button>
+    <button class="nav-tab" onclick="printChart()"><span class="tab-icon">🖨️</span><span>Daabac</span></button>
+  </div>
+</nav>
+
+<div id="app">
+
+<!-- ========== HOME ========== -->
+<div id="sec-home" class="section active">
+  <div class="home-hero">
+    <h1>Baro Qoraalka <span class="gold">Hiddahaaga</span></h1>
+    <p>Baro Far Cismaaniya — qoraalka Soomaalida ee qadiimiga ah. Casharrada, ciyaaro, qaamuus, iyo AI-powered barashada oo dhan hal meel.</p>
+    <button class="btn btn-gold" onclick="goTo('learn')">🚀 Bilow Barashada</button>
+  </div>
+
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card"><div class="num" id="stat-sessions">0</div><div class="lbl">Casharrada</div></div>
+    <div class="stat-card"><div class="num" id="stat-score">0</div><div class="lbl">Dhibcaha</div></div>
+    <div class="stat-card"><div class="num" id="stat-streak">0</div><div class="lbl">Silsilad 🔥</div></div>
+  </div>
+
+  <div class="home-cards">
+    <div class="home-card" onclick="goTo('learn')">
+      <div class="icon">📚</div>
+      <h3>Casharrada</h3>
+      <p>Baro dhammaan xuruufta, shaqallada, iyo tirooyinka Far Cismaaniya.</p>
+    </div>
+    <div class="home-card" onclick="goTo('qaamuus')">
+      <div class="icon">📖</div>
+      <h3>Qaamuuska</h3>
+      <p>300+ eray Soomaali oo ku qoran Far Cismaaniya. Raadi, baro, oo maqal.</p>
+    </div>
+    <div class="home-card" onclick="goTo('play')">
+      <div class="icon">🎮</div>
+      <h3>Ciyaaro 6-ka</h3>
+      <p>Flashcards, Spelling Bee, Xidid-Qoraal, iyo wax badan oo kale.</p>
+    </div>
+    <div class="home-card" onclick="goTo('speed')" style="border-color:rgba(239,68,68,0.35)">
+      <div class="icon">⚡</div>
+      <h3 style="color:#f87171">Speed Quiz</h3>
+      <p>Su'aalo degdeg ah — 10 ilbiriqsi kasta. Imisa aad heli kartaa?</p>
+    </div>
+    <div class="home-card" onclick="goTo('xisaab')" style="border-color:rgba(34,197,94,0.35)">
+      <div class="icon">🔢</div>
+      <h3 style="color:#4ade80">Xisaab Cismaaniya</h3>
+      <p>Baaxad, jaro, iyo tiro weyn — dhammaan Far Cismaaniya ah.</p>
+    </div>
+    <div class="home-card" onclick="goTo('keyboard')" style="border-color:rgba(168,85,247,0.35)">
+      <div class="icon">⌨️</div>
+      <h3 style="color:#c084fc">Farta Cismaaniya</h3>
+      <p>Keyboard Far Cismaaniya ah — taabo xarfaha oo ku qor.</p>
+    </div>
+    <div class="home-card" onclick="goTo('qoraal')" style="border-color:rgba(251,146,60,0.35)">
+      <div class="icon">📝</div>
+      <h3 style="color:#fb923c">Qoraalka Dheer</h3>
+      <p>Jumlo iyo sheekooyin Far Cismaaniya ah — akhri oo baro.</p>
+    </div>
+    <div class="home-card" onclick="goTo('leaderboard')" style="border-color:rgba(250,204,21,0.35)">
+      <div class="icon">🏆</div>
+      <h3 style="color:#facc15">Tartamayaasha</h3>
+      <p>Is-bar-bar dhig asxaabtaada — cidda ugu sareysa.</p>
+    </div>
+    <div class="home-card" onclick="goTo('turjumaan')" style="border-color:rgba(59,130,246,0.35)">
+      <div class="icon">🔁</div>
+      <h3 style="color:#60a5fa">Turjumaanka</h3>
+      <p>Ku beddel qoraalka labada far — Far Cismaaniya ↔ Far Laatiinka.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== LEARN ========== -->
+<div id="sec-learn" class="section">
+  <div class="learn-tabs">
+    <button class="learn-tab active" onclick="showLearnTab('chars')">🔤 Shaxda Xuruufta</button>
+    <button class="learn-tab" onclick="showLearnTab('converter')">🔄 Qoraal-Bedele</button>
+  </div>
+
+  <div id="learn-chars">
+    <div class="section-label">Shibbanayaasha — Consonants</div>
+    <div class="char-grid" id="grid-cons"></div>
+    <div class="section-label">Shaqallada — Vowels</div>
+    <div class="char-grid" id="grid-vow"></div>
+    <div class="section-label">Tirooyinka — Numbers</div>
+    <div class="char-grid" id="grid-nums"></div>
+  </div>
+
+  <div id="learn-converter" style="display:none">
+    <div class="converter-grid">
+      <div>
+        <div class="converter-label">Qoraalka Laatiinka</div>
+        <textarea id="latinIn" class="converter-in" placeholder="Qor halkan... (Tusaale: Nabad, Soomaaliya, Hooyo)"></textarea>
+      </div>
+      <div>
+        <div class="converter-label" style="color:var(--gold)">Far Cismaaniya</div>
+        <div id="osmOut" class="converter-out"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-gold" onclick="copyOsm()">📋 Koobiyeey</button>
+      <button class="btn btn-outline" onclick="clearConv()">🗑️ Tirtir</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== QAAMUUS ========== -->
+<div id="sec-qaamuus" class="section">
+  <div class="dict-search-wrap">
+    <span class="dict-search-icon">🔍</span>
+    <input type="text" class="dict-search" id="dictSearch" placeholder="Raadi eray kasta oo Soomaali ah..." oninput="dictInputHandler()" onkeypress="if(event.key==='Enter')doAiSearch()">
+    <button onclick="doAiSearch()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:var(--gold);border:none;border-radius:50px;padding:6px 16px;color:var(--navy);font-weight:700;font-size:13px;cursor:pointer;font-family:var(--font)">Raadi</button>
+  </div>
+
+  <!-- Local quick-filter cats -->
+  <div class="dict-cats" id="dictCats"></div>
+
+  <!-- AI status bar -->
+  <div id="dict-ai-bar" style="display:none;align-items:center;gap:10px;padding:10px 14px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:var(--radius-sm);margin-bottom:16px;font-size:13px;color:#93c5fd">
+    <span id="dict-ai-spinner" style="display:inline-block;animation:spin 1s linear infinite">⏳</span>
+    <span id="dict-ai-msg">Claude wuxuu erayada ka raadiyaa...</span>
+  </div>
+  <style>@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}</style>
+
+  <!-- Result count -->
+  <div id="dict-count" style="font-size:12px;color:var(--gray3);margin-bottom:12px"></div>
+
+  <div class="dict-grid" id="dictGrid"></div>
+</div>
+
+<!-- ========== PLAY ========== -->
+<div id="sec-play" class="section">
+  <div id="game-menu">
+    <h2 style="margin-bottom:20px">🎮 Dooro Ciyaar</h2>
+    <div class="game-grid">
+      <div class="game-card" onclick="startGame('flashcard')">
+        <div class="g-icon">🃏</div>
+        <div class="g-name">Flashcards</div>
+        <div class="g-desc">Dib u eeg & Xusuusnow</div>
+        <span class="g-badge badge-easy">FUDUD</span>
+      </div>
+      <div class="game-card" onclick="startGame('alpha')">
+        <div class="g-icon">🔤</div>
+        <div class="g-name">Xuruufta</div>
+        <div class="g-desc">Cismaaniya → Laatiinka</div>
+        <span class="g-badge badge-easy">FUDUD</span>
+      </div>
+      <div class="game-card" onclick="startGame('words')">
+        <div class="g-icon">✍️</div>
+        <div class="g-name">Erayada</div>
+        <div class="g-desc">Qor Far Cismaaniya</div>
+        <span class="g-badge badge-medium">DHEXDHEXAAD</span>
+      </div>
+      <div class="game-card" onclick="startGame('numbers')">
+        <div class="g-icon">🔢</div>
+        <div class="g-name">Tirooyinka</div>
+        <div class="g-desc">Tiro u beddel</div>
+        <span class="g-badge badge-medium">DHEXDHEXAAD</span>
+      </div>
+      <div class="game-card" onclick="startGame('spelling')">
+        <div class="g-icon">🐝</div>
+        <div class="g-name">Spelling Bee</div>
+        <div class="g-desc">Cod + Qoraal</div>
+        <span class="g-badge badge-hard">ADAG</span>
+      </div>
+      <div class="game-card" onclick="startGame('identify')">
+        <div class="g-icon">🔍</div>
+        <div class="g-name">Kala Saar</div>
+        <div class="g-desc">Nooca qoraalka</div>
+        <span class="g-badge badge-easy">FUDUD</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME UI -->
+  <div id="game-ui">
+    <div class="game-header">
+      <button class="btn btn-ghost btn-sm" onclick="exitGame()">⬅ Ka Bax</button>
+      <div style="flex:1; display:flex; align-items:center; gap:10px;">
+        <div class="progress-track"><div class="progress-fill" id="gProgress"></div></div>
+        <span class="q-counter" id="gCounter">1/10</span>
+      </div>
+      <div class="score-pill" id="gScore">⭐ 0</div>
+    </div>
+
+    <div class="card" style="text-align:center">
+      <!-- Flashcard mode -->
+      <div id="fc-mode" style="display:none">
+        <div class="flashcard-wrap">
+          <div class="flashcard" id="flashcard" onclick="flipCard()">
+            <div class="fc-face fc-front">
+              <div class="fc-osm" id="fc-osm"></div>
+              <div class="fc-hint">Ku dhufo si aad u beddesho</div>
             </div>
-            <div class="flex gap-2">
-                <button onclick="switchTab('home')" class="nav-item px-3 py-2 rounded-lg hover:bg-white/10 transition text-sm md:text-base font-medium" id="nav-home">🏠 Guriga</button>
-                <button onclick="switchTab('learn')" class="nav-item px-3 py-2 rounded-lg hover:bg-white/10 transition text-sm md:text-base font-medium" id="nav-learn">📚 Baro</button>
-                <button onclick="switchTab('play')" class="nav-item px-3 py-2 rounded-lg hover:bg-white/10 transition text-sm md:text-base font-medium" id="nav-play">🎮 Ciyaar</button>
+            <div class="fc-face fc-back">
+              <div class="fc-lat" id="fc-lat"></div>
+              <div style="font-size:13px;color:var(--gray2)" id="fc-mean"></div>
             </div>
+          </div>
         </div>
-    </nav>
+        <div style="display:flex;gap:10px;justify-content:center">
+          <button class="btn btn-ghost" onclick="fcVote(false)">❌ Garanwaa</button>
+          <button class="btn btn-gold" onclick="fcVote(true)">✅ Garanayaa</button>
+        </div>
+      </div>
 
-    <main class="max-w-5xl mx-auto pb-12">
+      <!-- Normal quiz mode -->
+      <div id="quiz-mode">
+        <div class="display-instr" id="gInstr">Su'aal</div>
+        <div id="gDisplay" class="display-main"></div>
+        <div id="gInputArea">
+          <div class="game-input-row">
+            <input type="text" class="game-input" id="gInput" placeholder="Jawaab..." autocomplete="off">
+            <button class="btn btn-gold" onclick="submitAns()">✓</button>
+          </div>
+        </div>
+        <div id="gChoices" class="choices-grid" style="display:none"></div>
+        <div class="feedback-box" id="gFeedback"></div>
+        <button class="btn btn-outline" id="gNextBtn" style="display:none;margin-top:16px" onclick="nextQ()">Xiga ➡</button>
+      </div>
+    </div>
+  </div>
 
-        <!-- 1. HOME SECTION -->
-        <section id="home-section" class="animate-fade-in">
-            <div class="glass-panel rounded-3xl p-8 md:p-12 text-center">
-                <h2 class="text-4xl md:text-6xl font-extrabold mb-6 text-white drop-shadow-lg">
-                    Baro Qoraalka <span class="text-osm-gold">Hiddahaaga</span>
-                </h2>
-                <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-                    Ku soo dhowow app-ka ugu casrisan ee lagu barto Far Cismaaniya. Baro xuruufta, u beddel qoraalkaaga, oo ku raaxayso ciyaaro xiiso leh.
-                </p>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                    <button onclick="switchTab('learn')" class="group glass-panel p-6 rounded-2xl hover:bg-white/5 transition text-left border-l-4 border-osm-gold">
-                        <div class="text-4xl mb-3">📚</div>
-                        <h3 class="text-xl font-bold text-osm-gold mb-1">Casharrada & Beddelaha</h3>
-                        <p class="text-sm text-gray-400 group-hover:text-gray-200">Baro shaxda xuruufta oo isticmaal aaladda wax beddesha.</p>
-                    </button>
-                    <button onclick="switchTab('play')" class="group glass-panel p-6 rounded-2xl hover:bg-white/5 transition text-left border-l-4 border-green-400">
-                        <div class="text-4xl mb-3">🎮</div>
-                        <h3 class="text-xl font-bold text-green-400 mb-1">Ciyaaraha & Layliga</h3>
-                        <p class="text-sm text-gray-400 group-hover:text-gray-200">Tijaabi aqoontaada 5 ciyaarood oo kala duwan.</p>
-                    </button>
-                </div>
-            </div>
-        </section>
+  <!-- RESULTS -->
+  <div id="results-ui">
+    <div class="card" style="text-align:center">
+      <div class="result-circle">
+        <div class="result-big" id="rScore">0</div>
+        <div class="result-sub" id="rTotal">/10</div>
+      </div>
+      <h2 id="rMsg" style="margin-bottom:8px">Shaqo fiican!</h2>
+      <p id="rXP" style="color:var(--gold);margin-bottom:24px">+50 XP</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-gold" onclick="exitGame()">🏠 Ciyaaro Kale</button>
+        <button class="btn btn-outline" onclick="goTo('progress')">📊 Kor u fiiri</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <!-- 2. LEARN SECTION -->
-        <section id="learn-section" class="hidden animate-fade-in">
-            <div class="glass-panel rounded-3xl p-6 md:p-8">
-                <div class="flex justify-center mb-8 border-b border-gray-700">
-                    <button onclick="showLearnSubTab('chars')" class="learn-subtab tab-btn active px-6 py-3 font-bold text-lg w-1/2 text-center" data-target="chars">🔤 Shaxda Xuruufta</button>
-                    <button onclick="showLearnSubTab('converter')" class="learn-subtab tab-btn px-6 py-3 font-bold text-lg w-1/2 text-center" data-target="converter">🔄 Qoraal-Bedele</button>
-                </div>
+<!-- ========== TURJUMAAN ========== -->
+<div id="sec-turjumaan" class="section">
+  <div class="trj-header">
+    <h2>Turjumaanka</h2>
+    <span class="trj-badge">LABADA FAR</span>
+  </div>
+  <p style="color:var(--gray2);font-size:14px;margin-bottom:20px;line-height:1.6">
+    Ku beddel qoraalkaaga labada far — Far Cismaaniya iyo Far Laatiinka. Dooro jihada aad rabto, qor, natiijadana si toos ah ayay u soo baxaysaa.
+  </p>
 
-                <!-- Characters Grid -->
-                <div id="chars-content">
-                    <div class="space-y-8">
-                        <div>
-                            <h3 class="text-2xl font-bold text-osm-gold mb-4 border-l-4 border-osm-gold pl-3">Shibbanayaasha (Consonants)</h3>
-                            <div id="consonants-grid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3"></div>
-                        </div>
-                        <div>
-                            <h3 class="text-2xl font-bold text-osm-gold mb-4 border-l-4 border-osm-gold pl-3">Shaqallada (Vowels)</h3>
-                            <div id="vowels-grid" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3"></div>
-                        </div>
-                        <div>
-                            <h3 class="text-2xl font-bold text-osm-gold mb-4 border-l-4 border-osm-gold pl-3">Tirooyinka (Numbers)</h3>
-                            <div id="numbers-grid" class="grid grid-cols-5 sm:grid-cols-10 gap-3"></div>
-                        </div>
-                    </div>
-                </div>
+  <!-- Direction selector -->
+  <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap">
+    <div class="trj-dir-row">
+      <button class="trj-dir-btn active" id="trj-btn-ltr" onclick="setTrjDir('ltr')">Far Laatiinka → Cismaaniya</button>
+      <button class="trj-dir-btn" id="trj-btn-rtl" onclick="setTrjDir('rtl')">Far Cismaaniya → Laatiinka</button>
+    </div>
+    <button class="trj-swap-btn" onclick="swapTrj()" title="Beddel jihada">⇄</button>
+  </div>
 
-                <!-- Converter Tool -->
-                <div id="converter-content" class="hidden">
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div>
-                            <label class="block text-sm font-bold text-gray-400 mb-2">Qoraalka Laatiinka (Somali Latin)</label>
-                            <textarea id="latinInput" class="w-full h-64 rounded-xl p-4 text-lg focus:ring-2 focus:ring-osm-gold" placeholder="Ku qor halkan (Tusaale: Nabad, Soomaaliya)..."></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-osm-gold mb-2">Natiijada Far Cismaaniya</label>
-                            <div id="osmanyaOutput" class="w-full h-64 rounded-xl p-4 text-3xl font-osmanya bg-black/30 border border-gray-600 overflow-auto leading-relaxed text-osm-gold"></div>
-                        </div>
-                    </div>
-                    <div class="mt-6 flex justify-center">
-                        <button onclick="copyToClipboard()" class="btn-gold px-8 py-3 rounded-full flex items-center gap-2">
-                            <span>📋</span> Koobiyeey Qoraalka
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <!-- Hint for reverse mode -->
+  <div class="trj-rev-hint" id="trj-rev-hint">
+    ℹ️ <strong>Tix-raac:</strong> Cismaaniya → Laatiinka: Waxaad ku qori kartaa Far Cismaaniya si toos ah — koodboodhkaaga hadduu taageero — ama geli qoraal Cismaaniya oo la koobiyeeyay. Natiijadu waxay ku soo baxaysaa Far Laatiinka.
+  </div>
 
-        <!-- 3. PLAY SECTION -->
-        <section id="play-section" class="hidden animate-fade-in">
-            
-            <!-- Game Menu -->
-            <div id="game-menu" class="glass-panel rounded-3xl p-8">
-                <h2 class="text-3xl font-bold text-center text-white mb-8">Dooro Ciyaar</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    <button onclick="startGame(1)" class="btn-blue p-6 rounded-xl flex flex-col items-center gap-3 hover:scale-105">
-                        <span class="text-4xl">🔤</span>
-                        <span class="text-xl">Xuruufta</span>
-                    </button>
-                    <button onclick="startGame(2)" class="btn-blue p-6 rounded-xl flex flex-col items-center gap-3 hover:scale-105">
-                        <span class="text-4xl">✍</span>
-                        <span class="text-xl">Erayada</span>
-                    </button>
-                    <button onclick="startGame(3)" class="btn-blue p-6 rounded-xl flex flex-col items-center gap-3 hover:scale-105">
-                        <span class="text-4xl">🔢</span>
-                        <span class="text-xl">Tirooyinka</span>
-                    </button>
-                    <button onclick="startGame(4)" class="btn-blue p-6 rounded-xl flex flex-col items-center gap-3 hover:scale-105">
-                        <span class="text-4xl">📝</span>
-                        <span class="text-xl">Jumladaha</span>
-                    </button>
-                    <button onclick="startGame(5)" class="btn-blue p-6 rounded-xl flex flex-col items-center gap-3 hover:scale-105">
-                        <span class="text-4xl">🔍</span>
-                        <span class="text-xl">Kala Saar</span>
-                    </button>
-                </div>
-            </div>
+  <!-- Translation panels -->
+  <div class="trj-panels" id="trjPanels">
+    <div class="trj-panel">
+      <div class="trj-panel-label trj-label-laatiin" id="trj-in-label">
+        <span>🅰️</span> FAR LAATIINKA — GELINTA
+      </div>
+      <textarea class="trj-textarea" id="trjInput" placeholder="Qor halkan... Tusaale: Nabad iyo nolol, Soomaaliya waa dalkeena"></textarea>
+      <div class="trj-char-count" id="trjCharCount">0 xaraf</div>
+    </div>
 
-            <!-- Game Interface -->
-            <div id="game-interface" class="hidden glass-panel rounded-3xl p-6 md:p-10 relative">
-                <button onclick="exitGame()" class="absolute top-6 left-6 text-gray-400 hover:text-white flex items-center gap-1 font-bold">
-                    ⬅ Ka bax
-                </button>
-                
-                <div class="text-center max-w-2xl mx-auto">
-                    <div class="flex justify-between items-center mb-6 mt-8">
-                        <span id="question-counter" class="text-sm font-mono text-gray-400">SU'AASHA 1/10</span>
-                        <span id="score-display" class="text-osm-gold font-bold text-lg">Dhibcaha: 0</span>
-                    </div>
-                    
-                    <!-- Progress Bar -->
-                    <div class="w-full bg-gray-700 h-2 rounded-full mb-8 overflow-hidden">
-                        <div id="progress-bar" class="bg-osm-gold h-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
+    <div class="trj-arrow-col">
+      <span class="trj-arrow">→</span>
+    </div>
 
-                    <p id="game-instruction" class="text-xl text-gray-300 mb-6">U beddel Cismaaniya:</p>
-                    
-                    <div id="game-display" class="text-6xl md:text-7xl font-osmanya text-white mb-8 min-h-[100px] flex items-center justify-center drop-shadow-[0_0_15px_rgba(255,215,0,0.3)]">
-                        <!-- Content goes here -->
-                    </div>
+    <div class="trj-panel">
+      <div class="trj-panel-label trj-label-cismaaniya" id="trj-out-label">
+        <span>𐒈</span> FAR CISMAANIYA — NATIIJADA
+      </div>
+      <div class="trj-out osm-font" id="trjOutput">Natiijadu waxay halkan ka soo baxaysaa...</div>
+      <div class="trj-char-count" id="trjOutCount">0 xaraf</div>
+    </div>
+  </div>
 
-                    <!-- Input Area -->
-                    <div id="input-area" class="w-full">
-                        <input type="text" id="game-input" class="w-full p-4 rounded-xl text-center text-xl md:text-2xl font-bold bg-black/40 border-2 border-gray-600 focus:border-osm-gold mb-4" placeholder="Qor jawaabta..." autocomplete="off">
-                        <button onclick="submitAnswer()" class="btn-gold w-full py-4 rounded-xl text-lg shadow-lg">Jawaab</button>
-                    </div>
+  <div class="trj-actions">
+    <button class="btn btn-gold" onclick="copyTrj()">📋 Koobiyeey Natiijada</button>
+    <button class="btn btn-outline" onclick="saveTrjHistory()">💾 Kayd</button>
+    <button class="btn btn-ghost btn-sm" onclick="clearTrj()">🗑️ Nadiifi</button>
+  </div>
 
-                    <!-- Choice Area (For Game 5) -->
-                    <div id="choice-area" class="hidden grid-cols-2 gap-4 w-full">
-                        <button onclick="submitChoice('cismaaniya')" class="quiz-option p-6 rounded-xl text-xl font-bold text-white">Far Cismaaniya</button>
-                        <button onclick="submitChoice('laatiin')" class="quiz-option p-6 rounded-xl text-xl font-bold text-white">Far Laatiin</button>
-                    </div>
+  <!-- Quick phrases -->
+  <div style="margin-bottom:24px">
+    <div class="trj-history-label">⚡ JUMLO DEGDEG AH</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap" id="quickPhrases"></div>
+  </div>
 
-                    <!-- Feedback -->
-                    <div id="feedback" class="mt-6 p-4 rounded-xl text-lg font-bold hidden"></div>
-                    
-                    <button id="next-btn" onclick="nextQuestion()" class="hidden mt-6 btn-blue w-full py-3 rounded-xl">Su'aasha Xigta ➡</button>
-                </div>
-            </div>
+  <!-- History -->
+  <div class="trj-history" id="trjHistWrap" style="display:none">
+    <div class="trj-history-label">🕐 TAARIIKHDA TURJUMAANKA</div>
+    <div id="trjHistList"></div>
+    <button class="btn btn-ghost btn-sm" onclick="clearTrjHistory()">🗑️ Taariikhda Nadiifi</button>
+  </div>
+</div>
 
-            <!-- Results Screen -->
-            <div id="results-screen" class="hidden glass-panel rounded-3xl p-10 text-center">
-                <h2 class="text-4xl font-bold text-osm-gold mb-4">Dhammaad!</h2>
-                <div class="text-8xl font-black text-white mb-4 drop-shadow-lg" id="final-score">8/10</div>
-                <p id="final-msg" class="text-xl text-gray-300 mb-8">Shaqo fiican!</p>
-                <button onclick="exitGame()" class="btn-gold px-8 py-3 rounded-full">🏠 Ku noqo Menu-ga</button>
-            </div>
+<!-- ========== PROGRESS ========== -->
+<div id="sec-progress" class="section">
+  <h2 style="margin-bottom:20px">📊 Horumarkaaga</h2>
 
-        </section>
+  <div class="progress-section">
+    <div class="prog-card">
+      <h3>Xuruufta</h3>
+      <div class="prog-bar-row"><span class="prog-label">Shibbanayaasha</span><div class="prog-track"><div class="prog-fill" id="prog-cons" style="width:0%"></div></div><span class="prog-pct" id="pct-cons">0%</span></div>
+      <div class="prog-bar-row"><span class="prog-label">Shaqallada</span><div class="prog-track"><div class="prog-fill" style="width:0%" id="prog-vow"></div></div><span class="prog-pct" id="pct-vow">0%</span></div>
+      <div class="prog-bar-row"><span class="prog-label">Tirooyinka</span><div class="prog-track"><div class="prog-fill" style="width:0%" id="prog-num"></div></div><span class="prog-pct" id="pct-num">0%</span></div>
+    </div>
+    <div class="prog-card">
+      <h3>Xisaabaadka</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px">
+        <div style="text-align:center;padding:12px;background:rgba(240,185,11,0.06);border-radius:8px">
+          <div style="font-size:26px;font-weight:800;color:var(--gold)" id="prog-total-score">0</div>
+          <div style="font-size:11px;color:var(--gray2)">DHIBCAHA</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(240,185,11,0.06);border-radius:8px">
+          <div style="font-size:26px;font-weight:800;color:var(--gold)" id="prog-games">0</div>
+          <div style="font-size:11px;color:var(--gray2)">CIYAARO</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(240,185,11,0.06);border-radius:8px">
+          <div style="font-size:26px;font-weight:800;color:var(--gold)" id="prog-streak">0🔥</div>
+          <div style="font-size:11px;color:var(--gray2)">SILSILAD</div>
+        </div>
+        <div style="text-align:center;padding:12px;background:rgba(240,185,11,0.06);border-radius:8px">
+          <div style="font-size:26px;font-weight:800;color:var(--gold)" id="prog-accuracy">0%</div>
+          <div style="font-size:11px;color:var(--gray2)">SAXNAAN</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    </main>
+  <h3 style="margin-bottom:14px;color:var(--gray2);font-size:14px;letter-spacing:1px">🏆 ABAALMARINTA</h3>
+  <div class="card">
+    <div class="achievement" id="ach-first"><span class="ach-icon">🌟</span><div class="ach-info"><div class="name">Aqoonsiga Koowaad</div><div class="desc">Ciyaartii ugu horreysay dhameystir</div></div></div>
+    <div class="achievement ach-locked" id="ach-perfect"><span class="ach-icon">💯</span><div class="ach-info"><div class="name">Kamil</div><div class="desc">10/10 hel hal ciyaarood</div></div></div>
+    <div class="achievement ach-locked" id="ach-streak"><span class="ach-icon">🔥</span><div class="ach-info"><div class="name">Silsilad 5</div><div class="desc">5 ciyaarood isku xigta dhameystir</div></div></div>
+    <div class="achievement ach-locked" id="ach-dict"><span class="ach-icon">📖</span><div class="ach-info"><div class="name">Qaamuus Ku Raadsho</div><div class="desc">50 eray raadi</div></div></div>
+  </div>
+</div>
 
-    <script>
-        // --- DATA (XOGTA) ---
-        const consonants = [
-            {l:'b', o:'𐒁'}, {l:'t', o:'𐒂'}, {l:'j', o:'𐒃'}, {l:'x', o:'𐒄'}, {l:'kh', o:'𐒅'},
-            {l:'d', o:'𐒆'}, {l:'r', o:'𐒇'}, {l:'s', o:'𐒈'}, {l:'sh', o:'𐒉'}, {l:'dh', o:'𐒊'},
-            {l:'c', o:'𐒋'}, {l:'g', o:'𐒌'}, {l:'f', o:'𐒍'}, {l:'q', o:'𐒎'}, {l:'k', o:'𐒏'},
-            {l:'l', o:'𐒐'}, {l:'m', o:'𐒑'}, {l:'n', o:'𐒒'}, {l:'w', o:'𐒓'}, {l:'h', o:'𐒔'},
-            {l:'y', o:'𐒕'}, {l:"'", o:'𐒀'}
-        ];
-        // Fixed Vowel Mappings
-        const vowelsShort = [
-            {l:'a', o:'𐒖'}, {l:'e', o:'𐒗'}, {l:'i', o:'𐒘'}, {l:'o', o:'𐒙'}, {l:'u', o:'𐒚'}
-        ];
-        const vowelsLong = [
-            {l:'aa', o:'𐒛'}, {l:'ee', o:'𐒜'}, {l:'ii', o:'𐒕'}, {l:'oo', o:'𐒝'}, {l:'uu', o:'𐒓'}
-        ];
-        const numbers = [
-            {l:'0', o:'𐒠'}, {l:'1', o:'𐒡'}, {l:'2', o:'𐒢'}, {l:'3', o:'𐒣'}, {l:'4', o:'𐒤'},
-            {l:'5', o:'𐒥'}, {l:'6', o:'𐒦'}, {l:'7', o:'𐒧'}, {l:'8', o:'𐒨'}, {l:'9', o:'𐒩'}
-        ];
+<!-- ========== SPEED QUIZ ========== -->
+<div id="sec-speed" class="section">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+    <h2>⚡ Speed Quiz</h2>
+    <span style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.35);color:#f87171;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:50px">DEGDEG</span>
+  </div>
+  <p style="color:var(--gray2);font-size:14px;margin-bottom:20px">10 ilbiriqsi kasta — jawaab si degdeg ah! Haddaad khaladaato waqtigu wuu socdaa.</p>
+  <div id="spd-menu">
+    <div class="game-grid" style="max-width:500px">
+      <div class="game-card" onclick="startSpeed('alpha')"><div class="g-icon">🔤</div><div class="g-name">Xuruufta</div><div class="g-desc">Cismaaniya → Laatiinka</div></div>
+      <div class="game-card" onclick="startSpeed('words')"><div class="g-icon">✍️</div><div class="g-name">Erayada</div><div class="g-desc">Laatiinka → Cismaaniya</div></div>
+      <div class="game-card" onclick="startSpeed('numbers')"><div class="g-icon">🔢</div><div class="g-name">Tirooyinka</div><div class="g-desc">Tiro u aqoonsi</div></div>
+    </div>
+  </div>
+  <div id="spd-ui" style="display:none">
+    <div class="card" style="text-align:center;max-width:520px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <button class="btn btn-ghost btn-sm" onclick="exitSpeed()">⬅ Ka Bax</button>
+        <div class="score-pill" id="spd-score">⭐ 0</div>
+        <div style="font-size:12px;color:var(--gray2);font-family:var(--mono)" id="spd-qnum">1/15</div>
+      </div>
+      <div class="spd-streak" id="spd-streak"></div>
+      <div class="spd-timer-ring">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle class="ring-bg" cx="40" cy="40" r="34"/>
+          <circle class="ring-fill" id="spd-ring" cx="40" cy="40" r="34" stroke-dasharray="213.6" stroke-dashoffset="0"/>
+        </svg>
+        <div class="spd-timer-num" id="spd-timer">10</div>
+      </div>
+      <div style="font-size:13px;color:var(--gray2);margin-bottom:10px" id="spd-instr"></div>
+      <div id="spd-display" style="font-size:52px;font-family:'Noto Sans Osmanya',serif;color:var(--white);margin-bottom:18px;min-height:70px;display:flex;align-items:center;justify-content:center"></div>
+      <div id="spd-choices" class="choices-grid" style="display:none;margin-bottom:12px"></div>
+      <div id="spd-input-row" style="display:flex;gap:8px;max-width:400px;margin:0 auto 12px">
+        <input type="text" class="game-input" id="spd-input" placeholder="Jawaab..." autocomplete="off">
+        <button class="btn btn-gold" onclick="submitSpeed()">✓</button>
+      </div>
+      <div class="feedback-box" id="spd-feedback"></div>
+    </div>
+  </div>
+  <div id="spd-results" style="display:none">
+    <div class="card" style="text-align:center">
+      <div class="result-circle"><div class="result-big" id="spd-final">0</div><div class="result-sub">/15</div></div>
+      <h2 id="spd-msg" style="margin-bottom:8px"></h2>
+      <p style="color:var(--gold);margin-bottom:8px" id="spd-best"></p>
+      <p style="color:var(--gray2);font-size:13px;margin-bottom:20px" id="spd-avg"></p>
+      <button class="btn btn-gold" onclick="exitSpeed()">🔄 Mar kale</button>
+    </div>
+  </div>
+</div>
 
-        // Maps for Logic
-        const osmanyaMap = {};
-        const reverseOsmanyaMap = {}; // For quiz generation
-        const numberMap = {}; // Map specifically for numbers for easy lookup in game 3
-        
-        [...consonants, ...vowelsShort, ...vowelsLong, ...numbers].forEach(item => {
-            osmanyaMap[item.l] = item.o;
-            // For reverse map, prioritize simple chars, avoid duplicates overwriting if possible
-            if (!reverseOsmanyaMap[item.o]) reverseOsmanyaMap[item.o] = item.l;
-            if (item.l.match(/^\d$/)) numberMap[item.l] = item.o; // Populate number map
-        });
+<!-- ========== XISAAB ========== -->
+<div id="sec-xisaab" class="section">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+    <h2>🔢 Xisaab Far Cismaaniya</h2>
+    <span style="background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.35);color:#4ade80;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:50px">XISAAB</span>
+  </div>
+  <p style="color:var(--gray2);font-size:14px;margin-bottom:20px">Tirooyinka Far Cismaaniya baro — baaxad, jaro, iyo xisaab degdeg ah.</p>
+  <div id="xis-menu">
+    <div class="game-grid" style="max-width:600px">
+      <div class="game-card" onclick="startXisaab('aqoonsi')"><div class="g-icon">👁️</div><div class="g-name">Aqoonsi</div><div class="g-desc">Tiro Far Cismaaniya ah aqoonsi</div><span class="g-badge badge-easy">FUDUD</span></div>
+      <div class="game-card" onclick="startXisaab('baaxad')"><div class="g-icon">➕</div><div class="g-name">Baaxad</div><div class="g-desc">Laba tiro isku dar</div><span class="g-badge badge-medium">DHEXDHEXAAD</span></div>
+      <div class="game-card" onclick="startXisaab('jaro')"><div class="g-icon">➖</div><div class="g-name">Jaro</div><div class="g-desc">Tiro ka jaro</div><span class="g-badge badge-medium">DHEXDHEXAAD</span></div>
+      <div class="game-card" onclick="startXisaab('weyn')"><div class="g-icon">🔼</div><div class="g-name">Tiro Weyn</div><div class="g-desc">Tiro 10-100 aqoonsi</div><span class="g-badge badge-hard">ADAG</span></div>
+    </div>
+  </div>
+  <div id="xis-ui" style="display:none">
+    <div class="game-header">
+      <button class="btn btn-ghost btn-sm" onclick="exitXisaab()">⬅ Ka Bax</button>
+      <div style="flex:1;display:flex;align-items:center;gap:10px">
+        <div class="progress-track"><div class="progress-fill" id="xis-prog"></div></div>
+        <span class="q-counter" id="xis-counter">1/10</span>
+      </div>
+      <div class="score-pill" id="xis-score">⭐ 0</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:13px;color:var(--gray2);margin-bottom:8px" id="xis-instr"></div>
+      <div class="xis-problem" id="xis-problem"></div>
+      <div class="xis-osm-display" id="xis-osm-hint"></div>
+      <div class="xis-choices" id="xis-choices"></div>
+      <div class="feedback-box" id="xis-feedback" style="margin-top:14px"></div>
+      <button class="btn btn-outline" id="xis-next" style="display:none;margin-top:14px" onclick="nextXisaab()">Xiga ➡</button>
+    </div>
+  </div>
+  <div id="xis-results" style="display:none">
+    <div class="card" style="text-align:center">
+      <div class="result-circle"><div class="result-big" id="xis-final">0</div><div class="result-sub">/10</div></div>
+      <h2 id="xis-msg" style="margin-bottom:20px"></h2>
+      <button class="btn btn-gold" onclick="exitXisaab()">🔄 Mar kale</button>
+    </div>
+  </div>
+</div>
 
-        // --- CONVERTER LOGIC ---
-        function convertText(text) {
-            let res = "";
-            let lower = text.toLowerCase();
-            for(let i=0; i<lower.length; i++) {
-                // Check double chars first (e.g., sh, aa, ii)
-                if(i+1 < lower.length) {
-                    let two = lower.substring(i, i+2);
-                    if(osmanyaMap[two]) {
-                        res += osmanyaMap[two];
-                        i++;
-                        continue;
-                    }
-                }
-                // Check single char
-                if(osmanyaMap[lower[i]]) res += osmanyaMap[lower[i]];
-                else res += text[i]; // Keep original if not found
-            }
-            return res;
-        }
+<!-- ========== KEYBOARD ========== -->
+<div id="sec-keyboard" class="section">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+    <h2>⌨️ Farta Cismaaniya</h2>
+    <span style="background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.35);color:#c084fc;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:50px">KEYBOARD</span>
+  </div>
+  <p style="color:var(--gray2);font-size:14px;margin-bottom:20px">Taabo xarfaha hoose oo ku qor Far Cismaaniya. Koobiyeey ama dheji meeshad rabto.</p>
+  <div class="kbd-wrap">
+    <div class="kbd-output" id="kbd-output">𐒒𐒖𐒁𐒖𐒆...</div>
+    <div id="kbd-rows"></div>
+    <div class="kbd-actions">
+      <button class="btn btn-gold btn-sm" onclick="kbdCopy()">📋 Koobiyeey</button>
+      <button class="btn btn-ghost btn-sm" onclick="kbdClear()">🗑️ Nadiifi</button>
+      <button class="btn btn-outline btn-sm" onclick="kbdSpace()">⎵ Boos</button>
+      <button class="btn btn-ghost btn-sm" style="color:#ef4444" onclick="kbdDel()">⌫ Tirtir</button>
+    </div>
+  </div>
+  <div style="margin-top:16px">
+    <div style="font-size:11px;color:var(--gray3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Natiijada Laatiinka</div>
+    <div style="background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-sm);padding:14px;font-size:15px;color:var(--gray2);min-height:48px" id="kbd-latin-out"></div>
+  </div>
+</div>
 
-        // --- APP LOGIC ---
-        
-        // 1. Navigation
-        function switchTab(tabId) {
-            // Hide all sections
-            ['home-section', 'learn-section', 'play-section'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            // Show target
-            document.getElementById(tabId+'-section').classList.remove('hidden');
-            
-            // Update Navbar Highlight
-            ['nav-home', 'nav-learn', 'nav-play'].forEach(id => {
-                const el = document.getElementById(id);
-                if(id === 'nav-'+tabId) {
-                    el.classList.add('text-osm-gold', 'bg-white/10');
-                    el.classList.remove('text-gray-300');
-                } else {
-                    el.classList.remove('text-osm-gold', 'bg-white/10');
-                    el.classList.add('text-gray-300');
-                }
-            });
+<!-- ========== QORAAL DHEER ========== -->
+<div id="sec-qoraal" class="section">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+    <h2>📝 Qoraalka Dheer</h2>
+    <span style="background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.35);color:#fb923c;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:50px">AKHRI & BARO</span>
+  </div>
+  <p style="color:var(--gray2);font-size:14px;margin-bottom:20px">Jumlo iyo sheekooyin — geeska bidix Laatiinka, geeska midig Far Cismaaniya. Ku dhufo kartada si aad u aragto turjumaadka.</p>
+  <div class="qd-tabs" id="qdTabs"></div>
+  <div id="qdContent"></div>
+</div>
 
-            if(tabId !== 'play') exitGame();
-        }
+<!-- ========== LEADERBOARD ========== -->
+<div id="sec-leaderboard" class="section">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+    <h2>🏆 Tartamayaasha</h2>
+    <span style="background:rgba(250,204,21,0.15);border:1px solid rgba(250,204,21,0.35);color:#facc15;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 10px;border-radius:50px">TARTAM</span>
+  </div>
+  <p style="color:var(--gray2);font-size:14px;margin-bottom:20px">Geli magacaaga oo kayd dhibcahaaga — is-bar-bar dhig kuwa kale.</p>
+  <div class="lb-form">
+    <input type="text" class="lb-input" id="lb-name-input" placeholder="Magacaaga geli..." maxlength="20">
+    <button class="btn btn-gold btn-sm" onclick="lbSave()">💾 Kayd Dhibcaha</button>
+  </div>
+  <div id="lb-list"></div>
+</div>
 
-        function showLearnSubTab(subTabId) {
-            document.getElementById('chars-content').classList.add('hidden');
-            document.getElementById('converter-content').classList.add('hidden');
-            
-            if(subTabId === 'chars') document.getElementById('chars-content').classList.remove('hidden');
-            else document.getElementById('converter-content').classList.remove('hidden');
+<!-- ========== PRINT (hidden, print-only) ========== -->
+<div id="sec-print" style="display:none">
+  <h1 style="text-align:center;font-size:24px;margin-bottom:4px">Far Cismaaniya — Shaxda Xuruufta</h1>
+  <p style="text-align:center;font-size:12px;color:#666;margin-bottom:16px">Osmanya Script Reference Chart</p>
+  <div class="print-section-title">Shibbanayaasha — Consonants</div>
+  <div class="print-char-grid" id="print-cons"></div>
+  <div class="print-section-title">Shaqallada — Vowels</div>
+  <div class="print-char-grid" id="print-vow"></div>
+  <div class="print-section-title">Tirooyinka — Numbers</div>
+  <div class="print-char-grid" id="print-nums"></div>
+</div>
 
-            // Update buttons
-            document.querySelectorAll('.learn-subtab').forEach(btn => {
-                if(btn.dataset.target === subTabId) btn.classList.add('active');
-                else btn.classList.remove('active');
-            });
-        }
+</div><!-- /app -->
 
-        // 2. Render Grids
-        function renderGrid(id, data) {
-            const container = document.getElementById(id);
-            container.innerHTML = data.map(item => `
-                <div class="glass-panel p-3 rounded-xl flex flex-col items-center justify-center hover:bg-white/10 transition cursor-default border border-white/5">
-                    <span class="text-3xl md:text-4xl font-osmanya text-osm-gold mb-1">${item.o}</span>
-                    <span class="text-sm font-bold text-gray-400">${item.l.toUpperCase()}</span>
-                </div>
-            `).join('');
-        }
+<div class="toast" id="toast"></div>
 
-        // 3. Game State
-        let gameState = {
-            type: 0,
-            qIndex: 0,
-            score: 0,
-            total: 0,
-            data: []
-        };
+<script>
+// ============================================================
+//  DATA
+// ============================================================
+const CONSONANTS = [
+  {l:'b',o:'𐒁'},{l:'t',o:'𐒂'},{l:'j',o:'𐒃'},{l:'x',o:'𐒄'},{l:'kh',o:'𐒅'},
+  {l:'d',o:'𐒆'},{l:'r',o:'𐒇'},{l:'s',o:'𐒈'},{l:'sh',o:'𐒉'},{l:'dh',o:'𐒊'},
+  {l:'c',o:'𐒋'},{l:'g',o:'𐒌'},{l:'f',o:'𐒍'},{l:'q',o:'𐒎'},{l:'k',o:'𐒏'},
+  {l:'l',o:'𐒐'},{l:'m',o:'𐒑'},{l:'n',o:'𐒒'},{l:'w',o:'𐒓'},{l:'h',o:'𐒔'},
+  {l:'y',o:'𐒕'},{l:"'",o:'𐒀'}
+];
+const VOWELS = [
+  {l:'a',o:'𐒖'},{l:'e',o:'𐒗'},{l:'i',o:'𐒘'},{l:'o',o:'𐒙'},{l:'u',o:'𐒚'},
+  {l:'aa',o:'𐒛'},{l:'ee',o:'𐒜'},{l:'ii',o:'𐒕'},{l:'oo',o:'𐒝'},{l:'uu',o:'𐒓'}
+];
+const NUMBERS = [
+  {l:'0',o:'𐒠'},{l:'1',o:'𐒡'},{l:'2',o:'𐒢'},{l:'3',o:'𐒣'},{l:'4',o:'𐒤'},
+  {l:'5',o:'𐒥'},{l:'6',o:'𐒦'},{l:'7',o:'𐒧'},{l:'8',o:'𐒨'},{l:'9',o:'𐒩'}
+];
 
-        function startGame(type) {
-            gameState.type = type;
-            gameState.qIndex = 0;
-            gameState.score = 0;
-            gameState.data = [];
+const DICT = [
+  // Maalin
+  // Nabad: N(𐒒) a(𐒖) b(𐒁) a(𐒖) d(𐒆)
+  {l:'Nabad',o:'𐒒𐒖𐒁𐒖𐒆',m:'Nabad / Peace',c:'Maalin'},
+  // Cunto: C(𐒋) u(𐒚) n(𐒒) t(𐒂) o(𐒙)
+  {l:'Cunto',o:'𐒋𐒚𐒒𐒂𐒙',m:'Cunto / Food',c:'Maalin'},
+  // Biyo: B(𐒁) ii(𐒕) o(𐒙) — "ii" dheer
+  {l:'Biyo',o:'𐒁𐒕𐒙',m:'Biyo / Water',c:'Maalin'},
+  // Lacag: L(𐒐) a(𐒖) c(𐒋) a(𐒖) g(𐒌)
+  {l:'Lacag',o:'𐒐𐒖𐒋𐒖𐒌',m:'Lacag / Money',c:'Maalin'},
+  // Waqti: W(𐒓) a(𐒖) q(𐒎) t(𐒂) i(𐒘)
+  {l:'Waqti',o:'𐒓𐒖𐒎𐒂𐒘',m:'Waqti / Time',c:'Maalin'},
+  // Qalin: Q(𐒎) a(𐒖) l(𐒐) ii(𐒕) n(𐒒) — "ii" dheer
+  {l:'Qalin',o:'𐒎𐒖𐒐𐒕𐒒',m:'Qalin / Pen',c:'Maalin'},
+  // Buug: B(𐒁) uu(𐒓) g(𐒌) — "uu" dheer
+  {l:'Buug',o:'𐒁𐒓𐒌',m:'Buug / Book',c:'Maalin'},
 
-            // Generate Data
-            if(type === 1) { // Alphabet (Reverse: Osmanya -> Latin)
-                gameState.total = 10;
-                let keys = Object.keys(reverseOsmanyaMap).filter(k => k.match(/[\u{10480}-\u{10497}\u{104A0}-\u{104A9}]/u)); 
-                for(let i=0; i<10; i++) {
-                    let q = keys[Math.floor(Math.random()*keys.length)];
-                    gameState.data.push({q: q, a: reverseOsmanyaMap[q].toLowerCase(), instr: "Waa maxay xarafkan?"});
-                }
-            } else if(type === 2) { // Words (Latin -> Osmanya)
-                gameState.total = 7;
-                const words = ["Nabad", "Qalin", "Hooyo", "Aabe", "Guri", "Dugsi", "Calan"];
-                gameState.data = words.map(w => ({q: w, a: convertText(w), instr: "U beddel Cismaaniya:"}));
-            } else if(type === 3) { // Numbers (Latin -> Osmanya Numbers)
-                gameState.total = 10;
-                for(let i=0; i<10; i++) {
-                    let n = Math.floor(Math.random()*99);
-                    let res = n.toString().split('').map(d => numberMap[d]).join('');
-                    gameState.data.push({q: n.toString(), a: res, instr: "U beddel Tiro Cismaaniya:"});
-                }
-            } else if(type === 4) { // Sentences (Latin -> Osmanya)
-                gameState.total = 5;
-                const sents = ["Nabad iyo nolol", "Barasho waa iftiin", "Soomaaliya", "Afka hooyo", "Guul"];
-                gameState.data = sents.map(s => ({q: s, a: convertText(s), instr: "Qor jumladdan:"}));
-            } else if(type === 5) { // Identify (Osmanya vs Latin)
-                gameState.total = 8;
-                let samples = [
-                    {t:"𐒈𐒕 𐒓𐒖𐒆", k:"cismaaniya", instr: "Waa kuwee qoraalkan?"}, {t:"Sii Wad", k:"laatiin", instr: "Waa kuwee qoraalkan?"},
-                    {t:"𐒒𐒖𐒁𐒖𐒆", k:"cismaaniya", instr: "Waa kuwee qoraalkan?"}, {t:"Nabad", k:"laatiin", instr: "Waa kuwee qoraalkan?"},
-                    {t:"𐒌𐒚𐒚𐒐", k:"cismaaniya", instr: "Waa kuwee qoraalkan?"}, {t:"Horumar", k:"laatiin", instr: "Waa kuwee qoraalkan?"}
-                ];
-                for(let i=0; i<8; i++) gameState.data.push(samples[Math.floor(Math.random()*samples.length)]);
-            }
+  // Qoys
+  // Hooyo: H(𐒔) oo(𐒝) y(𐒕) o(𐒙) — "oo" dheer
+  {l:'Hooyo',o:'𐒔𐒝𐒕𐒙',m:'Hooyo / Mother',c:'Qoys'},
+  // Aabe: aa(𐒛) b(𐒁) e(𐒗) — "aa" dheer
+  {l:'Aabe',o:'𐒛𐒁𐒗',m:'Aabe / Father',c:'Qoys'},
+  // Aabbe: aa(𐒛) b(𐒁) b(𐒁) e(𐒗)
+  {l:'Aabbe',o:'𐒛𐒁𐒁𐒗',m:'Aabbe / Father',c:'Qoys'},
+  // Wiil: W(𐒓) ii(𐒕) l(𐒐) — "ii" dheer
+  {l:'Wiil',o:'𐒓𐒕𐒐',m:'Wiil / Boy/Son',c:'Qoys'},
+  // Gabar: G(𐒌) a(𐒖) b(𐒁) a(𐒖) r(𐒇)
+  {l:'Gabar',o:'𐒌𐒖𐒁𐒖𐒇',m:'Gabar / Girl/Daughter',c:'Qoys'},
+  // Adeer: aa(𐒛) d(𐒆) ee(𐒜) r(𐒇) — "aa" iyo "ee" dheer
+  {l:'Adeer',o:'𐒖𐒆𐒜𐒇',m:'Adeer / Uncle',c:'Qoys'},
+  // Gabadhey: G(𐒌) a(𐒖) b(𐒁) a(𐒖) dh(𐒊) ee(𐒜) y(𐒕)
+  {l:'Gabadhey',o:'𐒌𐒖𐒁𐒖𐒊𐒜𐒕',m:'Gabadhey / My daughter',c:'Qoys'},
 
-            // Show Interface
-            document.getElementById('game-menu').classList.add('hidden');
-            document.getElementById('game-interface').classList.remove('hidden');
-            document.getElementById('results-screen').classList.add('hidden');
-            loadQuestion();
-        }
+  // Meel
+  // Guri: G(𐒌) u(𐒚) r(𐒇) ii(𐒕) — "ii" dheer
+  {l:'Guri',o:'𐒌𐒚𐒇𐒕',m:'Guri / House',c:'Meel'},
+  // Dugsiga: D(𐒆) u(𐒚) g(𐒌) s(𐒈) ii(𐒕) g(𐒌) a(𐒖)
+  {l:'Dugsiga',o:'𐒆𐒚𐒌𐒈𐒕𐒌𐒖',m:'Dugsiga / School',c:'Meel'},
+  // Magaalo: M(𐒑) a(𐒖) g(𐒌) aa(𐒛) l(𐒐) o(𐒙) — "aa" dheer
+  {l:'Magaalo',o:'𐒑𐒖𐒌𐒛𐒐𐒙',m:'Magaalo / City',c:'Meel'},
+  // Xagga: X(𐒄) a(𐒖) g(𐒌) g(𐒌) a(𐒖)
+  {l:'Xagga',o:'𐒄𐒖𐒌𐒌𐒖',m:'Xagga / Direction/Side',c:'Meel'},
+  // Dhex: Dh(𐒊) e(𐒗) x(𐒄)
+  {l:'Dhex',o:'𐒊𐒗𐒄',m:'Dhex / Middle',c:'Meel'},
+  // Hore: H(𐒔) o(𐒙) r(𐒇) e(𐒗)
+  {l:'Hore',o:'𐒔𐒙𐒇𐒗',m:'Hore / Front/Before',c:'Meel'},
+  // Dambe: D(𐒆) a(𐒖) m(𐒑) b(𐒁) e(𐒗)
+  {l:'Dambe',o:'𐒆𐒖𐒑𐒁𐒗',m:'Dambe / Behind/After',c:'Meel'},
+  // Sare: S(𐒈) a(𐒖) r(𐒇) e(𐒗)
+  {l:'Sare',o:'𐒈𐒖𐒇𐒗',m:'Sare / Above/Up',c:'Meel'},
+  // Hoos: H(𐒔) oo(𐒝) s(𐒈) — "oo" dheer
+  {l:'Hoos',o:'𐒔𐒝𐒈',m:'Hoos / Below/Down',c:'Meel'},
 
-        function loadQuestion() {
-            if (gameState.qIndex >= gameState.total) {
-                showResults();
-                return;
-            }
-            
-            let item = gameState.data[gameState.qIndex];
-            
-            // UI Updates
-            document.getElementById('question-counter').innerText = `SU'AASHA ${gameState.qIndex + 1}/${gameState.total}`;
-            document.getElementById('score-display').innerText = `Dhibcaha: ${gameState.score}`;
-            document.getElementById('progress-bar').style.width = `${(gameState.qIndex / gameState.total) * 100}%`;
-            
-            document.getElementById('game-instruction').innerText = item.instr;
-            document.getElementById('game-display').innerText = item.t || item.q; // t for type 5, q for others
+  // Dabiicad
+  // Xiddigta: X(𐒄) i(𐒘) d(𐒆) d(𐒆) ii(𐒕) g(𐒌) t(𐒂) a(𐒖)
+  {l:'Xiddigta',o:'𐒄𐒘𐒆𐒆𐒕𐒌𐒂𐒖',m:'Xiddigta / Star',c:'Dabiicad'},
+  // Biyaha: B(𐒁) ii(𐒕) y(𐒕) a(𐒖) h(𐒔) a(𐒖) — "ii" dheer
+  {l:'Biyaha',o:'𐒁𐒕𐒖𐒔𐒖',m:'Biyaha / Water',c:'Dabiicad'},
+  // Dhulka: Dh(𐒊) u(𐒚) l(𐒐) k(𐒏) a(𐒖)
+  {l:'Dhulka',o:'𐒊𐒚𐒐𐒏𐒖',m:'Dhulka / Land/Earth',c:'Dabiicad'},
+  // Cirka: C(𐒋) ii(𐒕) r(𐒇) k(𐒏) a(𐒖) — "ii" dheer
+  {l:'Cirka',o:'𐒋𐒕𐒇𐒏𐒖',m:'Cirka / Sky',c:'Dabiicad'},
+  // Iftiin: ii(𐒕) f(𐒍) t(𐒂) ii(𐒕) n(𐒒) — laba "ii" dheer
+  {l:'Iftiin',o:'𐒕𐒍𐒂𐒕𐒒',m:'Iftiin / Light',c:'Dabiicad'},
+  // Midab: M(𐒑) i(𐒘) d(𐒆) a(𐒖) b(𐒁)
+  {l:'Midab',o:'𐒑𐒘𐒆𐒖𐒁',m:'Midab / Color',c:'Dabiicad'},
+  // Cas: C(𐒋) a(𐒖) s(𐒈)
+  {l:'Cas',o:'𐒋𐒖𐒈',m:'Cas / Red',c:'Dabiicad'},
+  // Cad: C(𐒋) a(𐒖) d(𐒆)
+  {l:'Cad',o:'𐒋𐒖𐒆',m:'Cad / White',c:'Dabiicad'},
+  // Madow: M(𐒑) a(𐒖) d(𐒆) oo(𐒝) w(𐒓) — "oo" dheer
+  {l:'Madow',o:'𐒑𐒖𐒆𐒝𐒓',m:'Madow / Black',c:'Dabiicad'},
+  // Huruud: H(𐒔) u(𐒚) r(𐒇) uu(𐒓) d(𐒆) — "uu" dheer
+  {l:'Huruud',o:'𐒔𐒚𐒇𐒓𐒆',m:'Huruud / Yellow',c:'Dabiicad'},
+  // Cagaaran: C(𐒋) a(𐒖) g(𐒌) aa(𐒛) r(𐒇) a(𐒖) n(𐒒) — "aa" dheer
+  {l:'Cagaaran',o:'𐒋𐒖𐒌𐒛𐒇𐒖𐒒',m:'Cagaaran / Green',c:'Dabiicad'},
+  // Buluug: B(𐒁) u(𐒚) l(𐒐) uu(𐒓) g(𐒌) — "uu" dheer
+  {l:'Buluug',o:'𐒁𐒚𐒐𐒓𐒌',m:'Buluug / Blue',c:'Dabiicad'},
 
-            // Reset Inputs
-            document.getElementById('feedback').classList.add('hidden');
-            document.getElementById('next-btn').classList.add('hidden');
+  // Jir
+  // Gacan: G(𐒌) a(𐒖) c(𐒋) a(𐒖) n(𐒒)
+  {l:'Gacan',o:'𐒌𐒖𐒋𐒖𐒒',m:'Gacan / Hand',c:'Jir'},
+  // Lugta: L(𐒐) u(𐒚) g(𐒌) t(𐒂) a(𐒖)
+  {l:'Lugta',o:'𐒐𐒚𐒌𐒂𐒖',m:'Lugta / Leg',c:'Jir'},
+  // Indho: ii(𐒕) n(𐒒) dh(𐒊) o(𐒙) — "ii" dheer
+  {l:'Indho',o:'𐒕𐒒𐒊𐒙',m:'Indho / Eyes',c:'Jir'},
+  // Madax: M(𐒑) a(𐒖) d(𐒆) a(𐒖) x(𐒄)
+  {l:'Madax',o:'𐒑𐒖𐒆𐒖𐒄',m:'Madax / Head',c:'Jir'},
+  // Af: aa(𐒛) f(𐒍) — "aa" dheer
+  {l:'Af',o:'𐒖𐒍',m:'Af / Mouth/Language',c:'Jir'},
 
-            if(gameState.type === 5) {
-                document.getElementById('input-area').classList.add('hidden');
-                document.getElementById('choice-area').classList.remove('hidden');
-                document.getElementById('choice-area').classList.add('grid'); // Ensure grid display
-                
-                // Reset buttons
-                document.querySelectorAll('.quiz-option').forEach(btn => {
-                    btn.disabled = false;
-                    btn.classList.remove('correct', 'incorrect');
-                    btn.style.opacity = '1';
-                });
-            } else {
-                document.getElementById('input-area').classList.remove('hidden');
-                document.getElementById('choice-area').classList.add('hidden');
-                document.getElementById('choice-area').classList.remove('grid');
-                
-                let inp = document.getElementById('game-input');
-                inp.value = '';
-                inp.disabled = false;
-                inp.focus();
-                
-                // Placeholder hint
-                inp.placeholder = (gameState.type === 1) ? "Tusaale: b, sh" : "Qor jawaabta...";
-            }
-        }
+  // Bulshada
+  // Jaalle: J(𐒃) aa(𐒛) l(𐒐) l(𐒐) e(𐒗) — "aa" dheer
+  {l:'Jaalle',o:'𐒃𐒛𐒐𐒐𐒗',m:'Jaalle / Friend/Comrade',c:'Bulshada'},
+  // Calan: C(𐒋) a(𐒖) l(𐒐) a(𐒖) n(𐒒)
+  {l:'Calan',o:'𐒋𐒖𐒐𐒖𐒒',m:'Calan / Flag',c:'Bulshada'},
+  // Soomaaliya: S(𐒈) oo(𐒝) m(𐒑) aa(𐒛) l(𐒐) ii(𐒕) y(𐒕) a(𐒖)
+  {l:'Soomaaliya',o:'𐒈𐒝𐒑𐒛𐒐𐒕𐒕𐒖',m:'Soomaaliya / Somalia',c:'Bulshada'},
+  // Guul: G(𐒌) uu(𐒓) l(𐒐) — "uu" dheer
+  {l:'Guul',o:'𐒌𐒓𐒐',m:'Guul / Victory',c:'Bulshada'},
+  // Cod: C(𐒋) o(𐒙) d(𐒆)
+  {l:'Cod',o:'𐒋𐒙𐒆',m:'Cod / Voice/Vote',c:'Bulshada'},
 
-        function submitAnswer() {
-            let inp = document.getElementById('game-input');
-            let val = inp.value.trim();
-            if(!val) return;
+  // Fanka
+  // Heeso: H(𐒔) ee(𐒜) s(𐒈) o(𐒙) — "ee" dheer
+  {l:'Heeso',o:'𐒔𐒜𐒈𐒙',m:'Heeso / Songs',c:'Fanka'},
 
-            let correct = gameState.data[gameState.qIndex].a;
-            // Loose checking (case insensitive)
-            let isCorrect = (val.toLowerCase() === correct.toLowerCase()) || (val === correct);
-            
-            // For type 3 (Numbers), the answer is Osmanya script, which needs exact match
-            if (gameState.type === 3) {
-                 isCorrect = (val === correct);
-            }
-            
-            processResult(isCorrect, correct);
-            inp.disabled = true;
-        }
+  // Tilmaan
+  // Fiican: F(𐒍) ii(𐒕) c(𐒋) a(𐒖) n(𐒒) — "ii" dheer
+  {l:'Fiican',o:'𐒍𐒕𐒋𐒖𐒒',m:'Fiican / Good',c:'Tilmaan'},
+  // Xun: X(𐒄) u(𐒚) n(𐒒)
+  {l:'Xun',o:'𐒄𐒚𐒒',m:'Xun / Bad',c:'Tilmaan'},
+  // Weyn: W(𐒓) ee(𐒜) y(𐒕) n(𐒒) — "ee" dheer
+  {l:'Weyn',o:'𐒓𐒜𐒕𐒒',m:'Weyn / Big/Old',c:'Tilmaan'},
+  // Yar: Y(𐒕) a(𐒖) r(𐒇)
+  {l:'Yar',o:'𐒕𐒖𐒇',m:'Yar / Small/Young',c:'Tilmaan'},
+  // Cusub: C(𐒋) u(𐒚) s(𐒈) u(𐒚) b(𐒁)
+  {l:'Cusub',o:'𐒋𐒚𐒈𐒚𐒁',m:'Cusub / New',c:'Tilmaan'},
+  // Gaaban: G(𐒌) aa(𐒛) b(𐒁) a(𐒖) n(𐒒) — "aa" dheer
+  {l:'Gaaban',o:'𐒌𐒛𐒁𐒖𐒒',m:'Gaaban / Short',c:'Tilmaan'},
+  // Dheer: Dh(𐒊) ee(𐒜) r(𐒇) — "ee" dheer
+  {l:'Dheer',o:'𐒊𐒜𐒇',m:'Dheer / Long/Tall',c:'Tilmaan'},
+  // Kulul: K(𐒏) u(𐒚) l(𐒐) u(𐒚) l(𐒐)
+  {l:'Kulul',o:'𐒏𐒚𐒐𐒚𐒐',m:'Kulul / Hot',c:'Tilmaan'},
+  // Qabow: Q(𐒎) a(𐒖) b(𐒁) oo(𐒝) w(𐒓) — "oo" dheer
+  {l:'Qabow',o:'𐒎𐒖𐒁𐒝𐒓',m:'Qabow / Cold',c:'Tilmaan'},
 
-        function submitChoice(choice) {
-            let correctKey = gameState.data[gameState.qIndex].k;
-            let isCorrect = (choice === correctKey);
-            
-            processResult(isCorrect, correctKey === 'cismaaniya' ? 'Far Cismaaniya' : 'Far Laatiin');
-            
-            document.querySelectorAll('.quiz-option').forEach(btn => btn.disabled = true);
-        }
+  // Xisaab
+  // Hal: H(𐒔) a(𐒖) l(𐒐)
+  {l:'Hal',o:'𐒔𐒖𐒐',m:'Hal / One',c:'Xisaab'},
+  // Laba: L(𐒐) a(𐒖) b(𐒁) a(𐒖)
+  {l:'Laba',o:'𐒐𐒖𐒁𐒖',m:'Laba / Two',c:'Xisaab'},
+  // Saddex: S(𐒈) a(𐒖) d(𐒆) d(𐒆) e(𐒗) x(𐒄)
+  {l:'Saddex',o:'𐒈𐒖𐒆𐒆𐒗𐒄',m:'Saddex / Three',c:'Xisaab'},
+  // Afar: aa(𐒛) f(𐒍) a(𐒖) r(𐒇) — "aa" dheer
+  {l:'Afar',o:'𐒛𐒍𐒖𐒇',m:'Afar / Four',c:'Xisaab'},
+  // Shan: Sh(𐒉) a(𐒖) n(𐒒)
+  {l:'Shan',o:'𐒉𐒖𐒒',m:'Shan / Five',c:'Xisaab'},
+  // Lix: L(𐒐) ii(𐒕) x(𐒄) — "ii" dheer
+  {l:'Lix',o:'𐒐𐒕𐒄',m:'Lix / Six',c:'Xisaab'},
+  // Toddoba: T(𐒂) o(𐒙) d(𐒆) d(𐒆) o(𐒙) b(𐒁) a(𐒖)
+  {l:'Toddoba',o:'𐒂𐒙𐒆𐒆𐒙𐒁𐒖',m:'Toddoba / Seven',c:'Xisaab'},
+  // Sideed: S(𐒈) i(𐒘) d(𐒆) ee(𐒜) d(𐒆) — "ee" dheer
+  {l:'Sideed',o:'𐒈𐒘𐒆𐒜𐒆',m:'Sideed / Eight',c:'Xisaab'},
+  // Sagaal: S(𐒈) a(𐒖) g(𐒌) aa(𐒛) l(𐒐) — "aa" dheer
+  {l:'Sagaal',o:'𐒈𐒖𐒌𐒛𐒐',m:'Sagaal / Nine',c:'Xisaab'},
+  // Toban: T(𐒂) o(𐒙) b(𐒁) a(𐒖) n(𐒒)
+  {l:'Toban',o:'𐒂𐒙𐒁𐒖𐒒',m:'Toban / Ten',c:'Xisaab'}
+];
 
-        function processResult(isCorrect, rightAnswerText) {
-            let fb = document.getElementById('feedback');
-            fb.classList.remove('hidden', 'correct', 'incorrect');
-            
-            if(isCorrect) {
-                gameState.score++;
-                fb.classList.add('correct');
-                fb.innerHTML = "✅ SAX! Aad baad u fiican tahay.";
-            } else {
-                fb.classList.add('incorrect');
-                let displayAns;
-                if(gameState.type === 1) { // Alphabet (Latin result)
-                    displayAns = `<span class="font-bold text-white uppercase">${rightAnswerText}</span>`;
-                } else if (gameState.type === 5) { // Identify (Text result)
-                    displayAns = `<span class="font-bold text-white">${rightAnswerText}</span>`;
-                } else { // Words/Sentences/Numbers (Osmanya result)
-                    displayAns = `<span class="font-osmanya text-2xl">${rightAnswerText}</span>`;
-                }
-                fb.innerHTML = `❌ KHALAD! Jawaabta saxda ah: ${displayAns}`;
-            }
-            
-            document.getElementById('score-display').innerText = `Dhibcaha: ${gameState.score}`;
-            document.getElementById('next-btn').classList.remove('hidden');
-        }
+const DICT_CATS = ['Dhammaan','Maalin','Qoys','Meel','Dabiicad','Jir','Bulshada','Fanka','Tilmaan','Xisaab'];
 
-        function nextQuestion() {
-            gameState.qIndex++;
-            if(gameState.qIndex >= gameState.total) {
-                showResults();
-            } else {
-                loadQuestion();
-            }
-        }
+// Maps
+const OSM_MAP = {};
+const NUM_MAP = {};
+CONSONANTS.forEach(x => { OSM_MAP[x.l]=x.o; });
+VOWELS.forEach(x => { OSM_MAP[x.l]=x.o; });
+NUMBERS.forEach(x => { OSM_MAP[x.l]=x.o; NUM_MAP[x.l]=x.o; });
 
-        function showResults() {
-            document.getElementById('game-interface').classList.add('hidden');
-            document.getElementById('results-screen').classList.remove('hidden');
-            
-            document.getElementById('final-score').innerText = `${gameState.score}/${gameState.total}`;
-            
-            let msg = "";
-            let pct = gameState.score / gameState.total;
-            if(pct === 1) msg = "🏆 Maashaa'Allaah! Dhammaan waa sax!";
-            else if(pct >= 0.7) msg = "🌟 Aad baad u fiican tahay!";
-            else if(pct >= 0.5) msg = "👍 Si fiican baad isku dayday.";
-            else msg = "💪 Ha niyad jabin, dib u eeg casharrada!";
-            
-            document.getElementById('final-msg').innerText = msg;
-        }
+// ============================================================
+//  STATE
+// ============================================================
+let state = {
+  sessions:0, score:0, streak:0, gamesPlayed:0,
+  totalQ:0, correctQ:0, dictSearches:0,
+  progress:{cons:0,vow:0,num:0},
+  achievements:[]
+};
 
-        function exitGame() {
-            document.getElementById('game-interface').classList.add('hidden');
-            document.getElementById('results-screen').classList.add('hidden');
-            document.getElementById('game-menu').classList.remove('hidden');
-        }
+function loadState(){
+  const s = localStorage.getItem('farCisState');
+  if(s) state = JSON.parse(s);
+}
+function saveState(){
+  localStorage.setItem('farCisState',JSON.stringify(state));
+}
 
-        function copyToClipboard() {
-            let text = document.getElementById('osmanyaOutput').innerText;
-            // Use execCommand('copy') for better compatibility in iFrames
-            const el = document.createElement('textarea');
-            el.value = text;
-            el.setAttribute('readonly', '');
-            el.style.position = 'absolute';
-            el.style.left = '-9999px';
-            document.body.appendChild(el);
-            el.select();
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    // Replace alert with custom feedback
-                    const copyButton = document.querySelector('.btn-gold');
-                    const originalText = copyButton.innerHTML;
-                    copyButton.innerHTML = '✅ Waa la koobiyeeyay!';
-                    copyButton.disabled = true;
-                    setTimeout(() => {
-                        copyButton.innerHTML = originalText;
-                        copyButton.disabled = false;
-                    }, 1500);
-                }
-            } catch (err) {
-                console.error('Could not copy text: ', err);
-            }
-            document.body.removeChild(el);
-        }
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function goTo(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>{
+    if(t.getAttribute('onclick').includes("'"+id+"'")) t.classList.add('active');
+  });
+  if(id==='home') updateHomeStats();
+  if(id==='progress') updateProgress();
+  if(id==='qoraal') renderQoraal();
+  if(id==='leaderboard'){loadLb();renderLb();}
+  exitGame();
+}
 
-        // Init
-        document.addEventListener('DOMContentLoaded', () => {
-            renderGrid('consonants-grid', consonants);
-            renderGrid('vowels-grid', [...vowelsShort, ...vowelsLong]);
-            renderGrid('numbers-grid', numbers);
-            
-            // Input Listener for Converter
-            document.getElementById('latinInput').addEventListener('input', (e) => {
-                document.getElementById('osmanyaOutput').innerText = convertText(e.target.value);
-            });
+// ============================================================
+//  LEARN
+// ============================================================
+function showLearnTab(id){
+  document.getElementById('learn-chars').style.display = id==='chars'?'block':'none';
+  document.getElementById('learn-converter').style.display = id==='converter'?'block':'none';
+  document.querySelectorAll('.learn-tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+}
 
-            // Enter key for game
-            document.getElementById('game-input').addEventListener('keypress', (e) => {
-                if(e.key === 'Enter') {
-                    e.preventDefault(); // Prevent form submission if input is inside a form (good practice)
-                    submitAnswer();
-                }
-            });
-            
-            // Set initial tab state
-            switchTab('home');
-        });
+function renderGrids(){
+  function tile(item){
+    return `<div class="char-tile">
+      <span class="osm">${item.o}</span>
+      <span class="lat">${item.l.toUpperCase()}</span>
+    </div>`;
+  }
+  document.getElementById('grid-cons').innerHTML = CONSONANTS.map(tile).join('');
+  document.getElementById('grid-vow').innerHTML = VOWELS.map(tile).join('');
+  document.getElementById('grid-nums').innerHTML = NUMBERS.map(tile).join('');
+}
 
-    </script>
+// Converter
+function convertText(t){
+  let res='', lower=t.toLowerCase();
+  for(let i=0;i<lower.length;i++){
+    if(i+1<lower.length){
+      let two=lower.substring(i,i+2);
+      if(OSM_MAP[two]){res+=OSM_MAP[two];i++;continue;}
+    }
+    res += OSM_MAP[lower[i]] || t[i];
+  }
+  return res;
+}
+
+function copyOsm(){
+  const txt = document.getElementById('osmOut').innerText;
+  navigator.clipboard.writeText(txt).catch(()=>{});
+  showToast('✅ Waa la koobiyeeyay!');
+}
+function clearConv(){
+  document.getElementById('latinIn').value='';
+  document.getElementById('osmOut').innerText='';
+}
+
+// ============================================================
+//  DICTIONARY
+// ============================================================
+let activeCat='Dhammaan', dictSearchCount=0, dictAiTimer=null, lastAiQuery='';
+
+function renderDictCats(){
+  const el = document.getElementById('dictCats');
+  el.innerHTML = DICT_CATS.map(c=>`<button class="dict-cat${c===activeCat?' active':''}" onclick="setDictCat('${c}')">${c}</button>`).join('');
+}
+
+function setDictCat(c){
+  activeCat=c;
+  renderDictCats();
+  filterDict();
+}
+
+// Called on every keystroke — shows local results immediately
+function dictInputHandler(){
+  filterDict();
+  const q = document.getElementById('dictSearch').value.trim();
+  // Debounce AI search: fire after 600ms pause, min 2 chars
+  clearTimeout(dictAiTimer);
+  if(q.length>=2){
+    dictAiTimer=setTimeout(()=>doAiSearch(),600);
+  }
+}
+
+// Show local DICT results instantly
+function filterDict(){
+  const q = document.getElementById('dictSearch').value.toLowerCase();
+  dictSearchCount++;
+  if(dictSearchCount>=50 && !state.achievements.includes('dict')) unlockAchievement('dict');
+  let entries = DICT;
+  if(activeCat!=='Dhammaan') entries=entries.filter(e=>e.c===activeCat);
+  if(q) entries=entries.filter(e=>e.l.toLowerCase().includes(q)||e.m.toLowerCase().includes(q)||e.o.includes(q));
+  renderDictEntries(entries, false);
+}
+
+function renderDictEntries(entries, isAi){
+  const count=document.getElementById('dict-count');
+  if(isAi){
+    count.textContent=`🤖 Claude: ${entries.length} eray la helay`;
+    count.style.color='#60a5fa';
+  } else {
+    count.textContent=entries.length>0?`${entries.length} eray`:'';
+    count.style.color='var(--gray3)';
+  }
+  document.getElementById('dictGrid').innerHTML = entries.map(e=>`
+    <div class="dict-entry">
+      <div class="osm-word">${e.o}</div>
+      <div class="lat-word">${e.l}</div>
+      <div class="meaning">${e.m}</div>
+    </div>
+  `).join('') || `<div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--gray3);font-size:14px">Eray lama helin. Isku day raadinta.</div>`;
+}
+
+// AI-powered search using Claude API
+async function doAiSearch(){
+  const q = document.getElementById('dictSearch').value.trim();
+  if(!q || q===lastAiQuery) return;
+  lastAiQuery=q;
+
+  const bar=document.getElementById('dict-ai-bar');
+  const msg=document.getElementById('dict-ai-msg');
+  const spinner=document.getElementById('dict-ai-spinner');
+  bar.style.display='flex';
+  msg.textContent='Claude wuxuu erayada ka raadiyaa...';
+  spinner.style.display='inline-block';
+
+  const catFilter = activeCat!=='Dhammaan' ? ` Qaybta: ${activeCat}.` : '';
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:2000,
+        system:`Adiga waxaad tahay qaamuus-xeebaha Afka Soomaaliga iyo Far Cismaaniya. Marka la weydiisto eray, soo celi JSON kaliya — array of objects, format-ku waa:
+[{"l":"Erayga Laatiinka","o":"Far Cismaaniya","m":"Micnaha Soomaali / English"}]
+
+Xeerarka:
+1. Far Cismaaniya u isticmaal xarfaha Osmanya Unicode (U+10480–U+104A9)
+2. Soo celi 8-20 eray oo la xiriira su'aasha
+3. Ha soo celin JSON brackets-ka oo keliya — JSON pure ah, wax kale ma aha
+4. Erayada la raadiyay iyo erayada la xiriira labadaba ku dar
+5. Haddii erayga laga raadiyay aanu Soomaali ahayn, tarjum oo ku dar
+6. Shaqallada dhaadheer: aa=𐒛, ee=𐒜, ii=𐒕, oo=𐒝, uu=𐒓`,
+        messages:[{role:'user',content:`Raadi: "${q}"${catFilter}`}]
+      })
+    });
+    const data=await resp.json();
+    const text=(data.content?.[0]?.text||'').trim();
+    // Parse JSON — strip any markdown fences
+    const clean=text.replace(/```json|```/g,'').trim();
+    let entries=JSON.parse(clean);
+    if(!Array.isArray(entries)) entries=[];
+    // Merge with local DICT (avoid duplicates)
+    const localKeys=new Set(DICT.map(x=>x.l.toLowerCase()));
+    const aiOnly=entries.filter(x=>!localKeys.has((x.l||'').toLowerCase()));
+    // Show AI results + matching local
+    const q2=q.toLowerCase();
+    const localMatch=DICT.filter(e=>e.l.toLowerCase().includes(q2)||e.m.toLowerCase().includes(q2));
+    const merged=[...localMatch,...aiOnly];
+    renderDictEntries(merged, true);
+    spinner.style.display='none';
+    msg.textContent=`✅ ${merged.length} eray la helay`;
+    setTimeout(()=>bar.style.display='none',2500);
+  } catch(e){
+    spinner.style.display='none';
+    msg.textContent='⚠️ Internet-ka hubi oo dib u isku day';
+    msg.style.color='#f87171';
+    setTimeout(()=>{bar.style.display='none';msg.style.color='#93c5fd';},3000);
+  }
+}
+
+// ============================================================
+//  GAMES
+// ============================================================
+let G = { type:'', qIdx:0, score:0, total:0, data:[], correct:0, wrong:0 };
+
+const WORDS = [
+  {l:'Nabad',a:convertTextInit('Nabad')},{l:'Hooyo',a:convertTextInit('Hooyo')},
+  {l:'Guri',a:convertTextInit('Guri')},{l:'Qalin',a:convertTextInit('Qalin')},
+  {l:'Guul',a:convertTextInit('Guul')},{l:'Soomaaliya',a:convertTextInit('Soomaaliya')},
+  {l:'Calan',a:convertTextInit('Calan')},{l:'Dugsi',a:convertTextInit('Dugsi')},
+  {l:'Biyo',a:convertTextInit('Biyo')},{l:'Buug',a:convertTextInit('Buug')}
+];
+
+function convertTextInit(t){
+  let res='', lower=t.toLowerCase();
+  for(let i=0;i<lower.length;i++){
+    if(i+1<lower.length){let two=lower.substring(i,i+2);if(OSM_MAP[two]){res+=OSM_MAP[two];i++;continue;}}
+    res += OSM_MAP[lower[i]] || t[i];
+  }
+  return res;
+}
+
+const SENTENCES = [
+  {l:'Nabad iyo nolol',a:convertTextInit('Nabad iyo nolol')},
+  {l:'Barasho waa iftiin',a:convertTextInit('Barasho waa iftiin')},
+  {l:'Afka hooyo',a:convertTextInit('Afka hooyo')},
+  {l:'Dhulka Soomaalida',a:convertTextInit('Dhulka Soomaalida')},
+  {l:'Guul iyo barwaaqo',a:convertTextInit('Guul iyo barwaaqo')}
+];
+
+function startGame(type){
+  G.type=type; G.qIdx=0; G.score=0; G.correct=0; G.wrong=0;
+  G.data=[];
+
+  if(type==='flashcard'){
+    G.total=10;
+    let all=[...CONSONANTS,...VOWELS];
+    for(let i=0;i<10;i++){let x=all[Math.floor(Math.random()*all.length)];G.data.push(x);}
+  } else if(type==='alpha'){
+    G.total=10;
+    let all=[...CONSONANTS,...VOWELS];
+    for(let i=0;i<10;i++){let x=all[Math.floor(Math.random()*all.length)];G.data.push({q:x.o,a:x.l,instr:'Waa maxay xarafkan?',type:'input'});}
+  } else if(type==='words'){
+    G.total=7;
+    shuffle(WORDS).slice(0,7).forEach(w=>G.data.push({q:w.l,a:w.a,instr:'U beddel Far Cismaaniya:',type:'input'}));
+  } else if(type==='numbers'){
+    G.total=10;
+    for(let i=0;i<10;i++){
+      let n=Math.floor(Math.random()*99);
+      let a=n.toString().split('').map(d=>NUM_MAP[d]).join('');
+      G.data.push({q:n.toString(),a:a,instr:'U beddel Tiro Cismaaniya:',type:'input'});
+    }
+  } else if(type==='spelling'){
+    G.total=6;
+    let words=[...WORDS]; shuffle(words);
+    words.slice(0,6).forEach(w=>G.data.push({q:w.l,a:w.a,instr:'Maqal oo Qor Far Cismaaniya:',type:'spelling',latin:w.l}));
+  } else if(type==='identify'){
+    G.total=8;
+    let samples=[
+      {q:'𐒈𐒕 𐒓𐒖𐒆',a:'cismaaniya',instr:'Nooca qoraalka?',type:'identify'},
+      {q:'Nabad',a:'laatiin',instr:'Nooca qoraalka?',type:'identify'},
+      {q:'𐒌𐒚𐒚𐒐',a:'cismaaniya',instr:'Nooca qoraalka?',type:'identify'},
+      {q:'Soomaaliya',a:'laatiin',instr:'Nooca qoraalka?',type:'identify'},
+      {q:'𐒒𐒖𐒁𐒖𐒆',a:'cismaaniya',instr:'Nooca qoraalka?',type:'identify'},
+      {q:'Hooyo',a:'laatiin',instr:'Nooca qoraalka?',type:'identify'}
+    ];
+    shuffle(samples).slice(0,8).forEach(s=>G.data.push(s));
+  }
+
+  document.getElementById('game-menu').style.display='none';
+  document.getElementById('results-ui').classList.remove('visible');
+  document.getElementById('game-ui').classList.add('visible');
+  loadQ();
+}
+
+function loadQ(){
+  if(G.qIdx>=G.total){endGame();return;}
+  const item=G.data[G.qIdx];
+  document.getElementById('gCounter').textContent=`${G.qIdx+1}/${G.total}`;
+  document.getElementById('gScore').textContent=`⭐ ${G.score}`;
+  document.getElementById('gProgress').style.width=`${(G.qIdx/G.total)*100}%`;
+  document.getElementById('gFeedback').style.display='none';
+  document.getElementById('gNextBtn').style.display='none';
+
+  if(G.type==='flashcard'){
+    document.getElementById('fc-mode').style.display='block';
+    document.getElementById('quiz-mode').style.display='none';
+    const fc=document.getElementById('flashcard');
+    fc.classList.remove('flipped');
+    document.getElementById('fc-osm').textContent=item.o;
+    document.getElementById('fc-lat').textContent=item.l.toUpperCase();
+    document.getElementById('fc-mean').textContent='';
+    // find meaning from dict
+    let d=DICT.find(x=>x.l.toLowerCase()===item.l.toLowerCase());
+    if(d) document.getElementById('fc-mean').textContent=d.m;
+  } else {
+    document.getElementById('fc-mode').style.display='none';
+    document.getElementById('quiz-mode').style.display='block';
+    document.getElementById('gInstr').textContent=item.instr;
+
+    const disp=document.getElementById('gDisplay');
+    if(item.type==='input'||item.type==='spelling'){
+      if(G.type==='words'||G.type==='sentences'||G.type==='spelling'){
+        disp.className='display-latin';
+        disp.textContent=item.q;
+      } else if(G.type==='numbers'){
+        disp.className='display-number';
+        disp.textContent=item.q;
+      } else {
+        disp.className='display-main';
+        disp.textContent=item.q;
+      }
+    } else {
+      disp.className='display-main';
+      disp.textContent=item.q;
+    }
+
+    if(item.type==='identify'){
+      document.getElementById('gInputArea').style.display='none';
+      const ch=document.getElementById('gChoices');
+      ch.style.display='grid';
+      ch.innerHTML=`
+        <button class="choice-btn" onclick="submitChoice('cismaaniya')">Far Cismaaniya</button>
+        <button class="choice-btn" onclick="submitChoice('laatiin')">Far Laatiinka</button>
+      `;
+    } else {
+      document.getElementById('gInputArea').style.display='block';
+      document.getElementById('gChoices').style.display='none';
+      const inp=document.getElementById('gInput');
+      inp.value=''; inp.disabled=false;
+      if(item.type==='spelling'){
+        inp.placeholder='Qor Far Cismaaniya...';
+      } else {
+        inp.placeholder='Jawaab...';
+      }
+      setTimeout(()=>inp.focus(),100);
+    }
+  }
+}
+
+function flipCard(){
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function fcVote(knew){
+  if(knew){ G.score++; G.correct++; } else G.wrong++;
+  G.qIdx++;
+  if(G.qIdx>=G.total) endGame();
+  else loadQ();
+}
+
+function submitAns(){
+  const inp=document.getElementById('gInput');
+  let val=inp.value.trim();
+  if(!val)return;
+  const item=G.data[G.qIdx];
+  let correct = val===item.a || val.toLowerCase()===item.a.toLowerCase();
+  if(G.type==='numbers') correct = val===item.a;
+  showFeedback(correct, item.a);
+  inp.disabled=true;
+}
+
+function submitChoice(choice){
+  const item=G.data[G.qIdx];
+  let correct = choice===item.a;
+  document.querySelectorAll('.choice-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.toLowerCase().includes(item.a==='cismaaniya'?'cismaaniya':'laatiinka')) b.classList.add('reveal');
+    if(b.textContent.toLowerCase().includes(choice==='cismaaniya'?'cismaaniya':'laatiinka')){
+      b.classList.add(correct?'correct':'wrong');
+    }
+  });
+  showFeedback(correct, item.a==='cismaaniya'?'Far Cismaaniya':'Far Laatiinka', true);
+}
+
+function showFeedback(correct, rightAns, noNext){
+  const fb=document.getElementById('gFeedback');
+  fb.style.display='block';
+  fb.className='feedback-box '+(correct?'correct':'wrong');
+  if(correct){
+    G.score++; G.correct++;
+    fb.textContent='✅ SAX! Aad baad u fiican tahay.';
+  } else {
+    G.wrong++;
+    fb.innerHTML=`❌ KHALAD! Jawaabta saxda ah: <span class="osm" style="font-size:18px">${rightAns}</span>`;
+  }
+  G.totalQ++; state.totalQ=(state.totalQ||0)+1;
+  if(correct) state.correctQ=(state.correctQ||0)+1;
+  document.getElementById('gNextBtn').style.display='inline-flex';
+  document.getElementById('gScore').textContent=`⭐ ${G.score}`;
+}
+
+function nextQ(){
+  G.qIdx++;
+  loadQ();
+}
+
+function endGame(){
+  document.getElementById('game-ui').classList.remove('visible');
+  document.getElementById('results-ui').classList.add('visible');
+
+  state.score = (state.score||0)+G.score;
+  state.gamesPlayed = (state.gamesPlayed||0)+1;
+  state.sessions = (state.sessions||0)+1;
+  state.streak = (state.streak||0)+1;
+
+  document.getElementById('rScore').textContent=G.score;
+  document.getElementById('rTotal').textContent='/'+G.total;
+  const xp = G.score*10;
+  document.getElementById('rXP').textContent=`+${xp} XP`;
+  let msg='💪 Ha niyad jabin!';
+  const pct=G.score/G.total;
+  if(pct===1)msg='🏆 Dhammaan waa sax! Maashaa\'Allaah!';
+  else if(pct>=0.8)msg='🌟 Aad baad u fiican tahay!';
+  else if(pct>=0.6)msg='👍 Si fiican baad u samaysay!';
+  document.getElementById('rMsg').textContent=msg;
+
+  // Achievements
+  if(!state.achievements.includes('first')){ unlockAchievement('first'); }
+  if(pct===1 && !state.achievements.includes('perfect')){ unlockAchievement('perfect'); }
+  if(state.streak>=5 && !state.achievements.includes('streak')){ unlockAchievement('streak'); }
+
+  updateXPBar();
+  saveState();
+  updateHomeStats();
+}
+
+function exitGame(){
+  document.getElementById('game-ui').classList.remove('visible');
+  document.getElementById('results-ui').classList.remove('visible');
+  document.getElementById('game-menu').style.display='';
+}
+
+function unlockAchievement(id){
+  if(state.achievements.includes(id)) return;
+  state.achievements.push(id);
+  const msgs={first:'🌟 Abaalmarintan cusub!',perfect:'💯 Kamil! Dhammaan waa sax!',streak:'🔥 Silsilad 5 abaalmarinta!',dict:'📖 Qaamuus-raadshe!'};
+  showToast(msgs[id]||'🏆 Abaalmarinta cusub!');
+  saveState();
+}
+
+function shuffle(arr){ return arr.sort(()=>Math.random()-0.5); }
+
+// ============================================================
+//  AI CHAT
+// ============================================================
+// ============================================================
+//  TURJUMAAN (TRANSLATOR)
+// ============================================================
+let trjDir = 'ltr'; // ltr = Laatiinka→Cismaaniya, rtl = Cismaaniya→Laatiinka
+let trjHistory = [];
+
+// Reverse map: Osmanya char → Latin string
+const REV_MAP = {};
+[...CONSONANTS, ...VOWELS, ...NUMBERS].forEach(x => {
+  if(!REV_MAP[x.o]) REV_MAP[x.o] = x.l;
+});
+
+// Convert Osmanya text back to Latin
+function osmToLatin(text) {
+  let res = '';
+  for(let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    // Check if it's an Osmanya codepoint (U+10480–U+104A9 range)
+    const cp = text.codePointAt(i);
+    if(cp >= 0x10480 && cp <= 0x104A9) {
+      res += REV_MAP[ch] || ch;
+      // Osmanya chars are in supplementary plane — step 2 code units
+      if(cp > 0xFFFF) i++;
+    } else {
+      res += ch;
+    }
+  }
+  return res;
+}
+
+const QUICK_PHRASES = [
+  { lat:'Nabad iyo nolol', lbl:'Nabad iyo nolol' },
+  { lat:'Soomaaliya', lbl:'Soomaaliya' },
+  { lat:'Barasho waa iftiin', lbl:'Barasho waa iftiin' },
+  { lat:'Afka hooyo', lbl:'Afka hooyo' },
+  { lat:'Mahadsanid', lbl:'Mahadsanid' },
+  { lat:'Aad baad u fiican tahay', lbl:'Aad baad u fiican' },
+  { lat:'Waa kuma?', lbl:'Waa kuma?' },
+  { lat:'Guul iyo barwaaqo', lbl:'Guul iyo barwaaqo' },
+  { lat:'Dhulka Soomaalida', lbl:'Dhulka Soomaalida' },
+  { lat:'Xor iyo xaq', lbl:'Xor iyo xaq' }
+];
+
+function renderQuickPhrases() {
+  const el = document.getElementById('quickPhrases');
+  el.innerHTML = QUICK_PHRASES.map(p => `
+    <button class="ai-suggest" onclick="useQuickPhrase('${p.lat.replace(/'/g,"\\'")}')">
+      ${p.lbl}
+    </button>
+  `).join('');
+}
+
+function useQuickPhrase(lat) {
+  if(trjDir === 'ltr') {
+    document.getElementById('trjInput').value = lat;
+  } else {
+    // Convert to Osmanya first then put in input
+    document.getElementById('trjInput').value = convertText(lat);
+  }
+  runTrj();
+  document.getElementById('trjInput').focus();
+}
+
+function setTrjDir(dir) {
+  trjDir = dir;
+  document.getElementById('trj-btn-ltr').classList.toggle('active', dir === 'ltr');
+  document.getElementById('trj-btn-rtl').classList.toggle('active', dir === 'rtl');
+
+  const inp = document.getElementById('trjInput');
+  const out = document.getElementById('trjOutput');
+  const inLbl = document.getElementById('trj-in-label');
+  const outLbl = document.getElementById('trj-out-label');
+  const hint = document.getElementById('trj-rev-hint');
+
+  inp.value = '';
+  out.textContent = '';
+
+  if(dir === 'ltr') {
+    // Latin → Osmanya
+    inp.className = 'trj-textarea';
+    inp.placeholder = 'Qor halkan... Tusaale: Nabad iyo nolol, Soomaaliya waa dalkeena';
+    out.className = 'trj-out osm-font';
+    inLbl.className = 'trj-panel-label trj-label-laatiin';
+    inLbl.innerHTML = '<span>🅰️</span> FAR LAATIINKA — GELINTA';
+    outLbl.className = 'trj-panel-label trj-label-cismaaniya';
+    outLbl.innerHTML = '<span>𐒈</span> FAR CISMAANIYA — NATIIJADA';
+    hint.style.display = 'none';
+  } else {
+    // Osmanya → Latin
+    inp.className = 'trj-textarea osm-font';
+    inp.placeholder = 'Ku qor Far Cismaaniya ama ku dheji halkan...';
+    out.className = 'trj-out blue-out';
+    inLbl.className = 'trj-panel-label trj-label-cismaaniya';
+    inLbl.innerHTML = '<span>𐒈</span> FAR CISMAANIYA — GELINTA';
+    outLbl.className = 'trj-panel-label trj-label-laatiin';
+    outLbl.innerHTML = '<span>🅰️</span> FAR LAATIINKA — NATIIJADA';
+    hint.style.display = 'block';
+  }
+
+  updateTrjCounts();
+}
+
+function swapTrj() {
+  const inp = document.getElementById('trjInput');
+  const out = document.getElementById('trjOutput');
+  // Swap content
+  const outTxt = out.textContent;
+  setTrjDir(trjDir === 'ltr' ? 'rtl' : 'ltr');
+  inp.value = outTxt;
+  runTrj();
+}
+
+function runTrj() {
+  const inp = document.getElementById('trjInput').value;
+  const out = document.getElementById('trjOutput');
+  if(!inp.trim()) { out.textContent = ''; updateTrjCounts(); return; }
+
+  if(trjDir === 'ltr') {
+    out.textContent = convertText(inp);
+  } else {
+    out.textContent = osmToLatin(inp);
+  }
+  updateTrjCounts();
+}
+
+function updateTrjCounts() {
+  const inVal = document.getElementById('trjInput').value;
+  const outVal = document.getElementById('trjOutput').textContent;
+  document.getElementById('trjCharCount').textContent = [...inVal].length + ' xaraf';
+  document.getElementById('trjOutCount').textContent = [...outVal].length + ' xaraf';
+}
+
+function copyTrj() {
+  const txt = document.getElementById('trjOutput').textContent;
+  if(!txt) { showToast('⚠️ Waxba ma jiro'); return; }
+  navigator.clipboard.writeText(txt).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = txt;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+  showToast('✅ Waa la koobiyeeyay!');
+}
+
+function clearTrj() {
+  document.getElementById('trjInput').value = '';
+  document.getElementById('trjOutput').textContent = '';
+  updateTrjCounts();
+}
+
+function saveTrjHistory() {
+  const inp = document.getElementById('trjInput').value.trim();
+  const out = document.getElementById('trjOutput').textContent.trim();
+  if(!inp || !out) { showToast('⚠️ Marka hore qor'); return; }
+
+  const entry = {
+    osm: trjDir === 'ltr' ? out : inp,
+    lat: trjDir === 'ltr' ? inp : out,
+    dir: trjDir,
+    time: new Date().toLocaleTimeString()
+  };
+  trjHistory.unshift(entry);
+  if(trjHistory.length > 20) trjHistory.pop();
+  renderTrjHistory();
+  showToast('💾 Waa la kaydiyay!');
+}
+
+function renderTrjHistory() {
+  const wrap = document.getElementById('trjHistWrap');
+  const list = document.getElementById('trjHistList');
+  if(trjHistory.length === 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  list.innerHTML = trjHistory.map((e, i) => `
+    <div class="trj-hist-item" onclick="loadTrjHistory(${i})">
+      <div class="trj-hist-osm">${e.osm.substring(0, 12)}${e.osm.length > 12 ? '...' : ''}</div>
+      <div>
+        <div class="trj-hist-lat">${e.lat.substring(0, 30)}${e.lat.length > 30 ? '...' : ''}</div>
+        <div style="font-size:10px;color:var(--gray3);margin-top:2px">${e.time}</div>
+      </div>
+      <button class="trj-hist-del" onclick="event.stopPropagation();deleteTrjHistory(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function loadTrjHistory(i) {
+  const e = trjHistory[i];
+  setTrjDir(e.dir);
+  document.getElementById('trjInput').value = e.dir === 'ltr' ? e.lat : e.osm;
+  runTrj();
+}
+
+function deleteTrjHistory(i) {
+  trjHistory.splice(i, 1);
+  renderTrjHistory();
+}
+
+function clearTrjHistory() {
+  trjHistory = [];
+  renderTrjHistory();
+}
+
+// ============================================================
+//  PROGRESS
+// ============================================================
+function updateProgress(){
+  document.getElementById('prog-total-score').textContent=state.score||0;
+  document.getElementById('prog-games').textContent=state.gamesPlayed||0;
+  document.getElementById('prog-streak').textContent=(state.streak||0)+'🔥';
+  const acc = state.totalQ ? Math.round((state.correctQ/state.totalQ)*100) : 0;
+  document.getElementById('prog-accuracy').textContent=acc+'%';
+
+  // Simple progress simulation based on games played
+  const gp = Math.min(state.gamesPlayed||0,20);
+  const setBar=(id,pctId,pct)=>{
+    document.getElementById(id).style.width=pct+'%';
+    document.getElementById(pctId).textContent=pct+'%';
+  };
+  setBar('prog-cons','pct-cons',Math.min(100,gp*5));
+  setBar('prog-vow','pct-vow',Math.min(100,gp*6));
+  setBar('prog-num','pct-num',Math.min(100,gp*7));
+
+  // Achievements
+  const achs=['first','perfect','streak','dict'];
+  achs.forEach(id=>{
+    const el=document.getElementById('ach-'+id);
+    if(el){
+      if(state.achievements.includes(id)) el.classList.remove('ach-locked');
+      else el.classList.add('ach-locked');
+    }
+  });
+}
+
+function updateHomeStats(){
+  document.getElementById('stat-sessions').textContent=state.sessions||0;
+  document.getElementById('stat-score').textContent=state.score||0;
+  document.getElementById('stat-streak').textContent=state.streak||0;
+}
+
+function updateXPBar(){
+  const maxXP=500;
+  const xp=Math.min(state.score,maxXP);
+  document.getElementById('xpBar').style.width=(xp/maxXP*100)+'%';
+}
+
+// ============================================================
+//  TOAST
+// ============================================================
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded',()=>{
+  loadState();
+  loadLb();
+  renderGrids();
+  renderKeyboard();
+  renderDictCats();
+  filterDict();
+  updateHomeStats();
+  updateXPBar();
+  // Set home tab active
+  document.querySelector('.nav-tab').classList.add('active');
+
+  document.getElementById('latinIn').addEventListener('input',e=>{
+    document.getElementById('osmOut').textContent=convertText(e.target.value);
+  });
+
+  document.getElementById('trjInput').addEventListener('input', () => { runTrj(); });
+
+  renderQuickPhrases();
+
+  document.getElementById('gInput').addEventListener('keypress',e=>{
+    if(e.key==='Enter'){e.preventDefault();submitAns();}
+  });
+  document.getElementById('spd-input').addEventListener('keypress',e=>{
+    if(e.key==='Enter'){e.preventDefault();submitSpeed();}
+  });
+  document.getElementById('lb-name-input').addEventListener('keypress',e=>{
+    if(e.key==='Enter') lbSave();
+  });
+});
+// ============================================================
+//  SPEED QUIZ
+// ============================================================
+let SPD = { type:'', qIdx:0, score:0, data:[], timer:null, timeLeft:10, streak:0, bestStreak:0, totalTime:0 };
+const SPD_TOTAL = 15;
+
+function startSpeed(type){
+  SPD.type=type; SPD.qIdx=0; SPD.score=0; SPD.streak=0; SPD.bestStreak=0; SPD.totalTime=0;
+  SPD.data=[];
+  const allC=[...CONSONANTS,...VOWELS];
+  if(type==='alpha'){
+    for(let i=0;i<SPD_TOTAL;i++){let x=allC[Math.floor(Math.random()*allC.length)];SPD.data.push({q:x.o,a:x.l,choices:true});}
+  } else if(type==='words'){
+    const ws=[...WORDS]; shuffle(ws);
+    for(let i=0;i<SPD_TOTAL;i++){let w=ws[i%ws.length];SPD.data.push({q:w.l,a:w.a,choices:false});}
+  } else {
+    for(let i=0;i<SPD_TOTAL;i++){
+      let n=Math.floor(Math.random()*20)+1;
+      let a=n.toString().split('').map(d=>NUM_MAP[d]).join('');
+      SPD.data.push({q:n.toString(),a,choices:false});
+    }
+  }
+  document.getElementById('spd-menu').style.display='none';
+  document.getElementById('spd-results').style.display='none';
+  document.getElementById('spd-ui').style.display='block';
+  loadSpeedQ();
+}
+
+function loadSpeedQ(){
+  if(SPD.qIdx>=SPD_TOTAL){endSpeed();return;}
+  clearInterval(SPD.timer);
+  SPD.timeLeft=10;
+  const item=SPD.data[SPD.qIdx];
+  document.getElementById('spd-qnum').textContent=`${SPD.qIdx+1}/${SPD_TOTAL}`;
+  document.getElementById('spd-score').textContent=`⭐ ${SPD.score}`;
+  document.getElementById('spd-streak').textContent=SPD.streak>1?`🔥 Silsilad ${SPD.streak}`:'';
+  document.getElementById('spd-feedback').style.display='none';
+
+  const isOsm = /[\uD801]/.test(item.q)||/[\u{10480}-\u{104A9}]/u.test(item.q);
+  const disp=document.getElementById('spd-display');
+  disp.style.fontFamily = isOsm ? "'Noto Sans Osmanya',serif" : 'var(--font)';
+  disp.style.fontSize = isOsm ? '52px' : '40px';
+  disp.textContent=item.q;
+
+  const instr=document.getElementById('spd-instr');
+  if(SPD.type==='alpha') instr.textContent='Waa maxay xarafkan? (Laatiinka qor)';
+  else if(SPD.type==='words') instr.textContent='U beddel Far Cismaaniya:';
+  else instr.textContent='U beddel tiro Cismaaniya:';
+
+  if(item.choices){
+    document.getElementById('spd-input-row').style.display='none';
+    const ch=document.getElementById('spd-choices');
+    ch.style.display='grid';
+    // Generate 3 wrong answers + 1 correct
+    const pool=CONSONANTS.concat(VOWELS).filter(x=>x.l!==item.a);
+    shuffle(pool);
+    const opts=[item.a, pool[0].l, pool[1].l, pool[2].l]; shuffle(opts);
+    ch.innerHTML=opts.map(o=>`<button class="choice-btn" onclick="submitSpeedChoice('${o}')">${o.toUpperCase()}</button>`).join('');
+  } else {
+    document.getElementById('spd-choices').style.display='none';
+    document.getElementById('spd-input-row').style.display='flex';
+    const inp=document.getElementById('spd-input');
+    inp.value=''; inp.disabled=false;
+    setTimeout(()=>inp.focus(),50);
+  }
+  startSpdTimer();
+}
+
+function startSpdTimer(){
+  const ring=document.getElementById('spd-ring');
+  const num=document.getElementById('spd-timer');
+  const circ=213.6;
+  SPD.timeLeft=10;
+  ring.style.stroke='var(--gold)';
+  SPD.timer=setInterval(()=>{
+    SPD.timeLeft-=0.1;
+    const pct=SPD.timeLeft/10;
+    ring.style.strokeDashoffset=circ*(1-pct);
+    num.textContent=Math.ceil(SPD.timeLeft);
+    ring.style.stroke=pct>0.4?'var(--gold)':'#ef4444';
+    if(SPD.timeLeft<=0){
+      clearInterval(SPD.timer);
+      SPD.totalTime+=10;
+      SPD.streak=0;
+      showSpdFeedback(false, SPD.data[SPD.qIdx].a);
+    }
+  },100);
+}
+
+function submitSpeedChoice(choice){
+  clearInterval(SPD.timer);
+  SPD.totalTime+=(10-SPD.timeLeft);
+  document.querySelectorAll('#spd-choices .choice-btn').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.toLowerCase()===SPD.data[SPD.qIdx].a.toLowerCase()) b.classList.add('reveal');
+    if(b.textContent.toLowerCase()===choice.toLowerCase()) b.classList.add(choice===SPD.data[SPD.qIdx].a?'correct':'wrong');
+  });
+  showSpdFeedback(choice===SPD.data[SPD.qIdx].a, SPD.data[SPD.qIdx].a);
+}
+
+function submitSpeed(){
+  const inp=document.getElementById('spd-input');
+  const val=inp.value.trim();
+  if(!val)return;
+  clearInterval(SPD.timer);
+  SPD.totalTime+=(10-SPD.timeLeft);
+  inp.disabled=true;
+  const correct=val===SPD.data[SPD.qIdx].a||val.toLowerCase()===SPD.data[SPD.qIdx].a.toLowerCase();
+  showSpdFeedback(correct, SPD.data[SPD.qIdx].a);
+}
+
+function showSpdFeedback(correct, ans){
+  if(correct){SPD.score++;SPD.streak++;if(SPD.streak>SPD.bestStreak)SPD.bestStreak=SPD.streak;}
+  else SPD.streak=0;
+  document.getElementById('spd-score').textContent=`⭐ ${SPD.score}`;
+  document.getElementById('spd-streak').textContent=SPD.streak>1?`🔥 Silsilad ${SPD.streak}`:'';
+  const fb=document.getElementById('spd-feedback');
+  fb.style.display='block';
+  fb.className='feedback-box '+(correct?'correct':'wrong');
+  fb.innerHTML=correct?'✅ SAX!':(`❌ KHALAD! <span class="osm">${ans}</span>`);
+  setTimeout(()=>{SPD.qIdx++;loadSpeedQ();},800);
+}
+
+function endSpeed(){
+  document.getElementById('spd-ui').style.display='none';
+  document.getElementById('spd-results').style.display='block';
+  document.getElementById('spd-final').textContent=SPD.score;
+  const pct=SPD.score/SPD_TOTAL;
+  let msg='💪 Sii wad!';
+  if(pct===1)msg='🏆 Dhammaan sax! Aad baad u xawli!';
+  else if(pct>=0.8)msg='🌟 Aad baad u fiican!';
+  else if(pct>=0.6)msg='👍 Wanaagsan!';
+  document.getElementById('spd-msg').textContent=msg;
+  document.getElementById('spd-best').textContent=`Silsiladdii ugu dheereed: ${SPD.bestStreak} 🔥`;
+  const avg=SPD.totalTime/SPD_TOTAL;
+  document.getElementById('spd-avg').textContent=`Celceliska waqtiga: ${avg.toFixed(1)}s su'aal kasta`;
+  state.score=(state.score||0)+SPD.score;
+  state.gamesPlayed=(state.gamesPlayed||0)+1;
+  saveState(); updateHomeStats(); updateXPBar();
+}
+
+function exitSpeed(){
+  clearInterval(SPD.timer);
+  document.getElementById('spd-ui').style.display='none';
+  document.getElementById('spd-results').style.display='none';
+  document.getElementById('spd-menu').style.display='block';
+}
+
+// ============================================================
+//  XISAAB
+// ============================================================
+let XIS = { type:'', qIdx:0, score:0, data:[] };
+const XIS_TOTAL=10;
+
+function numToOsm(n){return n.toString().split('').map(d=>NUM_MAP[d]).join('');}
+
+function genXisaabData(type){
+  const data=[];
+  for(let i=0;i<XIS_TOTAL;i++){
+    let q,a,instr,hint='';
+    if(type==='aqoonsi'){
+      let n=Math.floor(Math.random()*19)+1;
+      const opts=[n,n+Math.floor(Math.random()*3)+1,n-Math.floor(Math.random()*3)-1,n+Math.floor(Math.random()*5)+2].map(x=>Math.max(1,x));
+      shuffle(opts); const uOpts=[...new Set(opts)].slice(0,4);
+      while(uOpts.length<4)uOpts.push(uOpts[uOpts.length-1]+1);
+      q=numToOsm(n); a=n.toString(); instr='Tirodan waa maxay?';
+      data.push({q,a,instr,choices:uOpts.map(x=>x.toString()),isOsm:true});
+    } else if(type==='baaxad'){
+      let x=Math.floor(Math.random()*9)+1, y=Math.floor(Math.random()*9)+1;
+      a=(x+y).toString(); q=`${x} + ${y}`; instr='Isku dar — jawaabta Far Cismaaniya qor:';
+      hint=numToOsm(x)+' + '+numToOsm(y);
+      data.push({q,a:numToOsm(x+y),instr,hint,choices:false,isOsm:false,displayAns:a});
+    } else if(type==='jaro'){
+      let x=Math.floor(Math.random()*9)+5, y=Math.floor(Math.random()*(x-1))+1;
+      a=(x-y).toString(); q=`${x} − ${y}`; instr='Ka jaro — jawaabta Far Cismaaniya qor:';
+      hint=numToOsm(x)+' − '+numToOsm(y);
+      data.push({q,a:numToOsm(x-y),instr,hint,choices:false,isOsm:false,displayAns:a});
+    } else {
+      let n=Math.floor(Math.random()*90)+10;
+      const opts=[n,n+Math.floor(Math.random()*5)+1,n-Math.floor(Math.random()*5)-1,n+10].map(x=>Math.max(10,x));
+      shuffle(opts); const uOpts=[...new Set(opts)].slice(0,4);
+      while(uOpts.length<4)uOpts.push(uOpts[uOpts.length-1]+1);
+      q=numToOsm(n); a=n.toString(); instr='Tirodan weyn waa maxay?';
+      data.push({q,a,instr,choices:uOpts.map(x=>x.toString()),isOsm:true});
+    }
+  }
+  return data;
+}
+
+function startXisaab(type){
+  XIS.type=type; XIS.qIdx=0; XIS.score=0;
+  XIS.data=genXisaabData(type);
+  document.getElementById('xis-menu').style.display='none';
+  document.getElementById('xis-results').style.display='none';
+  document.getElementById('xis-ui').style.display='block';
+  loadXisaab();
+}
+
+function loadXisaab(){
+  if(XIS.qIdx>=XIS_TOTAL){endXisaab();return;}
+  const item=XIS.data[XIS.qIdx];
+  document.getElementById('xis-counter').textContent=`${XIS.qIdx+1}/${XIS_TOTAL}`;
+  document.getElementById('xis-score').textContent=`⭐ ${XIS.score}`;
+  document.getElementById('xis-prog').style.width=`${(XIS.qIdx/XIS_TOTAL)*100}%`;
+  document.getElementById('xis-instr').textContent=item.instr;
+  document.getElementById('xis-feedback').style.display='none';
+  document.getElementById('xis-next').style.display='none';
+
+  const prob=document.getElementById('xis-problem');
+  prob.style.fontFamily=item.isOsm?"'Noto Sans Osmanya',serif":'var(--mono)';
+  prob.textContent=item.q;
+  document.getElementById('xis-osm-hint').textContent=item.hint||'';
+
+  const ch=document.getElementById('xis-choices');
+  if(item.choices){
+    ch.innerHTML=item.choices.map(o=>`<button class="xis-choice" onclick="submitXisaab('${o}')">${o}</button>`).join('');
+    ch.style.display='grid';
+  } else {
+    ch.innerHTML=`<div style="grid-column:1/-1;display:flex;gap:8px"><input type="text" class="game-input osm-font" id="xis-input" style="flex:1;font-family:'Noto Sans Osmanya',serif;font-size:20px" placeholder="Far Cismaaniya..." autocomplete="off"><button class="btn btn-gold" onclick="submitXisaabInput()">✓</button></div>`;
+    ch.style.display='grid';
+    setTimeout(()=>{const el=document.getElementById('xis-input');if(el){el.focus();el.onkeypress=e=>{if(e.key==='Enter')submitXisaabInput();};}},50);
+  }
+}
+
+function submitXisaab(choice){
+  const item=XIS.data[XIS.qIdx];
+  const correct=choice===item.a;
+  document.querySelectorAll('.xis-choice').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===item.a)b.classList.add('correct');
+    else if(b.textContent===choice&&!correct)b.classList.add('wrong');
+  });
+  showXisaabFeedback(correct,item);
+}
+
+function submitXisaabInput(){
+  const inp=document.getElementById('xis-input');
+  if(!inp||!inp.value.trim())return;
+  const item=XIS.data[XIS.qIdx];
+  const val=inp.value.trim();
+  const correct=val===item.a;
+  inp.disabled=true;
+  showXisaabFeedback(correct,item);
+}
+
+function showXisaabFeedback(correct,item){
+  if(correct)XIS.score++;
+  const fb=document.getElementById('xis-feedback');
+  fb.style.display='block';
+  fb.className='feedback-box '+(correct?'correct':'wrong');
+  const dispAns=item.isOsm?item.a:`<span class="osm" style="font-size:20px">${item.a}</span> (${item.displayAns||''})`;
+  fb.innerHTML=correct?'✅ SAX!':(`❌ KHALAD! Jawaabta: ${dispAns}`);
+  document.getElementById('xis-score').textContent=`⭐ ${XIS.score}`;
+  document.getElementById('xis-next').style.display='inline-flex';
+}
+
+function nextXisaab(){XIS.qIdx++;loadXisaab();}
+
+function endXisaab(){
+  document.getElementById('xis-ui').style.display='none';
+  document.getElementById('xis-results').style.display='block';
+  document.getElementById('xis-final').textContent=XIS.score;
+  const pct=XIS.score/XIS_TOTAL;
+  let msg='💪 Sii wad barashaada!';
+  if(pct===1)msg='🏆 Xisaab Kaamil!';
+  else if(pct>=0.8)msg='🌟 Xisaab fiican!';
+  else if(pct>=0.5)msg='👍 Wanaagsan!';
+  document.getElementById('xis-msg').textContent=msg;
+  state.score=(state.score||0)+XIS.score; state.gamesPlayed=(state.gamesPlayed||0)+1;
+  saveState(); updateHomeStats(); updateXPBar();
+}
+
+function exitXisaab(){
+  document.getElementById('xis-ui').style.display='none';
+  document.getElementById('xis-results').style.display='none';
+  document.getElementById('xis-menu').style.display='block';
+}
+
+// ============================================================
+//  KEYBOARD
+// ============================================================
+let kbdText = '';
+
+function renderKeyboard(){
+  const el=document.getElementById('kbd-rows');
+
+  function keyBtn(k){
+    return `<button class="kbd-key" onclick="kbdType('${k.o}','${k.l}')"><span class="k-osm">${k.o}</span><span class="k-lat">${k.l.toUpperCase()}</span></button>`;
+  }
+
+  // Shibbanayaasha — 4 safaf oo 6 kasta
+  const consRows=[
+    CONSONANTS.slice(0,6),
+    CONSONANTS.slice(6,12),
+    CONSONANTS.slice(12,18),
+    CONSONANTS.slice(18)
+  ];
+
+  // Shaqallada gaagaaban iyo dhaadheer — 2 safaf
+  const vowShort = VOWELS.slice(0,5);  // a e i o u
+  const vowLong  = VOWELS.slice(5);    // aa ee ii oo uu
+
+  el.innerHTML = `
+    <div style="margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;padding-left:2px;border-left:3px solid var(--gold);padding-left:8px">
+        Shibbanayaasha — Consonants
+      </div>
+      ${consRows.map(row=>`<div class="kbd-row">${row.map(keyBtn).join('')}</div>`).join('')}
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-sm);padding:12px">
+      <div style="font-size:11px;font-weight:700;color:#60a5fa;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;padding-left:8px;border-left:3px solid #60a5fa">
+        Shaqallada — Vowels
+      </div>
+      <div style="margin-bottom:6px">
+        <div style="font-size:10px;color:var(--gray3);letter-spacing:1px;text-align:center;margin-bottom:5px">GAAGAABAN — Short</div>
+        <div class="kbd-row">${vowShort.map(keyBtn).join('')}</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--gray3);letter-spacing:1px;text-align:center;margin-bottom:5px">DHAADHEER — Long</div>
+        <div class="kbd-row">${vowLong.map(keyBtn).join('')}</div>
+      </div>
+    </div>
+  `;
+}
+
+function kbdType(osm,lat){
+  kbdText+=osm;
+  updateKbdDisplay();
+}
+
+function kbdSpace(){kbdText+=' ';updateKbdDisplay();}
+function kbdDel(){kbdText=[...kbdText].slice(0,-1).join('');updateKbdDisplay();}
+function kbdClear(){kbdText='';updateKbdDisplay();}
+
+function updateKbdDisplay(){
+  const out=document.getElementById('kbd-output');
+  out.textContent=kbdText||'𐒒𐒖𐒁𐒖𐒆...';
+  document.getElementById('kbd-latin-out').textContent=osmToLatin(kbdText);
+}
+
+function kbdCopy(){
+  if(!kbdText){showToast('⚠️ Waxba ma jiro');return;}
+  navigator.clipboard.writeText(kbdText).catch(()=>{});
+  showToast('✅ Waa la koobiyeeyay!');
+}
+
+// ============================================================
+//  QORAAL DHEER
+// ============================================================
+const QORAAL_DATA = {
+  'Maalin-maalin': [
+    {t:'Nabad iyo Salamad',
+     lat:'Nabad iyo salamad. Sidee tahay? Waan fiicanahay, mahadsanid.',
+     osm:'𐒒𐒖𐒁𐒖𐒆 𐒘𐒕𐒙 𐒈𐒖𐒐𐒖𐒑𐒖𐒆. 𐒈𐒘𐒆𐒜 𐒂𐒖𐒔𐒖𐒕? 𐒓𐒖𐒖𐒒 𐒍𐒕𐒋𐒖𐒒𐒖𐒔𐒖𐒕, 𐒑𐒖𐒔𐒖𐒆𐒈𐒖𐒒𐒘𐒆.'},
+    {t:'Cuntada',
+     lat:'Cuntadu waa fiican tahay. Maxaad cunaysaa? Waxaan cunayaa rooti iyo hilib.',
+     osm:'𐒋𐒚𐒒𐒂𐒖𐒆𐒚 𐒓𐒖𐒖 𐒍𐒕𐒋𐒖𐒒 𐒂𐒖𐒔𐒖𐒕. 𐒑𐒖𐒄𐒖𐒖𐒆 𐒋𐒚𐒒𐒖𐒕𐒈𐒖𐒖? 𐒓𐒖𐒄𐒖𐒖𐒒 𐒋𐒚𐒒𐒖𐒕𐒖𐒖 𐒇𐒙𐒙𐒂𐒘 𐒘𐒕𐒙 𐒔𐒘𐒐𐒘𐒁.'},
+    {t:'Waqtiga',
+     lat:'Waqtiga maanta waa gaaban yahay. Berri baan shaqo badan leeyahay.',
+     osm:'𐒓𐒖𐒎𐒂𐒘𐒌𐒖 𐒑𐒖𐒖𐒒𐒂𐒖 𐒓𐒖𐒖 𐒌𐒛𐒁𐒖𐒒 𐒕𐒖𐒔𐒖𐒕. 𐒁𐒗𐒇𐒇𐒘 𐒁𐒖𐒖𐒒 𐒉𐒖𐒎𐒙 𐒁𐒖𐒆𐒖𐒒 𐒐𐒜𐒕𐒖𐒔𐒖𐒕.'},
+  ],
+  'Qoyska': [
+    {t:'Hooyo Jacayl',
+     lat:'Hooyo waa jacayl. Waxay noo karaysaa cunto macaan. Aabba shaqo buu tegayaa.',
+     osm:'𐒔𐒝𐒕𐒙 𐒓𐒖𐒖 𐒃𐒖𐒋𐒖𐒕𐒐. 𐒓𐒖𐒄𐒖𐒕 𐒒𐒙𐒙 𐒏𐒖𐒇𐒖𐒕𐒈𐒖𐒖 𐒋𐒚𐒒𐒂𐒙 𐒑𐒖𐒋𐒖𐒖𐒒. 𐒛𐒁𐒁𐒖 𐒉𐒖𐒎𐒙 𐒁𐒚𐒚 𐒂𐒗𐒌𐒖𐒕𐒖𐒖.'},
+    {t:'Caruurta',
+     lat:'Caruurtu waxay jeclaan karaan ciyaaraha. Wiilku buugga akhriyaa. Gabadhu waxay bartaa xisaabta.',
+     osm:'𐒋𐒖𐒇𐒚𐒚𐒇𐒂𐒚 𐒓𐒖𐒄𐒖𐒕 𐒃𐒗𐒋𐒐𐒖𐒖𐒒 𐒏𐒖𐒇𐒖𐒖𐒒 𐒋𐒘𐒕𐒖𐒖𐒇𐒖𐒔𐒖. 𐒓𐒕𐒐𐒏𐒚 𐒁𐒓𐒌𐒌𐒖 𐒖𐒏𐒔𐒇𐒘𐒕𐒖𐒖. 𐒌𐒖𐒁𐒖𐒊𐒚 𐒓𐒖𐒄𐒖𐒕 𐒁𐒖𐒇𐒂𐒖𐒖 𐒄𐒘𐒈𐒖𐒖𐒁𐒂𐒖.'},
+  ],
+  'Soomaaliya': [
+    {t:'Dalka',
+     lat:'Soomaaliya waa dal weyn oo qurxoon. Xeebaha Soomaaliya waa dhaadheer. Dadku waa kuwo geesi ah.',
+     osm:'𐒈𐒝𐒑𐒛𐒐𐒕𐒕𐒖 𐒓𐒖𐒖 𐒆𐒖𐒐 𐒓𐒜𐒕𐒒 𐒙𐒙 𐒎𐒚𐒇𐒄𐒙𐒙𐒒. 𐒄𐒗𐒗𐒁𐒖𐒔𐒖 𐒈𐒝𐒑𐒛𐒐𐒕𐒕𐒖 𐒓𐒖𐒖 𐒊𐒛𐒊𐒜𐒇. 𐒆𐒖𐒆𐒏𐒚 𐒓𐒖𐒖 𐒏𐒚𐒓𐒙 𐒌𐒜𐒈𐒘 𐒖𐒔.'},
+    {t:'Caasimadda',
+     lat:'Muqdisho waa caasimadda Soomaaliya. Waa magaalo weyn oo taariikheed. Dadka waa kuwo xoogan.',
+     osm:'𐒑𐒚𐒎𐒆𐒘𐒉𐒙 𐒓𐒖𐒖 𐒋𐒛𐒈𐒘𐒑𐒖𐒆𐒆𐒖 𐒈𐒝𐒑𐒛𐒐𐒕𐒕𐒖. 𐒓𐒖𐒖 𐒑𐒖𐒌𐒛𐒐𐒙 𐒓𐒜𐒕𐒒 𐒙𐒙 𐒂𐒛𐒇𐒕𐒄𐒜𐒆. 𐒆𐒖𐒆𐒏𐒖 𐒓𐒖𐒖 𐒏𐒚𐒓𐒙 𐒄𐒙𐒙𐒌𐒖𐒖𐒒.'},
+  ],
+  'Maahmaah': [
+    {t:'Aqoon',
+     lat:'Aqoon la\'aani waa iftiin la\'aan. Bare baro, oo baro bare.',
+     osm:'𐒖𐒎𐒙𐒙𐒒 𐒐𐒖𐒖𐒖𐒖𐒒𐒘 𐒓𐒖𐒖 𐒕𐒍𐒂𐒕𐒒 𐒐𐒖𐒖𐒖𐒖𐒒. 𐒁𐒖𐒇𐒗 𐒁𐒖𐒇𐒙, 𐒙𐒙 𐒁𐒖𐒇𐒙 𐒁𐒖𐒇𐒗.'},
+    {t:'Nabad',
+     lat:'Nabaddu waxay tahay aasaaska horumarinta. Guri nabadeed waa guri wanaagsan.',
+     osm:'𐒒𐒖𐒁𐒖𐒆𐒆𐒚 𐒓𐒖𐒄𐒖𐒕 𐒂𐒖𐒔𐒖𐒕 𐒛𐒈𐒖𐒖𐒈𐒏𐒖 𐒔𐒙𐒇𐒚𐒑𐒖𐒇𐒘𐒒𐒂𐒖. 𐒌𐒚𐒇𐒕 𐒒𐒖𐒁𐒖𐒆𐒜𐒆 𐒓𐒖𐒖 𐒌𐒚𐒇𐒕 𐒓𐒖𐒒𐒖𐒖𐒌𐒈𐒖𐒖𐒒.'},
+  ]
+};
+
+let activeQdCat='Maalin-maalin';
+
+function renderQoraal(){
+  const cats=Object.keys(QORAAL_DATA);
+  document.getElementById('qdTabs').innerHTML=cats.map(c=>`<button class="qd-tab${c===activeQdCat?' active':''}" onclick="setQdCat('${c}')">${c}</button>`).join('');
+  renderQdContent();
+}
+
+function setQdCat(c){
+  activeQdCat=c;
+  document.querySelectorAll('.qd-tab').forEach(t=>t.classList.toggle('active',t.textContent===c));
+  renderQdContent();
+}
+
+function renderQdContent(){
+  const items=QORAAL_DATA[activeQdCat]||[];
+  document.getElementById('qdContent').innerHTML=items.map((item,i)=>`
+    <div class="qd-card" id="qdc-${i}">
+      <div class="qd-title">${item.t}</div>
+      <div class="qd-lat">${item.lat}</div>
+      <div class="qd-osm">${item.osm}</div>
+      <button class="qd-reveal-btn" onclick="toggleQd(${i},this)">👁️ Far Cismaaniya Muuji</button>
+    </div>
+  `).join('');
+}
+
+function toggleQd(i,btn){
+  const card=document.getElementById('qdc-'+i);
+  const revealed=card.classList.toggle('revealed');
+  btn.textContent=revealed?'🙈 Qari':'👁️ Far Cismaaniya Muuji';
+}
+
+// ============================================================
+//  LEADERBOARD
+// ============================================================
+let lbData = [];
+
+function loadLb(){
+  const s=localStorage.getItem('farCisLb');
+  if(s) lbData=JSON.parse(s);
+}
+
+function lbSave(){
+  const nameEl=document.getElementById('lb-name-input');
+  const name=nameEl.value.trim();
+  if(!name){showToast('⚠️ Magacaaga geli');return;}
+  const existing=lbData.findIndex(x=>x.name.toLowerCase()===name.toLowerCase());
+  const entry={name, score:state.score||0, games:state.gamesPlayed||0};
+  if(existing>=0){
+    if(entry.score>lbData[existing].score) lbData[existing]=entry;
+    else{showToast('ℹ️ Dhibcahaagu ma kornayn');return;}
+  } else {
+    lbData.push(entry);
+  }
+  lbData.sort((a,b)=>b.score-a.score);
+  localStorage.setItem('farCisLb',JSON.stringify(lbData));
+  renderLb(name);
+  showToast('🏆 Waa la kaydiyay!');
+  nameEl.value='';
+}
+
+function renderLb(myName){
+  const medals=['🥇','🥈','🥉'];
+  const rankClass=['gold','silver','bronze'];
+  document.getElementById('lb-list').innerHTML=lbData.length===0?
+    `<p style="color:var(--gray3);text-align:center;padding:20px">Wali cidna kuma jirto — adiga noqo kii ugu horeeyay!</p>`:
+    lbData.map((e,i)=>`
+      <div class="lb-row${myName&&e.name===myName?' me':''}">
+        <div class="lb-rank ${rankClass[i]||''}">${medals[i]||i+1}</div>
+        <div class="lb-name">${e.name}${myName&&e.name===myName?' <span class="lb-badge">ADIGA</span>':''}</div>
+        <div style="text-align:right">
+          <div class="lb-score">${e.score}</div>
+          <div style="font-size:10px;color:var(--gray3)">${e.games} ciyaar</div>
+        </div>
+      </div>
+    `).join('');
+}
+
+// ============================================================
+//  PRINT
+// ============================================================
+function printChart(){
+  function ptile(item){
+    return `<div class="print-tile"><div class="p-osm">${item.o}</div><div class="p-lat">${item.l.toUpperCase()}</div></div>`;
+  }
+  document.getElementById('print-cons').innerHTML=CONSONANTS.map(ptile).join('');
+  document.getElementById('print-vow').innerHTML=VOWELS.map(ptile).join('');
+  document.getElementById('print-nums').innerHTML=NUMBERS.map(ptile).join('');
+  document.getElementById('sec-print').style.display='block';
+  setTimeout(()=>{window.print();document.getElementById('sec-print').style.display='none';},300);
+}
+
+</script>
 </body>
 </html>
